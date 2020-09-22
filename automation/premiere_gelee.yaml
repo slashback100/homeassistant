@@ -1,0 +1,38 @@
+  - id: premiere_gelee
+    alias: "Première gelée prévue demain ou après-demain"
+    trigger:
+        platform: template
+        value_template: "{% if states.weather.dark_sky.attributes.forecast[0].templow < 3 or states.weather.dark_sky.attributes.forecast[1].templow < 3 %}true{% endif  %}"
+    action:
+      - service: input_boolean.turn_on
+        data:
+            entity_id: input_boolean.premiere_gelee
+  - id: premiere_gelee_notif
+    alias: "Notifcation de première gelée"
+    trigger:
+        platform: state
+        entity_id: input_boolean.premiere_gelee
+        to: 'on'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Première gelée prévue aujourd'hui ou demain"
+      - service: persistent_notification.create
+        data:
+            message: "Rentrer le tuyau d'arrosage"
+            title: "Winter is coming"
+      - service: persistent_notification.create
+        data:
+            message: "Vider les ballasts des parasols"
+            title: "Winter is coming"
+  - id:  preiere_gelee_reset # reset boolean to 0 on 1 August
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and now().month == 8 }}"
+    action:
+      - service: input_boolean.turn_off
+        data:
+            entity_id: input_boolean.premiere_gelee

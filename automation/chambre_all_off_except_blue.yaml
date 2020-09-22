@@ -1,0 +1,18 @@
+  # two click in same second and ON -> turn off in 30 sec
+  # else, turn OFF after 1 sec
+  - alias: SwitchChambreOff
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: switch.s_chambre
+        to: 'on'
+    action:
+      - wait_template: "{{ is_state('switch.s_chambre', 'off') }}"
+        timeout: 0.3
+        continue_on_timeout: true
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ not wait.completed }}"
+            sequence:
+              - service: script.switch_off_all_no_blue

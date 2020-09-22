@@ -1,0 +1,24 @@
+  # two click in same second and ON -> turn off in 30 sec
+  # else, turn OFF after 1 sec
+  - alias: SwitchGarageMelSwitchOff
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: switch.s_garage_mel
+        to: 'on'
+    action:
+      - wait_template: "{{ is_state('switch.s_garage_mel', 'off') }}"
+        timeout: 0.3
+        continue_on_timeout: true
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ not wait.completed }}"
+            sequence:
+              - delay: '00:00:30'
+              - service: light.turn_off
+                entity_id: light.l_garage_mel
+
+        default:  
+          - service: light.toggle
+            entity_id: light.l_garage_mel

@@ -1,0 +1,27 @@
+  - alias : Tout éteindre
+    trigger:
+        platform: event
+        event_type: ios.notification_action_fired
+        event_data:
+            actionName: "OFF"
+    action:
+      - service: light.turn_off
+        entity_id: all
+  - alias : OuvrirGarageMelEntreeZoneMaison
+    trigger:
+        platform: event
+        event_type: ios.notification_action_fired
+        event_data:
+            actionName: "OPENGARAGEMEL"
+    action:
+      - service: cover.open_cover
+        entity_id: cover.garage_de_mel
+  - alias : OuvrirGarageChrisEntreeZoneMaison
+    trigger:
+        platform: event
+        event_type: ios.notification_action_fired
+        event_data:
+            actionName: "OPENGARAGECHRIS"
+    action:
+      - service: cover.open_cover
+        entity_id: cover.garage_de_chris

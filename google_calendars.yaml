@@ -1,0 +1,56 @@
+
+#- cal_id: christophe.desirant@gmail.com
+#  entities:
+#  - device_id: christophe_desirant_gmail_com
+#    ignore_availability: true
+#    name: christophe.desirant@gmail.com
+#    track: true
+
+- cal_id: 7mhibade3oeg8j5gqopa3h1970@group.calendar.google.com
+  entities:
+  - device_id: aide_menagere
+    ignore_availability: true
+    name: "Aide ménagère"
+    search: "Aide Ménagère"
+    track: true
+  - device_id: Calendier_Famille
+    ignore_availability: true
+    name: "Famille D\xE9sirant"
+    track: true
+    max_results: 20
+
+#- cal_id: addressbook#contacts@group.v.calendar.google.com
+#  entities:
+#  - device_id: contacts
+#    ignore_availability: true
+#    name: Contacts
+#    track: true
+#
+#- cal_id: fr.be#holiday@group.v.calendar.google.com
+#  entities:
+#  - device_id: jours_feries_en_belgique
+#    ignore_availability: true
+#    name: "Jours f\xE9ri\xE9s en Belgique"
+#    track: true
+
+
+- cal_id: christophe.desirant@gmail.com
+  entities:
+  - device_id: christophe_desirant_gmail_com
+    ignore_availability: true
+    name: christophe.desirant@gmail.com
+    track: false
+
+- cal_id: addressbook#contacts@group.v.calendar.google.com
+  entities:
+  - device_id: contacts
+    ignore_availability: true
+    name: Contacts
+    track: false
+
+- cal_id: fr.be#holiday@group.v.calendar.google.com
+  entities:
+  - device_id: jours_feries_en_belgique
+    ignore_availability: true
+    name: "Jours f\xE9ri\xE9s en Belgique"
+    track: false

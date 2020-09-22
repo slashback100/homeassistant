@@ -1,0 +1,55 @@
+  - alias: SwitchCuisine12_v2
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: switch.s_salon_music_minus
+        to: 'on'
+    action:
+      - wait_template: "{{ is_state('switch.s_salon_music_minus', 'off') }}"
+        timeout: 0.3
+        continue_on_timeout: true
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ not wait.completed }}"
+            sequence:
+              - service: media_player.media_play_pause
+                entity_id: media_player.max2play_2
+        #if short press:
+        default: 
+          - choose:
+              - conditions:
+                  - condition: or
+                    conditions:
+                      - condition: state
+                        entity_id: media_player.max2play_2
+                        state: 'paused'
+                      - condition: state
+                        entity_id: media_player.max2play_2
+                        state: 'idle'
+                sequence:
+                  - service: shell_command.tts_meteo_salon
+            default:
+              - service: media_player.volume_down
+                entity_id: media_player.max2play_2
+  - alias: SwitchCuisine11_v2
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: switch.s_salon_music_plus
+        to: 'on'
+    action:
+      - wait_template: "{{ is_state('switch.s_salon_music_plus', 'off') }}"
+        timeout: 0.3
+        continue_on_timeout: true
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ not wait.completed }}"
+            sequence:
+              - service: media_player.media_next_track
+                entity_id: media_player.max2play_2
+        default:  
+          - service: media_player.volume_up
+            entity_id: media_player.max2play_2
+

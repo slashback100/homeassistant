@@ -1,0 +1,115 @@
+resources:
+#  - url: /hacsfiles/custom-header/custom-header.js
+#    type: module
+  - url: /hacsfiles/dual-gauge-card.js
+    type: js
+  - url: /local/mini-graph-card-bundle.js?v=0.9.3
+    type: module
+  - url: /hacsfiles/lovelace-card-mod/card-mod.js
+    type: module
+    #  - url: /hacsfiles/lovelace-swipe-navigation/swipe-navigation.js
+    #    type: module
+title: My Awesome Home
+views:
+  - title: Home
+    type: horizontal-stack
+    panel: true
+    background: var(--background-image)
+    cards: 
+#      - type: custom:compact-custom-header
+#        entities:
+#          - light.l_salon_plafond
+         #- type: entity-filter
+         #- type: glance
+       - type: vertical-stack
+         cards:
+           - type: entities
+             entities:
+               - light.l_salon_plafond
+               - light.l_sam_plafond
+               - light.l_cuisine_plafond
+               - light.l_cuisineentree
+               - light.l_buanderie
+               - light.l_hall_plafond
+               - light.l_toilette
+               - light.l_garage_chris
+               - light.l_garage_mel
+               - light.l_escalier_ambiance
+               - cover.garage_de_chris
+               - binary_sensor.garage_de_mel
+           - type: entities
+             entities:
+               - light.l_escalier
+               - light.l_hall_nuit
+               - light.l_salle_jeu
+               - light.l_bureau
+               - light.l_sdb
+               - light.l_sdb_eviers
+               - light.l_chambre_parents
+               - light.l_dressing
+               - light.l_elise
+               - light.l_noemie
+               - light.l_hall_ambiance
+       - type: vertical-stack
+         cards:
+           - type: glance
+             entities:
+               - light.l_escalier
+               - light.l_hall_nuit
+               - light.l_salle_jeu
+               - light.l_bureau
+               - light.l_sdb
+               - light.l_sdb_eviers
+               - light.l_chambre_parents
+               - light.l_dressing
+               - light.l_elise
+               - light.l_noemie
+               - light.l_hall_ambiance
+       - type: vertical-stack
+         cards:
+           - type: glance
+             entities:
+               - light.l_atelier_mel
+               - light.l_cave_technique
+               - light.l_cave_jardin
+               - light.l_escalier_cave
+           - type: glance
+             entities:
+               - light.l_grenier
+          # - type: glance
+          #   entities:
+          #     - light.l_sdb_prise
+           - type: glance
+             entities:
+               - light.l_facade_avant
+               - light.l_terrasse_bas
+               - light.l_terrasse_haut
+#           - type: light
+#             entity: light.l_sam_plafond
+#           - type: picture-glance
+#             entities:
+#               - light.l_sam_plafond
+#         state_filter:
+#           - 'on'
+#          - type: picture-entity
+#            entity: light.l_salon_plafond
+#            image: /local/home.png
+
+#      - type: custom:compact-custom-header
+#        main_config: true
+#        entities:
+#          - light.l_salon_plafond
+#        card:
+#            type: glance
+#            title: People that are home
+  - title: Media
+    type: vertical-stack
+    panel: true
+    background: var(--background-image)
+    cards: 
+      - type: media-control
+        entity: media_player.kodi
+      - type: media-control
+        entity: media_player.max2play_2
+      - type: media-control
+        entity: media_player.salle_de_bain

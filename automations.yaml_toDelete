@@ -1,0 +1,1093 @@
+- alias: SwitchCavePorteExtOff
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/37
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_cave_porte_ext
+  id: 769f0e28fdb04abfaab4aacfee83e76f
+- alias: SwitchCavePorteExtOn
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/37
+    payload: 'ON'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_cave_porte_ext
+  - wait_template: '{{ is_state(''switch.s_cave_porte_ext'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_cave_porte_ext_jardin
+  - service: script.switch_cave_porte_ext_all
+  id: 10037c4202bc4fccb75177ebc392bf47
+- alias: SwitchBasEscalierOff
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/37
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_cave_porte_ext
+  id: 10cc9c3a14f04187a44e2e25fa8ec554
+- alias: SwitchCaveOn
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/37
+    payload: 'ON'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_cave_porte_ext
+  - wait_template: '{{ is_state(''switch.s_cave_porte_ext'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_cave_porte_ext_jardin
+  - service: script.switch_cave_porte_ext_all
+  id: 4d3f9f8d145e4a749d6a11dda114f7db
+- alias: SwitchChambreOff
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/30
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_chambre
+  id: 91ceb137338d4406b5876220dc67c461
+- alias: SwitchChambreONLong
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/30
+    payload: 'ON'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_chambre
+  - wait_template: '{{ is_state(''switch.s_chambre'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_off_all_no_blue_if_long
+    data:
+      switch_id: switch.s_chambre
+  id: f61a7ba7c3bc440db38fe4eb85fd9f3f
+- id: comingHome
+  alias: Comming Home
+  trigger:
+    platform: zone
+    entity_id: device_tracker.chris
+    zone: zone.Home
+    event: enter
+  action:
+  - service: shell_command.stop_motion
+- id: comingHomeAtNight
+  alias: Comming Home At Night
+  trigger:
+    platform: zone
+    entity_id: device_tracker.chris
+    zone: zone.Home
+    event: enter
+  condition:
+    condition: or
+    conditions:
+    - condition: sun
+      after: sunset
+      after_offset: +00:01:00
+    - condition: sun
+      before: sunrise
+  action:
+  - service: light.turn_on
+    entity_id: light.l_facade_avant
+  - service: script.turn_facade_off_5_min
+- alias: Make the lights go bright
+  initial_state: 'on'
+  trigger:
+    platform: mqtt
+    topic: cmd/etage3a/in/100
+    payload: 'ON'
+  action:
+  - service: script.turn_on
+    data:
+      entity_id: script.light_bright
+  id: 2bfca103b1284754a34d96b5d2b9f02f
+- alias: Stop the bright just there
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage3a/in/100
+    payload: 'OFF'
+  action:
+  - service: script.turn_off
+    data:
+      entity_id: script.light_bright
+  - service: script.turn_off
+    data:
+      entity_id: script.light_bright_pause
+  id: 716a65312f62478b8ca8a262935bbd9f
+- alias: SwitchGarageMelSwitchOff
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/41
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_garage_mel1
+  id: 43d0a50bd2d64e31b7df83f9b9c17ec3
+- alias: SwitchGarageMelON
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/41
+    payload: 'ON'
+  condition:
+  - condition: state
+    entity_id: light.l_garage_mel
+    state: 'off'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_garage_mel1
+  - service: light.turn_on
+    entity_id: light.l_garage_mel
+  id: f84ba2489d444f3887b2064e21a35aa7
+- alias: SwitchGMONLong
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/41
+    payload: 'ON'
+  condition:
+  - condition: state
+    entity_id: light.l_garage_mel
+    state: 'on'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_garage_mel1
+  - wait_template: '{{ is_state(''switch.s_garage_mel1'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_gm_script_switch_on
+  - service: script.switch_gm_script_switch_off
+  id: bd6c74b5a95d45f38f5db370d00deed4
+- id: garageChrisOpens
+  alias: Ouverture Garage Chris
+  trigger:
+    platform: state
+    entity_id: binary_sensor.garage_de_chris
+    from: 'off'
+    to: 'on'
+  action:
+  - service: notify.ios_chris
+    data:
+      message: Le garage de Christophe s'ouvre
+  - delay: 00:03
+  - service: script.gco
+- id: garageMelOpens
+  alias: Ouverture Garage Mel
+  trigger:
+    platform: state
+    entity_id: binary_sensor.garage_de_mel
+    from: 'off'
+    to: 'on'
+  action:
+  - service: notify.ios_chris
+    data:
+      message: Le garage de Mel s'ouvre
+  - delay: 00:03
+  - service: script.gmo
+- id: garageMelComesHome
+  alias: Mel rentre
+  trigger:
+    platform: state
+    entity_id: binary_sensor.garage_de_mel
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: device_tracker.slashback_mel
+    state: home
+  action:
+  - service: shell_command.mel_not_home
+- id: garageMelLeavesHome
+  alias: Mel part
+  trigger:
+    platform: state
+    entity_id: binary_sensor.garage_de_mel
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: device_tracker.slashback_mel
+    state: not_home
+  action:
+  - service: shell_command.mel_home
+- id: melIsAtHome
+  trigger:
+    platform: time
+    at: 03:00:00
+  action:
+  - service: shell_command.mel_home
+- alias: SwitchHallOff
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/43
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_hall_all
+  id: 4c73851adee144ab921344c8f3a2ee99
+- alias: SwitchHallONLong
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/43
+    payload: 'ON'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_hall_all
+  - wait_template: '{{ is_state(''switch.s_hall_all'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_off_rez
+    data:
+      switch_id: switch.s_hall_all
+  id: cd7138d0a74c4bc496b0359bae6455b8
+- alias: SwichHallHautOFF
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/14
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_eteindre_bas
+  id: d8f63aff71cc4553b80c39c5d4e27271
+- alias: SwichHallHautONLong
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/14
+    payload: 'ON'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_eteindre_bas
+  - wait_template: '{{ is_state(''switch.s_eteindre_bas'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_off_rez
+    data:
+      switch_id: switch.s_eteindre_bas
+  id: 71213a21e4f547f6afdb0b538047c5d9
+- id: HDD space
+  alias: '[System] SD Card Space at 90%'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.disk_use_percent
+    above: 89
+  action:
+  - service: persistent_notification.create
+    data:
+      title: Low SD Card Space
+      message: SD card usage is at {{ states.sensor.disk_use_percent_.state }}%
+      notification_id: low_disk_space
+- alias: Tout éteindre
+  trigger:
+    platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: 'OFF'
+  action:
+  - service: light.turn_off
+    entity_id: group.all_lights
+  id: 7f4933a33728477192c9c8cbf83e6624
+- id: leavingHome
+  alias: Leaving Home
+  trigger:
+    platform: zone
+    entity_id: device_tracker.chris
+    zone: zone.Home
+    event: leave
+  action:
+  - service: shell_command.start_motion
+- id: leavingHomePorteGarageChris
+  alias: Leaving Home Check Garage
+  trigger:
+    platform: zone
+    entity_id: device_tracker.chris
+    zone: zone.Home
+    event: leave
+  condition:
+  - condition: state
+    entity_id: binary_sensor.garage_de_chris
+    state: 'on'
+  action:
+  - service: notify.ios_chris
+    data:
+      message: Garage Ouvert !!
+- id: leavingHomeCheckLight
+  alias: Check light Leaving Home
+  trigger:
+    platform: zone
+    entity_id: device_tracker.chris
+    zone: zone.Home
+    event: leave
+  condition:
+    condition: or
+    conditions:
+    - condition: state
+      entity_id: light.l_buanderie
+      state: 'on'
+    - condition: state
+      entity_id: light.l_cuisineentree
+      state: 'on'
+    - condition: state
+      entity_id: light.l_cuisine_plafond
+      state: 'on'
+    - condition: state
+      entity_id: light.l_escalier_ambiance
+      state: 'on'
+    - condition: state
+      entity_id: light.l_facade_avant
+      state: 'on'
+    - condition: state
+      entity_id: light.l_garage_chris
+      state: 'on'
+    - condition: state
+      entity_id: light.l_garage_mel
+      state: 'on'
+    - condition: state
+      entity_id: light.l_hall_plafond
+      state: 'on'
+    - condition: state
+      entity_id: light.l_salon_plafond
+      state: 'on'
+    - condition: state
+      entity_id: light.l_sam_plafond
+      state: 'on'
+    - condition: state
+      entity_id: light.l_toilette
+      state: 'on'
+    - condition: state
+      entity_id: light.l_bureau
+      state: 'on'
+    - condition: state
+      entity_id: light.l_grenier
+      state: 'on'
+    - condition: state
+      entity_id: light.l_dressing
+      state: 'on'
+    - condition: state
+      entity_id: light.l_elise
+      state: 'on'
+    - condition: state
+      entity_id: light.l_noemie
+      state: 'on'
+    - condition: state
+      entity_id: light.l_escalier
+      state: 'on'
+    - condition: state
+      entity_id: light.l_hall_ambiance
+      state: 'on'
+    - condition: state
+      entity_id: light.l_hall_nuit
+      state: 'on'
+    - condition: state
+      entity_id: light.l_salle_jeu
+      state: 'on'
+    - condition: state
+      entity_id: light.l_sdb
+      state: 'on'
+    - condition: state
+      entity_id: light.l_sdb_eviers
+      state: 'on'
+    - condition: state
+      entity_id: light.l_terrasse_bas
+      state: 'on'
+    - condition: state
+      entity_id: light.l_terrasse_haut
+      state: 'on'
+  action:
+  - service: notify.ios_chris
+    data_template:
+      message: '{{ "Lumière allumée: " }} {% for l in states.light -%} {% if l.state
+        == "on" -%} {{ l.name + '' '' }} {%- endif %} {%- endfor %}
+
+        '
+      data:
+        push:
+          badge: 5
+          category: eteindretout
+- alias: SwitchCuisine11
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/24
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_lms_minus
+  id: 60a7cbae70f84e98abb4dc011849d04d
+- alias: SwitchCuisine11SoundMinus
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/24
+    payload: 'ON'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_lms_minus
+  - wait_template: '{{ is_state(''switch.s_lms_minus'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_music_minus_on
+  - service: script.switch_music_minus_on_morning
+  - service: script.switch_music_minus_off
+  id: 40d92ae2522142fd9eed13314d926990
+- alias: SwitchCuisine12
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/25
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_lms_plus
+  id: 192931b7dc1f405d930f9115544380d2
+- alias: SwitchCuisine11SoundPlus
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/25
+    payload: 'ON'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_lms_plus
+  - wait_template: '{{ is_state(''switch.s_lms_plus'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_music_plus_on
+  - service: script.switch_music_plus_off
+  id: ae281396600440cda335a9c8dac06d0b
+- alias: SwitchSdb4
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/18
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_sdb_minus
+  id: c6ea7faff6c24e6396b159924e34e216
+- alias: SwitchSdb4SoundMinus
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/18
+    payload: 'ON'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_sdb_minus
+  - wait_template: '{{ is_state(''switch.s_sdb_minus'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_sdb_minus_on
+  - service: script.switch_sdb_minus_off
+  id: d3f99cbd2efd461fb2be8f49cd605f82
+- alias: SwitchSdb3
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/19
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_sdb_plus
+  id: ea7d4ac200654c2cb9d59392ae547d8f
+- alias: SwitchSdb3SoundPlus
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/19
+    payload: 'ON'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_sdb_plus
+  - wait_template: '{{ is_state(''switch.s_sdb_plus'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_sdb_plus_on
+  - service: script.switch_sdb_plus_off
+  id: 7655860b651640018a8d730a41e79f49
+- alias: ResetArduinos
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: 05:00:00
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/reset
+      payload: 'ON'
+  id: 17abde39af6f41e5bdcd7eb02d6a19cc
+- alias: restoreStateArduinoReboot
+  trigger:
+  - platform: mqtt
+    topic: init/etage0a/ready
+    payload: ready
+  - platform: mqtt
+    topic: init/etage1a/ready
+    payload: ready
+  - platform: mqtt
+    topic: init/etage2a/ready
+    payload: ready
+  - platform: mqtt
+    topic: init/etage2b/ready
+    payload: ready
+  action:
+  - service: python_script.restore
+  id: 6f750860a43742869e91e6104ac990ed
+- alias: restoreStateHAStartup
+  trigger:
+    platform: event
+    event_type: homeassistant_start
+  action:
+  - service: python_script.restore
+  id: 14a1f8eb519c4cc89b931fdda08d452d
+- alias: restoreStateHAStartup2
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+  - service: python_script.restore
+  id: d87f7863521e41d38cb19c0af53459cc
+- alias: SwichCuisine9OFF
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/22
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_eteindre_bas
+  id: a3b4c5383579452e808044a7d8217079
+- alias: SwichCuisine9ONLong
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/22
+    payload: 'ON'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_eteindre_bas
+  - wait_template: '{{ is_state(''switch.s_eteindre_bas'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_off_rez
+    data:
+      switch_id: switch.s_eteindre_bas
+  id: 33abd6ea358943a28aeae13b11d375b4
+- alias: SwichCuisine10OFF
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/23
+    payload: 'OFF'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.s_eteindre_haut
+  id: 98bb86d358a344cfb45adb9fa2276463
+- alias: SwichCuisine10ONLong
+  initial_state: 'on'
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/23
+    payload: 'ON'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.s_eteindre_haut
+  - wait_template: '{{ is_state(''switch.s_eteindre_haut'', ''off'') }}'
+    timeout:
+      milliseconds: 500
+    continue_on_timeout: 'true'
+  - service: script.switch_off_haut
+    data:
+      switch_id: switch.s_eteindre_haut
+  id: d17f242c7b5144078d021d16418c5f48
+- alias: SwichBuanderie1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/35
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_buanderie
+  id: 96b010d332a04f009b292aa10ed05f55
+- alias: SwichBuanderie2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/36
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_garage_chris
+  id: d8cbff446f5443608ac89d23f08e27ad
+- alias: SwichBuanderie3
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/34
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_buanderie
+  id: ee1e3daaaa7341d297afa938ba6cfb7c
+- alias: SwichBuanderie4
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/37
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_buanderie
+  id: f807f4268aee42628153fbc46676403c
+- alias: SwichCuisine1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/14
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_buanderie
+  id: 0741f02f6c5a4df5b7b11cee78842dc1
+- alias: SwichCuisine2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/15
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_cuisine_plafond
+  id: a3d4c447704e452a9d4a5a5f532d819b
+- alias: SwichCuisine4
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/17
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier_ambiance
+  id: ea3a7a7039ab4c95b3bc1cd9712a42e7
+- alias: SwichCuisine7
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/20
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_sam_plafond
+  id: 05b7cc41a9ae4ae09c046ca8b6f787f3
+- alias: SwichCuisine8
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/21
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_salon_plafond
+  id: 44a81db5873946d18978eb462635bc63
+- alias: SwichCuisine5
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/18
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier
+  id: eb49dd8f0a4d4c27a53214d09d0b10bd
+- alias: SwichCuisine6
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/19
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_cuisineentree
+  id: ee9a2cc4d186474cb6c5ad9937931783
+- alias: SwitchGarageMel1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/42
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier_cave
+  id: 102bb00195e74998a7a1850525b5ef37
+- alias: SwitchGarageChris1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/38
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_garage_chris
+  id: 416c469f5b494bb1809374930c376ca6
+- alias: SwitchGarageChris2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/39
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_garage_mel
+  id: 1ab715c27f104c3ea92cc673f7f2311e
+- alias: SwitchGarageChris3
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/40
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_garage_chris
+  id: 412f9a26de634faba529d36bd3ef5df1
+- alias: SwichHall1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/28
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_facade_avant
+  id: 2e4730539ebd40cc884f9c9929f0b14e
+- alias: SwichHall2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/29
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_plafond
+  id: ce7865cd78c44aa58bd348f286d57fd6
+- alias: Switchportearriere1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/26
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_terrasse_bas
+  id: 6ba7bc3e77624e3dab5c77b2ae9379f9
+- alias: Switchportearriere2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/27
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_terrasse_haut
+  id: cbee5c5204474df8acbfa6c4a3e8c4dc
+- alias: SwitchSAM1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/31
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_sam_plafond
+  id: bd8e6a27524d459fa7f309bc4f500449
+- alias: SwitchSAM2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/32
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_plafond
+  id: 2f050a4a52174b27920d3f46d982a679
+- alias: SwitchSAM4
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/33
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier_ambiance
+  id: 5b4370017d404ef28d796f657385bf31
+- alias: SwichToilette
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/30
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_toilette
+  id: 5b3a92011ae44da5b50254e2aa659308
+- alias: SwichHallNuit1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/15
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_nuit
+  id: 92eab250f30a45b8a7ec8ee60289d180
+- alias: SwichHallNuit3
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/22
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier_ambiance
+  id: 66484eb17ca248929484d0fad3a442a0
+- alias: SwichHallNuit4
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/24
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_ambiance
+  id: e2786e3603d74757830aeb158b82e90d
+- alias: SwichHallNuit5
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/26
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_salle_jeu
+  id: 3e2f1696cf744c4b9ae1eef05784dbcf
+- alias: SwichHallNuit6
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/28
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier
+  id: c415c061f2fa4db3bc9fc3dceed1da58
+- alias: SwichElise1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/32
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_elise
+  id: 7a77b7a4408f465c985624971d92e438
+- alias: SwichNoemie1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/31
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_noemie
+  id: 7dbad9c9fa904db3ac7c2b1f65da9beb
+- alias: SwichDressing
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/26
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_dressing
+  id: 81e001ad2c8945d696823763ade24d8d
+- alias: SwichChambre1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/28
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_chambre_parents
+  id: 0d7917378b5b4bf393c0e6eb2483d2ff
+- alias: SwichChambre3
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/32
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_ambiance
+  id: e72f1d20f2d5477891f5d698e740f2cd
+- alias: SwichLit1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/17
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_chambre_parents
+  id: 8ab961a2b2a842f99bfacaf860e41666
+- alias: SwichLit2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/16
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_dressing
+  id: 39a457b2a96b4556bb452e82ec0de335
+- alias: SwichSdb1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/25
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_sdb
+  id: 0129bc39b9344ea38406374ddcf8d1e5
+- alias: SwichSdb2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/23
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_sdb_eviers
+  id: ccde3f79947e4b7cb24804dd70b3f201
+- alias: SwichHallTrappe1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/21
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_nuit
+  id: 824848b0b0554e67a78e38311dd50e1f
+- alias: SwichHallTrappe4
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/18
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_ambiance
+  id: 826f27d79acd45edb4f5c52000939234
+- alias: SwichHallTrappe2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/20
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_grenier
+  id: 40a47e2646994f2eacc5668e97c5827c
+- alias: SwichCaveEscalier1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/43
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier_cave
+  id: 3bd1ca92ad7b436d9e6fd303c9c54c31
+- alias: SwichCaveEscalier2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/42
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_cave_technique
+  id: bd5d1d3ff178480e97070eb174d20adb
+- alias: SwichCaveEscalier3
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/41
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_cave_jardin
+  id: 50a777d4b4144f41b8be577c2585b8d7
+- alias: SwichCaveEscalier6
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/38
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_atelier_mel
+  id: 6dee40ebb20146f093473ddb7a03d9e7
+- alias: SwichCaveTechnique
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/36
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_cave_technique
+  id: 11addda8e05e4a2a81648359350c3700
+- id: '1594385391975'
+  alias: wifi_down
+  description: Couper Wifi
+  trigger:
+  - at: 00:00
+    platform: time
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.unifi_cave
+    service: switch.turn_off
+  - data: {}
+    entity_id: switch.unifi_rdc
+    service: switch.turn_off
+- id: '1594385484890'
+  alias: wifi_down
+  description: Couper le Wifi
+  trigger:
+  - at: 00:00
+    platform: time
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.unifi_cave
+    service: switch.turn_off
+- id: '1594385486443'
+  alias: wifi_down
+  description: Couper le Wifi
+  trigger:
+  - at: 00:00
+    platform: time
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.unifi_cave
+    service: switch.turn_off
+- id: '1594385486605'
+  alias: wifi_down
+  description: Couper le Wifi
+  trigger:
+  - at: 00:00
+    platform: time
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.unifi_cave
+    service: switch.turn_off
+- id: '1594385486770'
+  alias: wifi_down
+  description: Couper le Wifi
+  trigger:
+  - at: 00:00
+    platform: time
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.unifi_cave
+    service: switch.turn_off

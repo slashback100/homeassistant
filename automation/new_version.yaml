@@ -1,0 +1,10 @@
+  - id: new_version
+    alias: "A new version is available"
+    trigger:
+        platform: state
+        entity_id: binary_sensor.updater
+    action:
+      - service: persistent_notification.create
+        data_template:
+            message: "Une nouvelle version de HomeAssistant est disponible (version {{ states.binary_sensor.updater.attributes.newest_version }})"
+            title: "Version"

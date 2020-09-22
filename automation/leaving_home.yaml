@@ -1,0 +1,76 @@
+  - id: leavingHome
+    alias: "Leaving Home"
+    initial_state: false
+    trigger:
+        platform: state
+        entity_id: person.christophe
+        from: 'home'
+    action:
+      - service: shell_command.start_motion
+ 
+  - id: leavingHomePorteGarageChris
+    alias: "Leaving Home Check Garage"
+    trigger:
+        platform: state
+        entity_id: person.christophe
+        from: 'home'
+    condition:
+      - condition: state
+        entity_id: binary_sensor.garage_de_chris
+        state: 'on'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Garage Ouvert !!"
+ 
+  - id: leavingHomeCheckLight_2
+    alias: "Check light Leaving Home"
+    trigger:
+      - platform: state
+        entity_id: person.melanie
+        from: 'home'
+        to: 'not_home'
+      - platform: state
+        entity_id: person.christophe
+        from: 'home'
+        to: 'not_home'
+    condition:
+        condition: and
+        conditions:
+          - condition: template
+            value_template: '{{ states("person.christophe") != "home" }}'
+          - condition: template
+            value_template: '{{ states("person.melanie") != "home" }}'
+          - condition: state
+            entity_id: group.light_to_check
+            state: 'on'
+    action:
+            #      - service: notify.mail
+            #       data_template: 
+            #            title: "#test"
+            #            message: >
+            #              {{ "Light is on: " }}
+            #              {% for l in states.light -%}
+            #              {% if l.state == "on" -%}
+            #              {{ l.name + ' ' }}
+            #              {%- endif %}
+            #              {%- endfor %}
+      - service: notify.mobile_app_iphone
+        data_template:
+            message: >
+              {{ "Lumière allumée: " }}
+              {{ states['light'] | selectattr('state','eq', 'on') | map(attribute='attributes.friendly_name') | list | join(', ') }}
+ #             {% for l in states.light -%}
+ #             {% if l.state == "on" -%}
+ #             {{ l.name + ' ' }}
+ #             {%- endif %}
+ #             {%- endfor %}
+ # equivalent to
+ # {{ states['light'] | selectattr('state','eq', 'on') | map(attribute='attributes.friendly_name') | list | join(', ') }}
+            data:
+                push:
+                    category: 'eteindretout'
+                    #action_data:
+                    #    entity_id: group.light_to_check
+                    #my_custom_data: foo
+

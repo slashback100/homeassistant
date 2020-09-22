@@ -1,0 +1,24 @@
+  - id: blackout
+    alias: "Blackout at home"
+    trigger:
+        platform: state
+        #entity_id: binary_sensor.kodi_rpi
+        entity_id: media_player.mediacenter_cinema
+        #from: 'idle'
+        to: 'off'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Coupure de courant à la maison"
+  - id: blackout2
+    alias: "Blackout at home 2"
+    trigger:
+        platform: state
+        entity_id: binary_sensor.kodi_rpi
+        from: 'on'
+        to: 'off'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Coupure de courant à la maison"
+ 

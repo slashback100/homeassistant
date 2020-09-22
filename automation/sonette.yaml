@@ -1,0 +1,302 @@
+  - alias: sonette_bing
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/47
+        payload: 'ON'
+    action:
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage1a/out/1
+            payload: 'ON'
+      - delay:
+            milliseconds: 100
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage1a/out/1
+            payload: 'OFF'
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_notif
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/47
+        payload: 'ON'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Quelqu'un sonne à la porte"
+      - service: notify.mobile_app_iphone_de_melanie
+        data:
+            message: "Quelqu'un sonne à la porte"
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_notif_critical
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/47
+        payload: 'ON'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Quelqu'un sonne à la porte"
+            data:
+                push:
+                    sound:
+                        name: "Ringtone_2_Haptic-sashimi.caf"
+                        critical: 1
+                        volume: 0.5
+      - service: notify.mobile_app_iphone_de_melanie
+        data:
+            message: "Quelqu'un sonne à la porte"
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_lampe_sam
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/47
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_lampe_billard
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/47
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_lampe ext
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/47
+        payload: 'ON'
+    condition:
+        condition: and
+        conditions:
+          - condition: or
+            conditions:
+              - condition: sun
+                after: sunset
+                after_offset: "+00:01:00"
+              - condition: sun
+                before: sunrise
+          - condition: state
+            entity_id: light.l_facade_avant
+            state: 'off'
+    action:
+      - service: light.turn_on
+        entity_id: light.l_facade_avant
+      - delay:
+            minutes: 2
+      - service: light.turn_off
+        entity_id: light.l_facade_avant
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_ext_haut_force
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/47
+        payload: 'ON'
+    action:
+      - service: shell_command.ringexthaut
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_ext_bas_force
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/47
+        payload: 'ON'
+    action:
+      - service: shell_command.ringextbas
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_ext_haut_ifplaying
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/47
+        payload: 'ON'
+    condition:
+      - condition: state
+        entity_id: media_player.terrassehaut
+        state: playing 
+    action:
+      - service: shell_command.ringexthaut
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_ext_bas_ifplaying
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/47
+        payload: 'ON'
+    condition:
+      - condition: state
+        entity_id: media_player.terrassebas_2
+        state: playing 
+    action:
+      - service: shell_command.ringextbas
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_bas_notif
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/32
+        payload: 'ON'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Quelqu'un sonne à la porte d'en bas"
+      - service: notify.mobile_app_iphone_de_melanie
+        data:
+            message: "Quelqu'un sonne à la porte d'en bas"
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_bas_notif_critical
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/32
+        payload: 'ON'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Quelqu'un sonne à la porte d'en bas"
+            data:
+                push:
+                    sound:
+                        name: "Ringtone_2_Haptic-sashimi.caf"
+                        critical: 1
+                        volume: 0.5
+      - service: notify.mobile_app_iphone_de_melanie
+        data:
+            message: "Quelqu'un sonne à la porte d'en bas"
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_bas_lampe_sam
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/32
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_bas_lampe_billard
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/32
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_bas_ext_bas_force
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/32
+        payload: 'ON'
+    action:
+      - service: shell_command.ringextbas
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_bas_ext_bas_ifplaying
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/32
+        payload: 'ON'
+    condition:
+      - condition: state
+        entity_id: media_player.terrassebas_2
+        state: playing 
+    action:
+      - service: shell_command.ringextbas
+      - delay:
+            milliseconds: 5000
+  - alias: sonette_bas_allumer_atelier
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/32
+        payload: 'ON'
+    condition:
+      - condition: state
+        entity_id: light.l_cave_jardin
+        state: 'off'
+    action:
+      - service: light.turn_on
+        entity_id: light.l_cave_jardin
+      - delay:
+            seconds: 90
+      - service: light.turn_off
+        entity_id: light.l_cave_jardin
+      - delay:
+            milliseconds: 5000

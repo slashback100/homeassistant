@@ -1,0 +1,14 @@
+  - alias: startup
+    initial_state: 'on'
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage1a/in/45
+            payload: 'ON'
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage1a/in/46
+            payload: 'ON'

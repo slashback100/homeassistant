@@ -1,0 +1,464 @@
+
+
+chris:
+  hide_if_away: false
+  icon:
+  mac:
+  name: chris
+  picture:
+  track: true
+
+slashback_mel:
+  hide_if_away: false
+  icon:
+  mac:
+  name: slashback_melanie
+  picture:
+  track: true
+
+slashback_chris:
+  hide_if_away: false
+  icon:
+  mac:
+  name: slashback_christophe
+  picture:
+  track: false
+
+galaxy_a5_2017:
+  hide_if_away: false
+  icon:
+  mac: 24:92:0E:76:DA:C0
+  name: android_mel
+  picture:
+  track: true
+
+cam:
+  hide_if_away: false
+  icon:
+  mac: 74:DA:38:7F:B1:19
+  name: camera_rpi
+  picture:
+  track: true
+
+18_55_0f_78_a2_77:
+  hide_if_away: false
+  icon:
+  mac: 18:55:0F:78:A2:77
+  name: a2_77
+  picture:
+  track: true
+
+
+b8_e8_56_3d_9e_3a:
+  hide_if_away: false
+  icon:
+  mac: B8:E8:56:3D:9E:3A
+  name: mac_chris
+  picture:
+  track: true
+
+kodi:
+  hide_if_away: false
+  icon:
+  mac: B8:27:EB:9B:A6:7F
+  name: kodi
+  picture:
+  track: true
+
+00_14_cd_20_73_d2:
+  hide_if_away: false
+  icon:
+  mac: 00:14:CD:20:73:D2
+  name: music_sdb
+  picture:
+  track: true
+
+b8_27_eb_fa_f6_b5:
+  hide_if_away: false
+  icon:
+  mac: B8:27:EB:FA:F6:B5
+  name: prog_rpi
+  picture:
+  track: true
+
+68_5a_cf_06_8d_82:
+  hide_if_away: false
+  icon:
+  mac: 68:5A:CF:06:8D:82
+  name: tablette
+  picture:
+  track: true
+
+00_03_ac_1e_5b_9a:
+  hide_if_away: false
+  icon:
+  mac: 00:03:AC:1E:5B:9A
+  name: 00 03 ac 1e 5b 9a
+  picture:
+  track: true
+
+belt020:
+  hide_if_away: false
+  icon:
+  mac: E4:B3:18:3A:FF:43
+  name: BELT020
+  picture:
+  track: true
+
+belt020_2:
+  hide_if_away: false
+  icon:
+  mac: 84:7B:EB:48:54:32
+  name: BELT020
+  picture:
+  track: true
+
+junakotshi:
+  hide_if_away: false
+  icon:
+  mac: 80:B0:3D:3E:F1:DB
+  name: JunAkotshi
+  picture:
+  track: true
+
+iphone_de_yves:
+  hide_if_away: false
+  icon:
+  mac: A4:D9:31:1A:73:FD
+  name: iPhone-de-yves
+  picture:
+  track: true
+
+applewachdeyves:
+  hide_if_away: false
+  icon:
+  mac: 60:70:C0:F4:1B:18
+  name: AppleWachdeyves
+  picture:
+  track: true
+
+galaxy_s10:
+  hide_if_away: false
+  icon:
+  mac: FE:A1:30:CC:59:91
+  name: Galaxy-S10
+  picture:
+  track: true
+
+mi5splus_t_l_phone:
+  hide_if_away: false
+  icon:
+  mac: 00:EC:0A:C8:B6:BF
+  name: MI5sPlus-T*l*phone
+  picture:
+  track: true
+
+oneplus5:
+  hide_if_away: false
+  icon:
+  mac: 94:65:2D:A0:4E:0D
+  name: OnePlus5
+  picture:
+  track: true
+
+28_ed_6a_66_4d_35:
+  hide_if_away: false
+  icon:
+  mac: 28:ED:6A:66:4D:35
+  name: 28 ed 6a 66 4d 35
+  picture:
+  track: true
+
+ipad_d:
+  hide_if_away: false
+  icon:
+  mac: 24:A2:E1:33:42:14
+  name: iPad-d
+  picture:
+  track: true
+
+air_de_marie:
+  hide_if_away: false
+  icon:
+  mac: 84:38:35:64:99:E6
+  name: Air-de-Marie
+  picture:
+  track: true
+
+samsung_galaxy_s7:
+  hide_if_away: false
+  icon:
+  mac: AC:5F:3E:65:7C:7B
+  name: Samsung-Galaxy-S7
+  picture:
+  track: true
+
+galaxy_s8:
+  hide_if_away: false
+  icon:
+  mac: 6C:C7:EC:35:FF:94
+  name: Galaxy-S8
+  picture:
+  track: true
+
+huawei_p20_lite_c40c27155:
+  hide_if_away: false
+  icon:
+  mac: F4:BF:80:7C:52:1B
+  name: HUAWEI P20 lite-c40c27155
+  picture:
+  track: true
+
+ipad_de_yves:
+  hide_if_away: false
+  icon:
+  mac: 00:5B:94:9D:CE:3A
+  name: iPad-de-yves
+  picture:
+  track: true
+
+nicbk117:
+  hide_if_away: false
+  icon:
+  mac: 8C:B8:4A:47:87:1C
+  name: nicbk117
+  picture:
+  track: true
+
+galaxy_a5_2017_2:
+  hide_if_away: false
+  icon:
+  mac: 9C:E0:63:7E:9A:10
+  name: Galaxy-A5-2017
+  picture:
+  track: true
+
+huawei_mate_20_lite_fd249:
+  hide_if_away: false
+  icon:
+  mac: D0:16:B4:A5:AA:73
+  name: HUAWEI Mate 20 lite-fd249
+  picture:
+  track: true
+
+iphonedbenjamin:
+  hide_if_away: false
+  icon:
+  mac: E4:2B:34:29:06:22
+  name: iPhonedBenjamin
+  picture:
+  track: true
+
+galaxy_s9_de_will:
+  hide_if_away: false
+  icon:
+  mac: 3E:E9:F6:E5:7A:BB
+  name: Galaxy-S9-de-Will
+  picture:
+  track: true
+
+mbp_de_junior:
+  hide_if_away: false
+  icon:
+  mac: 8C:85:90:4D:B6:89
+  name: MBP-de-Junior
+  picture:
+  track: true
+
+iphonedenicolas:
+  hide_if_away: false
+  icon:
+  mac: B0:CA:68:A4:32:57
+  name: iPhonedeNicolas
+  picture:
+  track: true
+
+iphonedeelodie:
+  hide_if_away: false
+  icon:
+  mac: 18:65:90:99:39:97
+  name: iPhonedeElodie
+  picture:
+  track: true
+
+c0_d2_dd_e3_91_8b:
+  hide_if_away: false
+  icon:
+  mac: C0:D2:DD:E3:91:8B
+  name: c0 d2 dd e3 91 8b
+  picture:
+  track: true
+
+imicki:
+  hide_if_away: false
+  icon:
+  mac: B4:8B:19:30:91:3B
+  name: iMicki
+  picture:
+  track: true
+
+iphonedemichele:
+  hide_if_away: false
+  icon:
+  mac: 68:FB:7E:BC:3E:8B
+  name: iPhonedeMichele
+  picture:
+  track: true
+
+wdc2533541f399321:
+  hide_if_away: false
+  icon:
+  mac:
+  name: 1TPX439
+  picture:
+  track: true
+
+acer_0003:
+  hide_if_away: false
+  icon:
+  mac: 00:F4:8D:73:81:0F
+  name: ACER-0003
+  picture:
+  track: true
+
+acer_0003_2:
+  hide_if_away: false
+  icon:
+  mac: 98:28:A6:2C:23:B5
+  name: ACER-0003
+  picture:
+  track: true
+
+'00_00_00_00_00_00':
+  hide_if_away: false
+  icon:
+  mac: 00:00:00:00:00:00
+  name: '00_00_00_00_00_00'
+  picture:
+  track: true
+
+b8_27_eb_17_78_93:
+  icon:
+  mac: B8:27:EB:17:78:93
+  name: b8_27_eb_17_78_93
+  picture:
+  track: true
+
+b8_27_eb_65_7d_6b:
+  icon:
+  mac: B8:27:EB:65:7D:6B
+  name: b8_27_eb_65_7d_6b
+  picture:
+  track: true
+
+mercedes:
+  icon:
+  mac:
+  name: mercedes
+  picture:
+  track: true
+
+chambre:
+  icon:
+  mac: B8:27:EB:17:F1:D0
+  name: chambre
+  picture:
+  track: true
+
+chambre_2:
+  icon:
+  mac: 36:31:78:B6:7D:7C
+  name: chambre
+  picture:
+  track: true
+
+christophes_airport_time_capsule:
+  icon:
+  mac: B8:C7:5D:C8:9D:AA
+  name: christophes-airport-time-capsule
+  picture:
+  track: true
+
+5a_46_f6_dc_64_39:
+  icon:
+  mac: 5A:46:F6:DC:64:39
+  name: 5a_46_f6_dc_64_39
+  picture:
+  track: true
+
+cam_2:
+  icon:
+  mac: B8:27:EB:7D:9C:0E
+  name: cam
+  picture:
+  track: true
+
+redminote8pro_redmi:
+  icon:
+  mac: 22:79:18:58:22:29
+  name: RedmiNote8Pro-Redmi
+  picture:
+  track: true
+
+3c_2e_ff_64_17_ea:
+  icon:
+  mac: 3C:2E:FF:64:17:EA
+  name: 3c_2e_ff_64_17_ea
+  picture:
+  track: true
+
+gribby:
+  icon:
+  mac: FC:EC:DA:8C:8B:24
+  name: GRIBBY
+  picture:
+  track: true
+
+homegood:
+  icon:
+  mac: F0:9F:C2:73:69:90
+  name: Homegood
+  picture:
+  track: true
+
+a4_cf_12_f5_9b_00:
+  icon:
+  mac: A4:CF:12:F5:9B:00
+  name: a4_cf_12_f5_9b_00
+  picture:
+  track: true
+
+f4_cf_a2_d1_48_86:
+  icon:
+  mac: F4:CF:A2:D1:48:86
+  name: f4_cf_a2_d1_48_86
+  picture:
+  track: true
+
+f4_db_e3_f0_77_bb:
+  icon:
+  mac: F4:DB:E3:F0:77:BB
+  name: f4_db_e3_f0_77_bb
+  picture:
+  track: true
+
+b8_27_eb_19_a5_84:
+  icon:
+  mac: B8:27:EB:19:A5:84
+  name: b8_27_eb_19_a5_84
+  picture:
+  track: true
+
+c0_3e_ba_5d_90_0c:
+  icon:
+  mac: C0:3E:BA:5D:90:0C
+  name: c0_3e_ba_5d_90_0c
+  picture:
+  track: true
+
+08_d2_3e_90_c9_3c:
+  name: 08_d2_3e_90_c9_3c
+  mac: 08:D2:3E:90:C9:3C
+  icon:
+  picture:
+  track: true

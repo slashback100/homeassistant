@@ -1,0 +1,164 @@
+light.l_buanderie:
+  friendly_name: Buanderie
+light.l_bureau:
+  friendly_name: Bureau
+light.l_chambre_parents:
+  friendly_name: Notre Chambre
+light.l_cuisine_plafond:
+  friendly_name: Cuisine
+light.l_cuisineentree:
+  friendly_name: Entrée de la cuisine
+light.l_dressing:
+  friendly_name: Dressing
+light.l_elise:
+  friendly_name: Chambre d'Élise
+light.l_escalier:
+  friendly_name: Escalier
+light.l_escalier_ambiance:
+  friendly_name: Marches d'Escalier
+light.l_facade_avant:
+  friendly_name: Facade avant
+light.l_garage_chris:
+  friendly_name: Garage de Christophe
+light.l_garage_mel:
+  friendly_name: Garage de Mel
+light.l_grenier:
+  friendly_name: Grenier
+light.l_hall_ambiance:
+  friendly_name: Veilleuse Hall de Nuit
+light.l_hall_nuit:
+  friendly_name: Hall de Nuit
+light.l_hall_plafond:
+  friendly_name: Hall d'Entrée
+light.l_noemie:
+  friendly_name: Chambre de Noémie
+light.l_salle_jeu:
+  friendly_name: Salle de Jeux
+light.l_salon_plafond:
+  friendly_name: Salon
+light.l_sam_plafond:
+  friendly_name: Salle à Manger
+light.l_sdb:
+  friendly_name: Salle de Bain
+light.l_sdb_eviers:
+  friendly_name: Eviers de la Salle de Bain
+light.l_terrasse_bas:
+  friendly_name: Grande Terrasse
+light.l_terrasse_haut:
+  friendly_name: Petite Terrasse
+light.l_toilette:
+  friendly_name: Toilette
+light.l_cave_technique:
+  friendly_name: Cave Technique
+light.l_atelier_mel:
+  friendly_name: Atelier Mel
+light.l_cave_jardin:
+  friendly_name: Atelier Chris
+script.light_bright:
+  hidden: true
+script.light_bright_pause:
+  hidden: true
+script.send_iphone_notif:
+  hidden: true
+script.turn_facade_off_5_min:
+  hidden: true
+sensor.icon:
+  hidden: true
+sensor.summary:
+  hidden: true
+sensor.temperature:
+  hidden: true
+sensor.humidity:
+  hidden: true
+sensor.daily_summary:
+  hidden: true
+sensor.hourly_summary:
+  hidden: true
+sensor.minutely_summary:
+  hidden: true
+sensor.ozone:
+  hidden: true
+sensor.visibility:
+  hidden: true
+sensor.pressure:
+  hidden: true
+sensor.cloud_cover:
+  hidden: true
+sensor.wind_speed:
+  hidden: true
+sensor.dew_point:
+  hidden: true
+sensor.apparent_temperature:
+  hidden: true
+sensor.precip_accumulation:
+  hidden: true
+sensor.precip_probability:
+  hidden: true
+sensor.precip_intensity:
+  hidden: true
+sensor.precip_type:
+  hidden: true
+sensor.precip_intensity_max:
+  hidden: true
+sensor.uv_index:
+  hidden: true
+sensor.wind_bearing:
+  hidden: true
+sensor.temperature_low:
+  hidden: true
+sensor.temperature_high:
+  hidden: true
+sensor.apparent_temperature_high:
+  hidden: true
+sensor.apparent_temperature_low:
+  hidden: true
+sensor.moon_phase:
+  hidden: true
+light.l_sdb_prise:
+  friendly_name: Prise de la Salle de Bain
+  icon: mdi:power-plug
+sensor.meteo_wind_speed:
+  friendly_name: Vitesse du vent
+light.l_escalier_cave:
+  friendly_name: Escalier de la Cave
+media_player.salle_de_bain_2:
+  friendly_name: Salle de bain
+binary_sensor.garage_de_chris:
+  friendly_name: Porte de garage de Christophe
+binary_sensor.garage_de_mel:
+  friendly_name: Porte de garage de Mel
+device_tracker.slashback_mel:
+  friendly_name: Mel
+device_tracker.chris:
+  friendly_name: Chris
+device_tracker.slashback_chris:
+  friendly_name: Christophe
+sensor.maison_vers_bxl:
+  friendly_name: Maison -> Vermeg
+sensor.chris_vers_maison:
+  friendly_name: Chris -> Maison
+sensor.bxl_vers_maison:
+  friendly-name: Bxl -> maison
+  friendly_name: Vermeg -> Maison
+sensor.rpicam:
+  friendly_name: Rpi Cam Folder Watcher
+light.l_prise_ext_avant:
+  friendly_name: Prise Extérieure Avant
+  icon: mdi:power-plug
+light.l_prise_ext_partere:
+  friendly_name: Prise Extérieure Arrière
+  icon: mdi:power-plug
+light.l_prise_ext_terrasse:
+  friendly_name: Prise Extérieure Terrasse
+  icon: mdi:power-plug
+light.l_billard_chauffage_fond:
+  friendly_name: Chauffage Billard Fond
+  icon: mdi:radiator
+light.l_bar:
+  friendly_name: Bar
+light.l_billard_chauffage_entree:
+  icon: mdi:radiator
+light.l_atelier_mel_chauffage:
+  icon: mdi:radiator
+light.l_cinema_chauffage:
+  icon: mdi:radiator

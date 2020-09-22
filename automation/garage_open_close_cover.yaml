@@ -1,0 +1,45 @@
+  # two click in same second and ON -> turn off in 30 sec
+  # else, turn OFF after 1 sec
+  - alias: SwitchGarageChris1
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: switch.s_cover_garage_chris
+        to: 'on'
+    action:
+      - wait_template: "{{ is_state('switch.s_cover_garage_chris', 'off') }}"
+        timeout: 0.3
+        continue_on_timeout: true
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ not wait.completed }}"
+            sequence:
+              - service: cover.toggle
+                data:
+                    entity_id: cover.garage_de_chris
+        default:  
+          - service: light.toggle
+            data:
+                entity_id: light.l_garage_chris
+  - alias: SwitchGarageChris2
+    trigger:
+      - platform: state
+        entity_id: switch.s_cover_garage_mel
+        to: 'on'
+    action:
+      - wait_template: "{{ is_state('switch.s_cover_garage_mel', 'off') }}"
+        timeout: 0.3
+        continue_on_timeout: true
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ not wait.completed }}"
+            sequence:
+              - service: cover.toggle
+                data:
+                    entity_id: cover.garage_de_mel
+        default:  
+          - service: light.toggle
+            data:
+                entity_id: light.l_garage_chris

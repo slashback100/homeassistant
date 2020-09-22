@@ -1,0 +1,52 @@
+## turn off with delay if double click
+
+switch_off_haut:
+    sequence:
+      - service: light.turn_off
+        entity_id: group.premier_etage
+      - service: light.turn_off
+        entity_id: group.grenier
+ 
+switch_off_rez:
+    sequence:
+      - service: light.turn_off
+        entity_id: group.rez_de_chaussee
+      - service: light.turn_off
+        entity_id: group.exterieur
+      - service: media_player.media_pause
+        entity_id: media_player.max2play_2
+
+switch_off_all_no_blue:
+    sequence:
+      - service: light.turn_off
+        entity_id: group.caves
+      - service: light.turn_off
+        entity_id: group.grenier
+      - service: light.turn_off
+        entity_id: group.rez_de_chaussee
+      - service: light.turn_off
+        entity_id: group.exterieur
+      - service: light.turn_off
+        entity_id: light.l_escalier
+      - service: light.turn_off
+        entity_id: light.l_noemie
+      - service: light.turn_off
+        entity_id: light.l_elise
+      - service: light.turn_off
+        entity_id: light.l_hall_nuit
+      - service: light.turn_off
+        entity_id: light.l_bureau
+      - service: light.turn_off
+        entity_id: light.l_salle_jeu
+      - service: light.turn_off
+        entity_id: light.l_sdb
+      - service: light.turn_off
+        entity_id: light.l_sdb_eviers
+      - service: media_player.media_pause
+        entity_id: media_player.max2play_2
+      - service: media_player.media_pause
+        entity_id: media_player.terrassebas_2
+      - service: media_player.media_pause
+        entity_id: media_player.terrassehaut
+      - service: media_player.media_pause
+        entity_id: media_player.salle_de_bain_2
