@@ -2,8 +2,8 @@ homeassistant:
   # Name of the location where Home Assistant is running
   #name: Maison
   # Location required to calculate the time the sun rises and sets
-  #latitude: "50.5723"
-  #longitude: "5.30443"
+  #latitude: 
+  #longitude: 
   # Impacts weather/sunrise data (altitude above sea level in meters)
   #elevation: 120
   # metric for Metric, imperial for Imperial
@@ -342,13 +342,13 @@ zone:
     radius: 50
     icon: mdi:worker
 #  - name: Lotissement
-#    latitude: 50.572313525212998
-#    longitude: 5.30472989285150
+#    latitude: 
+#    longitude: 
 #    radius: 500
 #    icon: mdi:home
   - name: Home
-    latitude: 50.572313525212998
-    longitude: 5.30472989285150
+    latitude: !secret lat
+    longitude: !secret long 
     radius: 120
     icon: mdi:home
 mobile_app:
@@ -518,8 +518,8 @@ weather:
   - platform: darksky
     api_key: !secret darksky_api
     mode: daily # hourly
-    latitude: "50.5723"
-    longitude: "5.30443"
+    latitude: !secret lat
+    longitude: !secret long
     #garbage_collection:
     #sensors:
     #  - name: Poubelle noir # Each week on Wednesday
@@ -540,8 +540,8 @@ sensor:
 #    #unit: si
 #    #mode: hourly # daily
     api_key: !secret darksky_api
-    latitude: "50.5723"
-    longitude: "5.30443"
+    latitude: !secret lat
+    longitude: !scret long
 #    #update_interval: '00:30:00' # HH:MM:SS
     scan_interval:
         minutes: 30
@@ -592,18 +592,18 @@ sensor:
     value_template: '{{ (value | multiply(0.001)) | round(1) }}'
   - platform: waze_travel_time
     name: maison_vers_bxl
-    origin: 50.572235, 5.304693
+    origin: !secret lat_long
     destination: 50.846312, 4.368580
     region: 'EU'
   - platform: waze_travel_time
     name: bxl_vers_maison
     origin: 50.846312, 4.368580
-    destination: 50.572235, 5.304693
+    destination: !secret lat_long
     region: 'EU'
   - platform: waze_travel_time
     name: chris_vers_maison
     origin: device_tracker.iphone
-    destination: 50.572235, 5.304693
+    destination: !secret lat_long
     region: 'EU'
   - platform: mqtt
     name: "Motion detected Garage Chris"
