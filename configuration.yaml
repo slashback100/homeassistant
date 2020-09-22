@@ -824,10 +824,18 @@ sensor:
             {%- else -%}
             Processing
             {%- endif -%}
+  - platform: mqtt
+    name: "Température de la cave"
+    state_topic: "cmd/esp_cave/temp"
+    unit_of_measurement: '°C'
+  - platform: mqtt
+    name: "Humidité de la cave"
+    state_topic: "cmd/esp_cave/hygro"
+    unit_of_measurement: '%'
 
 google:
   client_id: 229610571543-36kttum3kp476oht9d73i4tpfvqtfgog.apps.googleusercontent.com
-  client_secret: GT8BUfF_mcRuOkyxduPY0QTs
+  client_secret: !secret google_secret
   track_new_calendar: false
   # !!!!!!!!!!!!!!!!!!!!!!!!!
   # google auth doens not allow symlink, but it is needed for thr RO filesystem
