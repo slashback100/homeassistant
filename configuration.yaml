@@ -1,0 +1,983 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  #name: Maison
+  # Location required to calculate the time the sun rises and sets
+  #latitude: "50.5723"
+  #longitude: "5.30443"
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  #elevation: 120
+  # metric for Metric, imperial for Imperial
+  #unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  #time_zone: Europe/Brussels
+  # Customization file
+  customize: !include customize.yaml
+  whitelist_external_dirs:
+    - /mnt/rpicam
+    - /home/homeassistant/test
+  auth_providers:
+    - type: homeassistant
+    - type: trusted_networks
+      trusted_networks:
+        - 192.168.0.0/24
+          #      allow_bypass_login: true
+    - type: legacy_api_password
+      api_password: !secret home_pass
+#mercedesmeapi:
+#  username: christophe.desirant@gmail.com
+#  password: 
+#  pin: 
+logger:
+    #default: error
+    default: debug
+    #    logs:
+    #        homeassistant.core: debug
+    #        homeassistant.components.mqtt: debug
+python_script:
+
+camera:
+  - platform: mjpeg
+    name: mycam
+    mjpeg_url: http://192.168.0.59:8081/
+    username: !secret cam_user
+    password: !secret cam_pass
+    authentication: basic
+    verify_ssl: false
+    scan_interval: 315360000 
+recorder:
+    db_url: !secret db_url
+    exclude:
+        entities:
+          - sensor.since_last_boot
+# Show links to resources in log and frontend
+#introduction:
+system_health:
+# Enables the frontend
+frontend:
+  themes:
+    material_dark_green:
+        light_green: "#08a8a5"
+        dark_green: "#017775"
+        dark_grey: "#232326"
+        light_grey: "#344249"
+        red: "#d10404"
+        yellow: "#fffa0c"
+        white: "#f7f7f7"
+        pink: "#ff0090"
+
+  #Top bar, activate text on script, selected icon on home assistant menu, top panel of media players, text in config page, text on developer tools states page, mqtt publish text, logbook text
+        primary-color: "var(--light_green)"
+  # divider on dev tools info page
+        light-primary-color: "var(--red)"
+  # some hyperlinked text
+        dark-primary-color: "var(--red)"
+  # color of heading text when item selected from home screen ex: light
+        text-primary-color: "var(--white)"
+  # main background, top of side panel
+        primary-background-color: "var(--dark_grey)"
+  # not sure where used 
+        sidebar-text_-_background: "var(--pink)"
+  # card background colour, part of media player background
+        paper-card-background-color: "var(--light_grey)"
+  # mqtt pubish header and thats it 
+        paper-card-header-color: "var(--white)"
+  # main background colour of states page
+        secondary-background-color: "var(--dark_grey)"
+  # most of the text used
+        primary-text-color: "var(--white)"
+  #secondary pieces of text 
+        secondary-text-color: "var(--white)"
+  #main background of side panel 
+        paper-listbox-background-color: "var(--light_grey)"
+  #not sure where used
+        paper-toggle-button-checked-ink-color: "var(--pink)"
+  #switch colour when on
+        paper-toggle-button-checked-button-color: "var(--yellow)"
+  #Backgroud of switch/toggle when on
+        paper-toggle-button-checked-bar-color: "var(--yellow)"
+  #slide knob on brightness/volumes when not 0
+        paper-slider-knob-color: "var(--yellow)"
+  #slide knob on brightness/volumes when 0
+        paper-slider-knob-start-color: "var(--red)"
+  #don't know where used
+        paper-slider-pin-color: "var(--pink)"
+  #colour of brightness/volume slider line in used portion 
+        paper-slider-active-color: "var(--yellow)"
+  #not sure where used
+        paper-slider-secondary-color: "var(--pink)"
+  # background of brightness/volume slider line not used portion 
+        paper-slider-container-color: "var(--red)"
+  #not sure where used
+        paper-progress-secondary-color: "var(--pink)"
+  #background of theme selection toggle tiny use 
+        paper-item-selected_-_background-color: "var(--light_green)"
+  #text, not sure which one "var(--white)"
+        paper-item-icon_-_color: "var(--pink)"
+  # icon on state page when off
+        paper-item-icon-color: "var(--dark_green)"
+  #states icon when active 
+        paper-item-icon-active-color: "var(--yellow)"
+  #colour of switch toggle when off, icon on selected page of menu 
+        paper-grey-50: "var(--light_green)"
+  #background of selected screen on menu "var(--light_green)"
+        paper-grey-200: "var(--dark_green)"
+  #Backgound of label icon
+        label-badge-background-color: "var(--light_grey)"
+  #colour of text in label icon 
+        label-badge-text-color: "var(--white)"
+  #colour of edge of sensor labels
+        label-badge-red: "var(--red)"
+  #not sure where used
+        label-badge-blue: "var(--pink)"
+        label-badge-green: "var(--pink)"
+        label-badge-yellow: "var(--pink)"
+        label-badge-grey: "var(--pink)"
+  # Row 1 on entities page
+        table-row-background-color: "var(--light_grey)"
+  # row 2 on entities page
+        table-row-alternative-background-color: "var(--dark_grey)"
+    oled:
+        primary-color: 'black'
+        accent-color: '#03A9F4'
+        dark-primary-color: 'var(--accent-color)'
+        light-primary-color: 'var(--accent-color)'
+        primary-text-color: '#FFFFFF'
+        text-primary-color: 'var(--primary-text-color)'
+        secondary-text-color: '#03A9F4'
+        disabled-text-color: 'white'
+        label-badge-border-color: 'green'
+        sidebar-icon-color: 'black'
+        primary-background-color: 'black'
+        secondary-background-color: '#222222'
+        divider-color: 'black'
+        table-row-background-color: '#292929'
+        table-row-alternative-background-color: '#292929'
+        paper-listbox-color: 'black'
+        paper-listbox-background-color: '#03A9F4'
+        paper-grey-50: 'black'
+        paper-grey-200: 'black'
+        paper-card-header-color: 'red'
+        paper-card-background-color: 'black'
+        paper-dialog-background-color: 'black'
+        paper-item-icon-color: 'var(--primary-text-color)'
+        paper-item-icon-active-color: '#03A9F4'
+        paper-item-icon_-_color: 'green'
+        paper-item-selected_-_background-color: '#292929'
+        paper-tabs-selection-bar-color: 'green'
+        label-badge-red: 'var(--accent-color)'
+        label-badge-text-color: 'var(--primary-text-color)'
+        label-badge-background-color: '#222222'
+        paper-toggle-button-checked-button-color: 'var(--accent-color)'
+        paper-toggle-button-checked-bar-color: 'var(--accent-color)'
+        paper-toggle-button-checked-ink-color: 'var(--accent-color)'
+        paper-toggle-button-unchecked-button-color: 'var(--disabled-text-color)'
+        paper-toggle-button-unchecked-bar-color: 'var(--disabled-text-color)'
+        paper-toggle-button-unchecked-ink-color: 'var(--disabled-text-color)'
+        paper-slider-knob-color: 'var(--accent-color)'
+        paper-slider-knob-start-color: 'var(--accent-color)'
+        paper-slider-pin-color: 'var(--accent-color)'
+        paper-slider-active-color: 'var(--accent-color)'
+        paper-slider-container-color: 'linear-gradient(var(--primary-background-color), var(--secondary-background-color)) no-repeat'
+        paper-slider-secondary-color: 'var(--secondary-background-color)'
+        paper-slider-disabled-active-color: 'var(--disabled-text-color)'
+        google-red-500: '#b58e31'
+        google-green-500: '#2980b9'
+    clear:
+        # Background imagg
+        background-image: 'center / cover no-repeat url("/local/day.jpg") fixed'
+
+        # Colors
+        text-color: '#636B75'                                                           # Grey text
+        text-medium-color: '#8c96a5'                                                    # Medium grey text
+        text-light-color: '#BAC0C6'                                                     # Light grey text
+        accent-color: '#00a1ff'                                                         # Blue
+        background-color: '#F7F8F9'                                                     # Light grey background
+        background-color-2: '#F4F5F6'                                                   # Light grey background
+        background-card-color: 'rgba(255,255,255,1.0)'                                  # White background
+        border-color: '#EAEAEA'                                                         # Light grey border
+
+        # Header
+        primary-color: 'var(--text-color)'                                              # Background
+        text-primary-color: '#FFF'                                                      # Text
+          
+        # Left Menu
+        paper-listbox-background-color: 'var(--background-color)'                       # Background
+
+        # UI
+        paper-card-header-color: 'var(--text-color)'                                    # Title in settings
+        primary-background-color: 'var(--background-color)' 
+    darkorange:
+        primary-color: "#ff9800"
+        light-primary-color: "#ffc947"
+        dark-primary-color: "#c66900"
+        text-primary-color: "#ffffff"
+        primary-background-color: "#37464f"
+        sidebar-text_-_background: "#62717b"
+        card-background-color: "#263137"
+        paper-card-background-color: "#263137"
+        paper-card-header-color: "var(--text-primary-color)"
+        secondary-background-color: "var(--primary-background-color)"
+        primary-text-color: "var(--text-primary-color)"
+        secondary-text-color: "var(--primary-color)"
+        paper-listbox-background-color: "var(--sidebar-text_-_background)"
+        paper-toggle-button-checked-ink-color: "var(--dark-primary-color)"
+        paper-toggle-button-checked-button-color: "var(--dark-primary-color)"
+        paper-toggle-button-checked-bar-color: "var(--dark-primary-color)"
+        paper-slider-knob-color: "var(--primary-color)"
+        paper-slider-knob-start-color: "var(--primary-color)"
+        paper-slider-pin-color: "var(--primary-color)"
+        paper-slider-active-color: "var(--primary-color)"
+        paper-slider-secondary-color: "var(--light-primary-color)"
+        paper-slider-container-color: "var(--sidebar-text_-_background)"
+        paper-progress-secondary-color: "var(--sidebar-text_-_background)"
+        paper-item-selected_-_background-color: "var(--primary-color)"
+        paper-item-icon_-_color: "var(--text-primary-color)"
+        paper-item-icon-color: "var(--sidebar-text_-_background)"
+        paper-item-icon-active-color: "var(--primary-color)"
+        paper-grey-50: "var(--sidebar-text_-_background)"
+        paper-grey-200: "var(--primary-background-color)"
+        label-badge-background-color: "var(--sidebar-text_-_background)"
+        label-badge-text-color: "var(--text-primary-color)"
+        label-badge-red: "var(--primary-color)"
+        label-badge-blue: "var(--light-primary-color)"
+        label-badge-green: "var(--dark-primary-color)"
+        label-badge-yellow: "var(--text-primary-color)"
+        label-badge-grey: "var(--paper-grey-500)"
+        table-row-background-color: "var(--paper-card-background-color)"
+        table-row-alternative-background-color: "var(--sidebar-text_-_background)"
+# Enabes configuration UI
+config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+http:
+    ssl_certificate: /etc/letsencrypt/live/slashbackdomo.ddns.net/fullchain.pem
+    ssl_key: /etc/letsencrypt/live/slashbackdomo.ddns.net/privkey.pem
+    server_port: 4294
+    #base_url: slashbackdomo.ddns.net
+    # https://www.home-assistant.io/docs/ecosystem/certificates/lets_encrypt/
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+notify:
+  - name: mail
+    platform: smtp
+    sender: christophe.desirant@gmail.com
+    recipient: christophe.desirant@gmail.com
+    server: smtp.gmail.com
+    port: 587
+    username: christophe.desirant@gmail.com 
+    password: !secret gmail_pass 
+  - name: mailifttt
+    platform: smtp
+    sender: christophe.desirant@gmail.com
+    recipient: trigger@applet.ifttt.com
+    server: smtp.gmail.com
+    port: 587
+    username: christophe.desirant@gmail.com 
+    password: !secret gmail_pass
+  - name: Pushbullet Mel
+    platform: pushbullet
+    api_key: !secret pushbullet_api
+  - name: clickSend_mel
+    platform: clicksend
+    username: christophe.desirant@gmail.com
+    api_key: !secret clicksend_api
+    recipient: 0032485767963
+    sender: Domotique Maison
+  - name: clickSend_chris
+    platform: clicksend
+    username: christophe.desirant@gmail.com
+    api_key: !secret clicksend_api
+    recipient: 0032474720378
+    sender: Domotique Maison
+  - name: clickSend_all
+    platform: clicksend
+    username: christophe.desirant@gmail.com
+    api_key: !secret clicksend_api
+    recipient: [0032474720378, 0032485767963]
+    sender: Domotique Maison
+# Discover some devices automatically
+discovery:
+        #    ignore:
+            #      - igd
+        #    enable:
+        #     - homekit  
+device_tracker:
+  - platform: mqtt_json
+    devices:
+       mercedes: cmd/mercedes/tracker
+  - platform: nmap_tracker
+    hosts: 192.168.0.1-255
+    exclude:
+      - 192.168.0.186
+      - 192.168.0.176
+      - 192.168.0.1
+      - 192.168.0.200
+      - 192.168.0.201
+      - 192.168.0.202
+      - 192.168.0.203
+      - 192.168.0.100
+    interval_seconds: 60
+        #  - platform: bbox
+        #    host: 192.168.0.1
+        #  - platform: owntracks
+        #    waypoints: True
+        #    region_mapping:
+        #        Abbaye: Home
+zone:
+  - name: NN
+    latitude: 50.834996
+    longitude: 4.337171
+    radius: 50
+    icon: mdi:worker
+  - name: Vermeg
+    latitude: 50.846542621266003
+    longitude: 4.3683864563446004
+    radius: 50
+    icon: mdi:worker
+#  - name: Lotissement
+#    latitude: 50.572313525212998
+#    longitude: 5.30472989285150
+#    radius: 500
+#    icon: mdi:home
+  - name: Home
+    latitude: 50.572313525212998
+    longitude: 5.30472989285150
+    radius: 120
+    icon: mdi:home
+mobile_app:
+
+ios:
+    push:
+        categories:
+          - name: "Ouvrir garage"
+            identifier: 'ouvrirgarage'
+            actions:
+              - identifier: 'OPENGARAGE'
+                title: 'Ouvrir Garagee'
+                activationMode: 'background'
+                authenticationRequired: yes
+                destructive: no
+                behavior: 'default'
+          - name: "Eteindre tout"
+            identifier: 'eteindretout'
+            actions:
+              - identifier: 'OFF'
+                title: 'Tout éteindre'
+                activationMode: 'background'
+                authenticationRequired: yes
+                destructive: yes
+                behavior: 'default'
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+    exclude:
+       entities:
+         - automation.reset_arduino_watchdog
+         - automation.getproduction
+         - automation.refreshcam
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+        
+media_player:
+  - platform: squeezebox
+    #name: Music Salon
+    host: 192.168.0.205
+  - platform: squeezebox
+    #name: Music Salle de bain
+    host: 192.168.0.188
+  - platform: squeezebox
+    host: 192.168.0.212
+    #name: Music Terrasse du bas
+  - platform: squeezebox
+    host: 192.168.0.211
+    #name: Music Terrasse du haut
+  - platform: kodi
+    name: Mediacenter Salon
+    host: 192.168.0.205
+    enable_websocket: false
+    # tcp_port: 9090
+  - platform: kodi
+    name: Mediacenter Cinéma
+    host: 192.168.0.175
+    enable_websocket: false
+    # tcp_port: 9090
+    #test websocket with username/password ? and port ?
+# Weather prediction
+input_boolean:
+    voiture_a_brancher:
+          name: "Voiture à la maison mais pas branchée"
+          initial: off
+          icon: mdi:power-plug
+    mel_borrowed_mercedes:
+          #name: "Mel a emprunter la Mercedes"
+          #initial: off
+          #icon: mdi:car
+input_text:
+    youtube_search_criteria:
+       name: 'Criteria for youtube search'
+input_select:
+    kodi_ip:
+       name: 'Ip of kodi'
+       options:
+         - Salon
+         - Cinema
+       initial: Salon
+binary_sensor:
+ - platform: mqtt
+   name: garage_de_mel
+   device_class: garage_door
+   state_topic: cmd/etage1a/in/45
+   payload_on: "OFF"
+   payload_off: "ON"
+ - platform: mqtt
+   name: garage_de_chris
+   device_class: garage_door
+   state_topic: cmd/etage1a/in/46
+   payload_on: "OFF"
+   payload_off: "ON"
+ - platform: ping
+   host: 192.168.0.175
+   name: kodi rpi
+   scan_interval: 60
+   count: 1
+ - platform: ping
+   host: 192.168.0.200
+   name: etage1a
+   scan_interval: 60
+   count: 1
+ - platform: ping
+   count: 1
+   host: 192.168.0.201
+   name: etage2a
+   scan_interval: 60
+ - platform: ping
+   count: 1
+   host: 192.168.0.202
+   name: etage2b
+   scan_interval: 60
+ - platform: ping
+   count: 1
+   host: 192.168.0.203
+   name: etage0a
+   scan_interval: 60
+ - platform: ping
+   count: 1
+   host: 192.168.0.59
+   name: Camera rpi
+   scan_interval: 60
+
+cover:
+  - platform: mqtt
+    name: garage_de_chris
+    device_class: garage
+    state_topic: cmd/etage1a/in/46
+    state_open: "OFF"
+    state_closed: "ON"
+    command_topic: cmd/etage1a/out/69
+    payload_close: 'ON'
+    payload_open: 'ON'
+    retain: true
+  - platform: mqtt
+    name: garage_de_mel
+    device_class: garage
+    state_topic: cmd/etage1a/in/45
+    state_open: "OFF"
+    state_closed: "ON"
+    command_topic: cmd/etage1a/out/68
+    payload_close: 'ON'
+    payload_open: 'ON'
+    retain: true
+climate:
+  - platform: mqtt
+    name: ChauffageBillardFond
+    payload_on: "ON"
+    payload_off: "OFF"
+    power_command_topic: cmd/etage0a/out/12
+    mode_command_topic: cmd/etage0a/out/12
+    #    action_topic: cmd/etage0a/out/12
+    modes:
+      - "off"
+      - "heat"
+weather:
+  - platform: darksky
+    api_key: !secret darksky_api
+    mode: daily # hourly
+    latitude: "50.5723"
+    longitude: "5.30443"
+    #garbage_collection:
+    #sensors:
+    #  - name: Poubelle noir # Each week on Wednesday
+    #    frequency: "weekly"
+    #    collection_days: mon
+    #  - name: Carton et PMC # Each week on Wednesday
+    #    frequency: "odd-weeks"
+    #    collection_days: mon
+    #  - name: Plastiques souples
+    #    frequency: "every-n-weeks"
+    #    collection_days: mon
+    #    period: 8
+    #    first_week: 17
+
+sensor:
+  - platform: darksky
+    name: Météo
+#    #unit: si
+#    #mode: hourly # daily
+    api_key: !secret darksky_api
+    latitude: "50.5723"
+    longitude: "5.30443"
+#    #update_interval: '00:30:00' # HH:MM:SS
+    scan_interval:
+        minutes: 30
+    language: fr
+    forecast:
+      - 0
+    monitored_conditions:
+      - icon
+      - summary
+      - temperature
+      - humidity
+      - daily_summary
+#      - hourly_summary
+#      - minutely_summary
+#      - ozone
+#      - visibility
+#      - pressure
+#      - cloud_cover
+#      - wind_speed
+#      - dew_point
+#      - apparent_temperature
+#      - precip_accumulation
+      - precip_probability
+#      - precip_type
+#      - precip_intensity
+#      - precip_intensity_max
+#      - uv_index
+#      - wind_bearing
+#      - temperature_low
+#      - temperature_high
+#      - apparent_temperature_high
+#      - apparent_temperature_low
+#      - moon_phase
+  - platform: systemmonitor
+    #name: systemmonitor
+    resources:
+      - type: processor_use
+      - type: memory_use_percent
+        #      - type: since_last_boot
+      - type: memory_free
+      - type: disk_use_percent
+        arg: /
+  - platform: command_line
+    name: cputemperature
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    scan_interval: 720
+    unit_of_measurement: 'C'
+    value_template: '{{ (value | multiply(0.001)) | round(1) }}'
+  - platform: waze_travel_time
+    name: maison_vers_bxl
+    origin: 50.572235, 5.304693
+    destination: 50.846312, 4.368580
+    region: 'EU'
+  - platform: waze_travel_time
+    name: bxl_vers_maison
+    origin: 50.846312, 4.368580
+    destination: 50.572235, 5.304693
+    region: 'EU'
+  - platform: waze_travel_time
+    name: chris_vers_maison
+    origin: device_tracker.iphone
+    destination: 50.572235, 5.304693
+    region: 'EU'
+  - platform: mqtt
+    name: "Motion detected Garage Chris"
+    state_topic: "garage_chris/motion"
+    #    qos: 0
+    #    expire_after: 60
+  - platform: folder
+    folder: /mnt/rpicam
+    filter: "*.avi"
+  - platform: command_line
+    name: last_cam_img
+    command: "ls -tr /mnt/rpicam/*jpg 2> /dev/null | grep -v lastsnap | tail -n 1 | sed -E 's/^.*\\///'"
+  - platform: command_line
+    name: last_cam_file
+    command: "ls -tr /mnt/rpicam/*avi 2> /dev/null | grep -v lastsnap | tail -n 1 | sed -E 's/^.*\\///'"
+    #  - platform: history_stats
+    #    name: Chris au travail
+    #    entity_id: device_tracker.chris
+    #    state: 'Vermeg'
+    #    type: ratio
+    #    start: '{{ 0 }}'
+    #    end: '{{ now() }}'
+    #  - platform: history_stats
+    #    name: Chris a la maison
+    #    entity_id: device_tracker.chris
+    #    state: 'home'
+    #    type: ratio
+    #    start: '{{ 0 }}'
+    #    end: '{{ now() }}'
+  - platform: rest
+    resource: http://192.168.0.110/solar_api/v1/GetPowerFlowRealtimeData.fcgi
+    name: Production total
+    value_template: '{{ (value_json.Body.Data.Site.E_Total / 1000 | int ) | round(2) }}'
+    unit_of_measurement: "kWh"
+    scan_interval: 315360000 
+  - platform: rest
+    resource: http://192.168.0.110/solar_api/v1/GetPowerFlowRealtimeData.fcgi
+    name: Production du jour
+    value_template: '{{ (value_json.Body.Data.Site.E_Day / 1000 | int ) | round(2) }}'
+    unit_of_measurement: "kWh"
+    scan_interval: 315360000 
+  - platform: rest
+    resource: http://192.168.0.110/solar_api/v1/GetPowerFlowRealtimeData.fcgi
+    name: Production instantanée
+    value_template: '{{ value_json.Body.Data.Site.P_PV | int }}'
+    unit_of_measurement: "W"
+    scan_interval: 315360000 
+  - platform: command_line
+    name: SSL cert expiry
+    unit_of_measurement: days
+    scan_interval: 10800
+    command: "ssl-cert-check -b -c /etc/letsencrypt/live/slashbackdomo.ddns.net/cert.pem | awk '{ print $NF }'"
+  - platform: imap_email_content
+    server: imap.gmail.com
+    port: 993
+    username: christophe.desirant@gmail.com
+    password: !secret gmail_pass
+    folder: Mercedes
+    senders:
+      - noreply@mercedes.me
+      - christophe.desirant@gmail.com
+    value_template: >-
+            {% if 'entré dans la zone de gardiennage virtuel Amay' in subject %}
+               home
+            {% elif 'quitté la zone de gardiennage virtuel Amay' in subject %}
+               away
+            {% elif 'entré dans la zone de gardiennage virtuel Vermeg' in subject %}
+               vermeg
+            {% else %}
+               away
+            {% endif %} 
+  - platform: snmp
+    name: extHdd_free
+    host: 192.168.0.175
+    baseoid: 1.3.6.1.2.1.25.2.3.1.6.56
+    accept_errors: true
+    unit_of_measurement: '%'
+    value_template: '{{ (value | int) * 100 / 958842016 | int }}'
+  - platform: snmp
+    name: kodi_root_free
+    host: 192.168.0.175
+    baseoid: 1.3.6.1.2.1.25.2.3.1.6.31
+    accept_errors: true
+    unit_of_measurement: '%'
+    value_template: '{{ (value | int) * 100 / 2467900 | int }}'
+  - platform: snmp
+    name: kodi_mem_free
+    host: 192.168.0.175
+    baseoid: 1.3.6.1.2.1.25.2.3.1.6.31
+    accept_errors: true
+    unit_of_measurement: '%'
+    value_template: '{{ (value | int) * 100 / 763576 | int }}'
+# - platform: fronius
+    #resource: http://192.168.0.110
+    #monitored_conditions:
+    #  - sensor_type: inverter
+    #  - sensor_type: meter
+    #  - sensor_type: storage
+    #  - sensor_type: power_flow
+  - platform: mqtt
+    name: "BalanceTerrasseBas"
+    state_topic: "cmd/extBasMusic/balance"
+    value_template: >-
+           {% if value == "left" %}
+                Cave
+           {% elif value == "right" %}
+                Terrasse
+           {% else %}
+                Cave et Terrasse
+           {% endif %}
+
+  - platform: mqtt
+    name: "BalanceTerrasseHaut"
+    state_topic: "cmd/extHautMusic/balance"
+  - platform: mqtt
+    name: "BalanceMusiqueSalon"
+    state_topic: "cmd/salonMusic/balance"
+######### mercedes #########
+  - platform: mqtt
+    name: "Mercedes Distance Start"
+    state_topic: "cmd/mercedes/distancestart"
+    unit_of_measurement: 'km'
+  - platform: mqtt
+    name: "Mercedes Odometre"
+    state_topic: "cmd/mercedes/odo"
+    unit_of_measurement: 'km'
+  - platform: mqtt
+    name: "Mercedes Réservoir"
+    state_topic: "cmd/mercedes/tanklevelpercent"
+    unit_of_measurement: '%'
+  - platform: mqtt
+    name: "Mercedes Verouillé"
+    state_topic: "cmd/mercedes/locked"
+    value_template: >-
+            {%- if (value == 'True') -%}
+            Verrouillée
+            {%- elif (value == 'False') -%}
+            Non verrouillée
+            {%- else -%}
+            {{ value }}
+            {%- endif -%}
+  - platform: mqtt
+    name: "Mercedes Range Eletric"
+    state_topic: "cmd/mercedes/rangeelectric"
+    unit_of_measurement: 'km'
+  - platform: mqtt
+    name: "Mercedes Max Range"
+    state_topic: "cmd/mercedes/maxrange"
+    unit_of_measurement: 'km'
+  - platform: mqtt
+    name: "Mercedes Etat de charge"
+    state_topic: "cmd/mercedes/stateofcharge"
+  - platform: mqtt
+    name: "Mercedes Statut de charge"
+    state_topic: "cmd/mercedes/electricchargingstatus"
+  - platform: mqtt
+    name: "Mercedes Fenêtre fermées"
+    state_topic: "cmd/mercedes/windowsclosed"
+    value_template: >-
+            {%- if (value == 'CLOSED') -%}
+            Fermées
+            {%- else -%}
+            Ouvertes
+            {%- endif -%}
+  - platform: mqtt
+    name: "Mercedes Frein à main"
+    state_topic: "cmd/mercedes/parkbrake"
+    value_template: >-
+            {%- if (value == 'True') -%}
+            Frein mis
+            {%- else -%}
+            Frein non mis
+            {%- endif -%}
+  - platform: mqtt
+    name: "Mercedes Avertissement Pneu"
+    state_topic: "cmd/mercedes/tireswarning"
+    value_template: >-
+            {%- if (value == 'NO_WARNING') -%}
+            Ok
+            {%- else -%}
+            Alerte
+            {%- endif -%}
+  - platform: mqtt
+    name: "Mercedes Liquide Lave-glace"
+    state_topic: "cmd/mercedes/warningwashwater"
+    value_template: >-
+            {%- if (value == 'True') -%}
+            Alerte
+            {%- else -%}
+            Ok
+            {%- endif -%}
+  - platform: mqtt
+    name: "Mercedes Liquide de frein"
+    state_topic: "cmd/mercedes/warningbrakefluid"
+    value_template: >-
+            {%- if (value == 'True') -%}
+            Alerte
+            {%- else -%}
+            Ok
+            {%- endif -%}
+  - platform: mqtt
+    name: "Mercedes Liquide de refroidissement"
+    state_topic: "cmd/mercedes/warningcoolantlevellow"
+    value_template: >-
+            {%- if (value == 'True') -%}
+            Alerte
+            {%- else -%}
+            Ok
+            {%- endif -%}
+  - platform: mqtt
+    name: "Mercedes Préchauffage"
+    state_topic: "cmd/mercedes/auxheat"
+    value_template: >-
+            {%- if (value == 'ACTIVE') -%}
+            Actif
+            {%- elif (value == 'INACTIVE') -%}
+            Inactif
+            {%- else -%}
+            Processing
+            {%- endif -%}
+
+google:
+  client_id: 229610571543-36kttum3kp476oht9d73i4tpfvqtfgog.apps.googleusercontent.com
+  client_secret: GT8BUfF_mcRuOkyxduPY0QTs
+  track_new_calendar: false
+  # !!!!!!!!!!!!!!!!!!!!!!!!!
+  # google auth doens not allow symlink, but it is needed for thr RO filesystem
+  # /opt/domo/homeassistant2/lib/python3.8/site-packages/oauth2client/_helpers.py
+  #
+  #/
+  # def validate_file(filename):
+  #      """if os.path.islink(filename):
+  #             raise IOError(_SYM_LINK_MESSAGE.format(filename))
+  #         elif os.path.isdir(filename):
+  #      """
+  #      if os.path.isdir(filename):
+  #          raise IOError(_IS_DIR_MESSAGE.format(filename))
+  #      elif not os.path.isfile(filename):
+  #          warnings.warn(_MISSING_FILE_MESSAGE.format(filename))
+
+# Text to speech
+tts:
+  - platform: voicerss
+    api_key: !secret voicerss_api
+    base_url: https://slashbackdomo.ddns.net:4294
+    language: 'fr-fr'
+    codec: mp3
+    cache_dir: /tmp/
+    format: '48khz_16bit_stereo'
+  - platform: google_translate
+    language: 'fr'
+    base_url: https://slashbackdomo.ddns.net:4294
+    cache_dir: /tmp/
+    service_name: google_say
+
+# Cloud
+#cloud:
+
+homekit:
+    filter:
+        include_domains:
+              - light
+              - cover
+                #- climate
+              - media_player
+              - camera
+
+mqtt:
+    broker: 192.168.0.186
+    port: 1883
+    username: !secret mqtt_user
+    password: !secret mqtt_pass
+    discovery: true
+    discovery_prefix: discover
+
+group: !include groups.yaml
+script: !include_dir_merge_named script
+switch: !include_dir_merge_list  switch
+light: !include_dir_merge_list light
+#automation old: !include_dir_merge_list automation
+automation: !include_dir_merge_list automation
+#automation: !include automations.yaml
+#variable:
+#   stopDimmer:
+#       value: 0  
+shell_command:
+  start_motion: ssh pi@cam 'sudo /usr/sbin/service motion start'
+  stop_motion: ssh pi@cam 'sudo /usr/sbin/service motion stop'
+  #  vol_minus: /opt/domo/modules/sendCommandAndroid.sh volminug
+  #  vol_plus: /opt/domo/modules/sendCommandAndroid.sh volplus
+  #  mel_home: /opt/domo/tools/melHomeOrNot home
+  #  mel_not_home: /opt/domo/tools/melHomeOrNot not_home
+  renew_ssl: ~/certbot/certbot-auto_v2 renew --quiet --no-self-upgrade --standalone --preferred-challenges http-01 --pre-hook "sudo systemctl stop home-assistant.service" --post-hook "sudo systemctl start home-assistant.service"
+  tts_meteo_salon: /opt/domo/modules/tts.sh  "Actuellement, {{ states('sensor.meteo_summary') }}. Aujourd'hui, {{ states('sensor.meteo_summary_0d') }}, la température actuelle est de {{ state_attr('weather.dark_sky', 'temperature') | round(0) }} degré. La température minimale prévue est de {{ state_attr('weather.dark_sky', 'forecast')[1]['templow'] | round }} degrés et la température maximale de {{ state_attr('weather.dark_sky', 'forecast')[0]['temperature'] | round }} degrés. Il faut actuellement {{ states('sensor.maison_vers_bxl') }} minutes pour aller à Bruxelles en passant par la {{ state_attr('sensor.maison_vers_bxl', 'route') | regex_replace('-','et') }}. Bonne journée !" salon
+  tts_meteo_sdb: /opt/domo/modules/tts.sh  "Actuellement, {{ states('sensor.meteo_summary') }}. Aujourd'hui, {{ states('sensor.meteo_summary_0d') }}, la température actuelle est de {{ state_attr('weather.dark_sky', 'temperature') | round(0) }} degré. La température minimale prévue est de {{ state_attr('weather.dark_sky', 'forecast')[1]['templow'] | round }} degrés et la température maximale de {{ state_attr('weather.dark_sky', 'forecast')[0]['temperature'] | round }} degrés. Bonne journée !" sdb
+  ringexthaut: /opt/domo/modules/ring.sh extHaut
+  ringextbas: /opt/domo/modules/ring.sh extBas
+  curl: >-
+      /usr/bin/curl {{ args|default('-sS') }} -X {{ method|default('get')|upper }} {%- for k in headers %} -H "{{ k }}: {{ headers[k] }}"{% endfor %} {{- (' -d \'' ~ payload|tojson ~ '\'') if payload }} {{ url }} > {{ stream|default('/dev/null') }}
+  youtubeonkodi: >-
+      /opt/domo/tools/kodi-cli -k {{ states('input_select.kodi_ip') }} -s "{{ states('input_text.youtube_search_criteria') }}"
+
+alert:
+  blackout:
+      name: "Coupure de courant 1"
+      message: "Coupure de courant depuis {{ relative_time (states.binary_sensor.kodi.last_changed) }} (alert blackout)"
+      done_message: "Le courant est revenu"
+      entity_id: binary_sensor.kodi
+      skip_first: false
+      repeat: 10
+      state: 'off'
+      notifiers:
+#        - ios_chris 
+        - mobile_app_iphone
+  blackout2:
+      name: "Coupure de courant 2"
+      message: "Coupure de courant depuis {{ relative_time (states.binary_sensor.kodi_rpi.last_changed) }} (alert blackout2)"
+      done_message: "Le courant est revenu"
+      entity_id: binary_sensor.kodi_rpi
+      skip_first: false
+      repeat: 10
+      state: 'off'
+      notifiers:
+#        - ios_chris 
+        - mobile_app_iphone
+  mel_garage_open:
+      name: Garage de Mel est ouvert
+      message: "Le garage de Mel est ouvert depuis {{ relative_time (states.binary_sensor.garage_de_mel.last_changed) }}"
+      done_message: Le garage de Mel s'est fermé
+      entity_id: binary_sensor.garage_de_mel
+      state: 'on'
+      repeat:
+        - 1
+        - 2
+        - 5
+        - 30
+        - 60
+      skip_first: true
+      notifiers:
+        - mobile_app_iphone
+          #- pushbullet_mel
+        - mobile_app_sm_a520f
+  chris_garage_open:
+      name: Garage de Christophe est ouvert
+      message: "Le garage de Christophe est ouvert depuis {{ relative_time (states.binary_sensor.garage_de_chris.last_changed) }}"
+      done_message: Le garage de Christophe s'est fermé
+      entity_id: binary_sensor.garage_de_chris
+      state: 'on'
+      repeat:
+        - 1
+        - 2
+        - 5
+        - 30
+        - 60
+      skip_first: true
+      notifiers:
+#        - ios_chris 
+        - mobile_app_iphone
+#        - mail
+  voiture_non_branchee:
+      name: Voiture dans garage mais non branchée
+      message: "Voiture non branchée !"
+      done_message: "La voiture a été branchée"
+      entity_id: input_boolean.voiture_a_brancher
+      state: 'on'
+      repeat: 1
+      skip_first: false
+      notifiers:
+        - mobile_app_iphone
+shopping_list:
+
+#folder_watcher: # doesnt work with nfs...
+#  - folder: /home/homeassistant/test
+#  - folder: /mnt/rpicam
+#    patterns:
+#      - '*.avi'
+#      - '*.JPG'
