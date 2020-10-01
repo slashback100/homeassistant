@@ -48,7 +48,7 @@
     state_topic: cmd/etage2b/in/15
     payload_off: "OFF"
     payload_on: "ON"
-  - name: "s_chambe_entree_music_minus"
+  - name: "s_chambre_entree_music_minus"
     platform: mqtt
     command_topic: cmd/etage2b/in/36
     state_topic: cmd/etage2b/in/36
@@ -108,20 +108,20 @@
     payload_on: "ON"
   - name: "s_hall_all"
     platform: mqtt
-    command_topic: cmd/etage0a/in/43
-    state_topic: cmd/etage0a/in/43
+    command_topic: cmd/etage1a/in/43
+    state_topic: cmd/etage1a/in/43
     payload_off: "OFF"
     payload_on: "ON"
   - name: "s_eteindre_haut"
     platform: mqtt
-    command_topic: cmd/etage0a/in/23
-    state_topic: cmd/etage0a/in/23
+    command_topic: cmd/etage1a/in/23
+    state_topic: cmd/etage1a/in/23
     payload_off: "OFF"
     payload_on: "ON"
   - name: "s_eteindre_bas"
     platform: mqtt
-    command_topic: cmd/etage0a/in/22
-    state_topic: cmd/etage0a/in/22
+    command_topic: cmd/etage1a/in/22
+    state_topic: cmd/etage1a/in/22
     payload_off: "OFF"
     payload_on: "ON"
   - name: "s_hall_eteindre_bas"

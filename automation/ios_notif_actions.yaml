@@ -25,3 +25,12 @@
     action:
       - service: cover.open_cover
         entity_id: cover.garage_de_chris
+  - alias : ProposerFermetureGarageChris
+    trigger:
+        platform: event
+        event_type: ios.notification_action_fired
+        event_data:
+            actionName: "FERMERGARAGECHRIS"
+    action:
+      - service: cover.close_cover
+        entity_id: cover.garage_de_chris

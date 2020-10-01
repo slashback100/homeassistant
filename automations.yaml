@@ -1,1 +1,12 @@
-[]
+- id: '1601386650786'
+  alias: Nouvelle automteatisation
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: a
+    payload: '1'
+  condition: []
+  action:
+  - wait_for_trigger: []
+    timeout: ''
+  mode: single

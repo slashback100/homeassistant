@@ -3,45 +3,19 @@
 switch_off_haut:
     sequence:
       - service: light.turn_off
-        entity_id: group.premier_etage
-      - service: light.turn_off
-        entity_id: group.grenier
+        entity_id: group.premier_etage, group.grenier
  
 switch_off_rez:
     sequence:
       - service: light.turn_off
-        entity_id: group.rez_de_chaussee
-      - service: light.turn_off
-        entity_id: group.exterieur
+        entity_id: group.rez_de_chaussee, group.exterieur
       - service: media_player.media_pause
         entity_id: media_player.max2play_2
 
 switch_off_all_no_blue:
     sequence:
       - service: light.turn_off
-        entity_id: group.caves
-      - service: light.turn_off
-        entity_id: group.grenier
-      - service: light.turn_off
-        entity_id: group.rez_de_chaussee
-      - service: light.turn_off
-        entity_id: group.exterieur
-      - service: light.turn_off
-        entity_id: light.l_escalier
-      - service: light.turn_off
-        entity_id: light.l_noemie
-      - service: light.turn_off
-        entity_id: light.l_elise
-      - service: light.turn_off
-        entity_id: light.l_hall_nuit
-      - service: light.turn_off
-        entity_id: light.l_bureau
-      - service: light.turn_off
-        entity_id: light.l_salle_jeu
-      - service: light.turn_off
-        entity_id: light.l_sdb
-      - service: light.turn_off
-        entity_id: light.l_sdb_eviers
+        entity_id: group.caves,group.grenier,group.rez_de_chaussee,group.exterieur,light.l_escalier,light.l_noemie,light.l_elise,light.l_hall_nuit,light.l_bureau,light.l_salle_jeu,light.l_sdb,light.l_sdb_eviers
       - service: media_player.media_pause
         entity_id: media_player.max2play_2
       - service: media_player.media_pause

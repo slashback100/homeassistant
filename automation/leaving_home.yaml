@@ -1,14 +1,4 @@
-  - id: leavingHome
-    alias: "Leaving Home"
-    initial_state: false
-    trigger:
-        platform: state
-        entity_id: person.christophe
-        from: 'home'
-    action:
-      - service: shell_command.start_motion
- 
-  - id: leavingHomePorteGarageChris
+  - id: leavingHome_CheckPorteGarageChris
     alias: "Leaving Home Check Garage"
     trigger:
         platform: state
@@ -23,8 +13,8 @@
         data:
             message: "Garage Ouvert !!"
  
-  - id: leavingHomeCheckLight_2
-    alias: "Check light Leaving Home"
+  - id: leavingHome_CheckLight_2
+    alias: "Leaving Home Check Light"
     trigger:
       - platform: state
         entity_id: person.melanie
@@ -45,32 +35,30 @@
             entity_id: group.light_to_check
             state: 'on'
     action:
-            #      - service: notify.mail
-            #       data_template: 
-            #            title: "#test"
-            #            message: >
-            #              {{ "Light is on: " }}
-            #              {% for l in states.light -%}
-            #              {% if l.state == "on" -%}
-            #              {{ l.name + ' ' }}
-            #              {%- endif %}
-            #              {%- endfor %}
       - service: notify.mobile_app_iphone
         data_template:
             message: >
               {{ "Lumière allumée: " }}
               {{ states['light'] | selectattr('state','eq', 'on') | map(attribute='attributes.friendly_name') | list | join(', ') }}
- #             {% for l in states.light -%}
- #             {% if l.state == "on" -%}
- #             {{ l.name + ' ' }}
- #             {%- endif %}
- #             {%- endfor %}
- # equivalent to
- # {{ states['light'] | selectattr('state','eq', 'on') | map(attribute='attributes.friendly_name') | list | join(', ') }}
             data:
                 push:
                     category: 'eteindretout'
-                    #action_data:
-                    #    entity_id: group.light_to_check
-                    #my_custom_data: foo
-
+  - id: leavingHome_ProposeCloseGarage
+    mode: single
+    alias: "Leaving Home Propose To Close Garage Chris"
+    trigger:
+        platform: state
+        entity_id: cover.garage_de_chris
+        to: 'open'
+    condition:
+        condition: state
+        entity_id: device_tracker.iphone_3
+        state: 'home'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Fermer le garage de Chris ?"
+            data:
+                push:
+                    category: 'fermergaragechris'
+      - delay: "00:01:00"

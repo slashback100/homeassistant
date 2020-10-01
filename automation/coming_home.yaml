@@ -46,7 +46,10 @@
     action:
       - service: light.turn_on
         entity_id: light.l_facade_avant
-      - service: script.turn_facade_off_5_min
+      - delay: '00:05:00' #wait 5 min
+      - service: light.turn_off
+        data:
+            entity_id: light.l_facade_avant
         #- service: notify.mail
         #        data: 
         #   title: "#test"

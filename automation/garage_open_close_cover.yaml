@@ -42,4 +42,4 @@
         default:  
           - service: light.toggle
             data:
-                entity_id: light.l_garage_chris
+                entity_id: light.l_garage_mel
