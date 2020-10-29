@@ -30,7 +30,9 @@ homeassistant:
 logger:
     #default: error
     default: debug
-    #    logs:
+    logs:
+        homeassistant.components.homekit: debug
+        pyhap: debug
     #        homeassistant.core: debug
     #        homeassistant.components.mqtt: debug
 python_script:
@@ -304,10 +306,6 @@ notify:
     sender: Domotique Maison
 # Discover some devices automatically
 discovery:
-        #    ignore:
-            #      - igd
-        #    enable:
-        #     - homekit  
 device_tracker:
   - platform: mqtt_json
     devices:
@@ -444,6 +442,8 @@ input_boolean:
           #initial: off
           #icon: mdi:car
 input_text:
+    youtube_url:
+       name: 'Full url of Youtube video'
     youtube_search_criteria:
        name: 'Criteria for youtube search'
 input_select:
@@ -520,15 +520,42 @@ cover:
     retain: true
 climate:
   - platform: mqtt
-    name: ChauffageBillardFond
+    name: Chauffage du Cinema
+    payload_on: "ON"
+    payload_off: "OFF"
+    power_command_topic: cmd/etage0a/out/48
+    #mode_command_topic: log/info/chauffage_cinema
+    current_temperature_topic: cmd/esp_cinema/temp
+    #    action_topic: cmd/etage0a/out/12
+    temperature_command_topic: log/info/set_temp_chauf_cinema
+    retain: true
+    max_temp: 25
+    min_temp: 15
+    temp_step: 1
+    precision: 1.0
+    modes:
+      - "auto"
+      - "off"
+      - "heat"
+    initial: 20
+  - platform: mqtt
+    name: Chauffage du Billard
     payload_on: "ON"
     payload_off: "OFF"
     power_command_topic: cmd/etage0a/out/12
-    mode_command_topic: cmd/etage0a/out/12
     #    action_topic: cmd/etage0a/out/12
+    current_temperature_topic: cmd/esp_billard/temp
+    temperature_command_topic: log/info/set_temp_chauf_billard
+    retain: true
+    max_temp: 25
+    min_temp: 15
+    temp_step: 1
+    precision: 1.0
     modes:
+      - "auto"
       - "off"
       - "heat"
+    initial: 20
 weather:
   - platform: darksky
     api_key: !secret darksky_api
@@ -840,12 +867,12 @@ sensor:
             Processing
             {%- endif -%}
   - platform: mqtt
-    name: "Température de la cave"
-    state_topic: "cmd/esp_cave/temp"
-    unit_of_measurement: '°C'
+    name: "Humidité dans le Cinéma"
+    state_topic: "cmd/esp_cinema/hygro"
+    unit_of_measurement: '%'
   - platform: mqtt
-    name: "Humidité de la cave"
-    state_topic: "cmd/esp_cave/hygro"
+    name: "Humidité dans le Billard"
+    state_topic: "cmd/esp_billard/hygro"
     unit_of_measurement: '%'
 
 google:
@@ -886,6 +913,7 @@ tts:
 #cloud:
 
 homekit:
+    safe_mode: true
     filter:
         include_domains:
               - light
@@ -907,7 +935,8 @@ script: !include_dir_merge_named script
 switch: !include_dir_merge_list  switch
 light: !include_dir_merge_list light
 #automation old: !include_dir_merge_list automation
-automation: !include_dir_merge_list automation
+automation: !include automations.yaml
+automation mine: !include_dir_merge_list automation
 #automation: !include automations.yaml
 #variable:
 #   stopDimmer:
@@ -928,6 +957,8 @@ shell_command:
       /usr/bin/curl {{ args|default('-sS') }} -X {{ method|default('get')|upper }} {%- for k in headers %} -H "{{ k }}: {{ headers[k] }}"{% endfor %} {{- (' -d \'' ~ payload|tojson ~ '\'') if payload }} {{ url }} > {{ stream|default('/dev/null') }}
   youtubeonkodi: >-
       /opt/domo/tools/kodi-cli -k {{ states('input_select.kodi_ip') }} -s "{{ states('input_text.youtube_search_criteria') }}"
+  youtubeonkodilink: >-
+      /opt/domo/tools/kodi-cli -k {{ states('input_select.kodi_ip') }} -y "{{ states('input_text.youtube_url') }}"
 
 alert:
   blackout:

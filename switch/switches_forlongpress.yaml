@@ -142,3 +142,9 @@
     state_topic: cmd/etage2b/in/30
     payload_off: "OFF"
     payload_on: "ON"
+  - name: "s_cave_tech"
+    platform: mqtt
+    command_topic: cmd/etage0a/in/36
+    state_topic: cmd/etage0a/in/36
+    payload_off: "OFF"
+    payload_on: "ON"

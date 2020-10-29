@@ -9,9 +9,7 @@
         timeout: 0.3
         continue_on_timeout: true
       - choose:
-          - conditions:
-              - condition: template
-                value_template: "{{ not wait.completed }}"
+          - conditions: "{{ not wait.completed }}"
             sequence:
               - service: light.turn_off
                 data:
@@ -31,10 +29,8 @@
         timeout: 0.3
         continue_on_timeout: true
       - choose:
-          - conditions:
-              - condition: template
-                value_template: "{{ not wait.completed }}"
+          - conditions: "{{ not wait.completed }}"
             sequence:
               - service: light.turn_off
                 data:
-                    entity_id: group.caves
+                    entity_id: light.l_atelier_mel,light.l_bar,light.l_billard,light.l_cave_jardin,light.l_cave_technique,light.l_cinema_lampe,light.l_kicker,light.l_urinoir

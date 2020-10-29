@@ -352,14 +352,6 @@
     action:
       - service: light.toggle
         entity_id: light.l_atelier_mel
-  - alias: SwichCaveTechnique
-    trigger:
-      - platform: mqtt
-        topic: cmd/etage0a/in/36
-        payload: 'ON'
-    action:
-      - service: light.toggle
-        entity_id: light.l_cave_technique
   - alias: SwichBar
     trigger:
       - platform: mqtt

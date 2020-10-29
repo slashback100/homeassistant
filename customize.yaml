@@ -162,3 +162,11 @@ light.l_atelier_mel_chauffage:
   icon: mdi:radiator
 light.l_cinema_chauffage:
   icon: mdi:radiator
+switch.cinema_chauffage:
+  icon: mdi:radiator
+switch.billard_chauffage_entree:
+  icon: mdi:radiator
+switch.billard_chauffage_fond:
+  icon: mdi:radiator
+switch.atelier_mel_chauffage:
+  icon: mdi:radiator
