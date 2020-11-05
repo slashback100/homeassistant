@@ -175,6 +175,33 @@
       - service: shell_command.ringextbas
       - delay:
             milliseconds: 5000
+  - alias: sonette_lampe_cave_tech
+    mode: single 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/47
+        payload: 'ON'
+    condition:
+      - condition: state
+        entity_id: light.l_cave_technique
+        state: 'on'
+    action:
+      - service: light.toggle
+        entity_id: light.l_cave_technique
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_cave_technique
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_cave_technique
+      - delay:
+            milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_cave_technique
+      - delay:
+            milliseconds: 5000
   - alias: sonette_bas_notif
     mode: single 
     trigger:

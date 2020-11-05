@@ -148,3 +148,9 @@
     state_topic: cmd/etage0a/in/36
     payload_off: "OFF"
     payload_on: "ON"
+  - name: "s_cave_escalier"
+    platform: mqtt
+    command_topic: cmd/etage1a/in/42
+    state_topic: cmd/etage1a/in/42
+    payload_off: "OFF"
+    payload_on: "ON"

@@ -87,14 +87,6 @@
     action:
       - service: light.toggle
         entity_id: light.l_cuisineentree
-  - alias: SwitchGarageMel1
-    trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/42
-        payload: 'ON'
-    action:
-      - service: light.toggle
-        entity_id: light.l_escalier_cave
   - alias: SwitchGarageChris3
     trigger:
       - platform: mqtt
@@ -368,6 +360,14 @@
     action:
       - service: light.toggle
         entity_id: light.l_urinoir
+  - alias: SwitchBureau
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2a/in/23
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_bureau
 #  - alias: SwichCinema
 #    trigger:
 #      - platform: mqtt

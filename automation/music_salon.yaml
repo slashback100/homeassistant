@@ -9,26 +9,14 @@
         timeout: 0.3
         continue_on_timeout: true
       - choose:
-          - conditions:
-              - condition: template
-                value_template: "{{ not wait.completed }}"
+          - conditions: "{{ not wait.completed }}"
             sequence:
               - service: media_player.media_play_pause
                 entity_id: media_player.max2play_2
-              - service: switch.turn_off
-                entity_id: switch.prog_kodi
         #if short press:
         default: 
           - choose:
-              - conditions:
-                  - condition: or
-                    conditions:
-                      - condition: state
-                        entity_id: media_player.max2play_2
-                        state: 'paused'
-                      - condition: state
-                        entity_id: media_player.max2play_2
-                        state: 'idle'
+              - conditions: "{{ states('media_player.max2play_2') in ['paused', 'idle'] }}"
                 sequence:
                   - service: shell_command.tts_meteo_salon
             default:
@@ -54,4 +42,11 @@
         default:  
           - service: media_player.volume_up
             entity_id: media_player.max2play_2
-
+  - alias: TurnOffMediaCenter
+    trigger:
+      - platform: state
+        entity_id: media_player.max2play_2
+        to: 'playing'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.prog_kodi

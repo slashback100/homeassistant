@@ -12,7 +12,7 @@ homeassistant:
   #time_zone: Europe/Brussels
   # Customization file
   customize: !include customize.yaml
-  whitelist_external_dirs:
+  allowlist_external_dirs:
     - /mnt/rpicam
     - /home/homeassistant/test
   auth_providers:
@@ -389,6 +389,20 @@ ios:
                 behavior: 'default'
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
+    intents:
+        TexteDansSalon:
+                - Dire ce texte [dans le salon] [:] {myTxt}
+intent_script:
+    TexteDansSalon:
+        speech:
+            text: "Ok"
+        action:
+          - service: input_text.set_value
+            data:
+                entity_id: input_text.text_for_tts
+                value: "{{myTxt}}"
+          - service: shell_command.tts_salon
+
 
 # Enables support for tracking state changes over time
 history:
@@ -441,11 +455,16 @@ input_boolean:
           #name: "Mel a emprunter la Mercedes"
           #initial: off
           #icon: mdi:car
+    premiere_gelee:
+          name: "Première gelée"
+          icon: mdi:snowflake
 input_text:
     youtube_url:
        name: 'Full url of Youtube video'
     youtube_search_criteria:
        name: 'Criteria for youtube search'
+    text_for_tts:
+       name: 'Text à lire via tts'
 input_select:
     kodi_ip:
        name: 'Ip of kodi'
@@ -577,6 +596,15 @@ weather:
     #    first_week: 17
 
 sensor:
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'date_time_utc'
+      - 'date_time_iso'
+      - 'time_date'
+      - 'time_utc'
   - platform: darksky
     name: Météo
 #    #unit: si
@@ -950,6 +978,7 @@ shell_command:
   #  mel_not_home: /opt/domo/tools/melHomeOrNot not_home
   renew_ssl: ~/certbot/certbot-auto_v2 renew --quiet --no-self-upgrade --standalone --preferred-challenges http-01 --pre-hook "sudo systemctl stop home-assistant.service" --post-hook "sudo systemctl start home-assistant.service"
   tts_meteo_salon: /opt/domo/modules/tts.sh  "Actuellement, {{ states('sensor.meteo_summary') }}. Aujourd'hui, {{ states('sensor.meteo_summary_0d') }}, la température actuelle est de {{ state_attr('weather.dark_sky', 'temperature') | round(0) }} degré. La température minimale prévue est de {{ state_attr('weather.dark_sky', 'forecast')[1]['templow'] | round }} degrés et la température maximale de {{ state_attr('weather.dark_sky', 'forecast')[0]['temperature'] | round }} degrés. Il faut actuellement {{ states('sensor.maison_vers_bxl') }} minutes pour aller à Bruxelles en passant par la {{ state_attr('sensor.maison_vers_bxl', 'route') | regex_replace('-','et') }}. Bonne journée !" salon
+  tts_salon: /opt/domo/modules/tts.sh  "{{ states('input_text.text_for_tts') }}" salon
   tts_meteo_sdb: /opt/domo/modules/tts.sh  "Actuellement, {{ states('sensor.meteo_summary') }}. Aujourd'hui, {{ states('sensor.meteo_summary_0d') }}, la température actuelle est de {{ state_attr('weather.dark_sky', 'temperature') | round(0) }} degré. La température minimale prévue est de {{ state_attr('weather.dark_sky', 'forecast')[1]['templow'] | round }} degrés et la température maximale de {{ state_attr('weather.dark_sky', 'forecast')[0]['temperature'] | round }} degrés. Bonne journée !" sdb
   ringexthaut: /opt/domo/modules/ring.sh extHaut
   ringextbas: /opt/domo/modules/ring.sh extBas

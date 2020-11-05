@@ -34,3 +34,23 @@
               - service: light.turn_off
                 data:
                     entity_id: light.l_atelier_mel,light.l_bar,light.l_billard,light.l_cave_jardin,light.l_cave_technique,light.l_cinema_lampe,light.l_kicker,light.l_urinoir
+  - alias: SwitchHautEscalierOff
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: switch.s_cave_escalier
+        to: 'on'
+    action:
+      - wait_template: "{{ is_state('switch.s_cave_escalier', 'off') }}"
+        timeout: 0.3
+        continue_on_timeout: true
+      - choose:
+          - conditions: "{{ not wait.completed }}"
+            sequence:
+              - service: light.turn_off
+                data:
+                    entity_id: group.caves
+        default:
+          - service: light.toggle
+            data:
+                entity_id: light.l_escalier_cave

@@ -1,0 +1,13 @@
+- id: '1604599617858'
+  alias: SwitchSalleJeu
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/30
+    payload: 'ON'
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    entity_id: light.l_salle_jeu
+  mode: single

@@ -4,6 +4,10 @@ switch_off_haut:
     sequence:
       - service: light.turn_off
         entity_id: group.premier_etage, group.grenier
+      - service: media_player.media_pause
+        entity_id: media_player.chambre
+      - service: media_player.media_pause
+        entity_id: media_player.salle_de_bain_2
  
 switch_off_rez:
     sequence:

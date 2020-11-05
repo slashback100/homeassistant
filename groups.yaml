@@ -121,4 +121,15 @@ exterieur:
             - light.l_facade_avant
             - light.l_terrasse_bas
             - light.l_terrasse_haut
-
+light_for_flash:
+    name: Lampes à faire clignoter si intrusion
+    entities:
+            - group.exterieur
+            - light.l_buanderie
+            - light.l_cuisine_plafond
+            - light.l_cuisineentree
+            - light.l_escalier
+            - light.l_hall_plafond
+            - light.l_salon_plafond
+            - light.l_sam_plafond
+            - light.l_toilette
