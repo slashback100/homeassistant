@@ -170,3 +170,9 @@ switch.billard_chauffage_fond:
   icon: mdi:radiator
 switch.atelier_mel_chauffage:
   icon: mdi:radiator
+presence_simulation.running:
+  icon: mdi:account-group
+  templates:
+    rgb_color: "if (state === 'true') {\n    return [0,255,0];\n} else {\n    return\
+      \ [0,0,0];\n}\n"
+  rgb_color: '[255,255,255]'

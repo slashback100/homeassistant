@@ -23,6 +23,31 @@ homeassistant:
           #      allow_bypass_login: true
     - type: legacy_api_password
       api_password: !secret home_pass
+customizer:
+    custom_ui: local
+presence_simulation:
+    delta: 7
+    entity_id:
+      - light.l_hall_plafond
+      - light.l_sam_plafond
+      - light.l_salon_plafond
+      - light.l_cuisine_plafond
+      - light.l_cuisineentree
+      - light.l_toilette
+      - light.l_garage_chris
+      - light.l_garage_mel
+      - light.l_escalier
+      - light.l_chambre_parents
+      - light.l_dressing
+      - light.l_elise
+      - light.l_escalier_ambiance
+      - light.l_hall_nuit
+      - light.l_sdb
+      - light.l_sdb_eviers
+      - light.l_bureau
+      - light.l_facade_avant
+      - light.l_terrasse_haut
+      - light.l_terrasse_bas
 #mercedesmeapi:
 #  username: christophe.desirant@gmail.com
 #  password: 
