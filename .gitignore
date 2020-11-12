@@ -2,3 +2,8 @@
 secrets.yaml
 .homekit
 .homekit.state
+.git-credentials
+.storage
+.ios.conf
+.google.token
+home-assistant.log
