@@ -23,8 +23,8 @@ homeassistant:
           #      allow_bypass_login: true
     - type: legacy_api_password
       api_password: !secret home_pass
-customizer:
-    custom_ui: local
+#customizer:
+#    custom_ui: local
 presence_simulation:
     delta: 7
     entity_id:

@@ -5,8 +5,8 @@
 		"user":{
 			"description": "Configuration",
 			"data": {
-				"entities": "Groupe d'entités",
-				"delta": "Delta"
+				"entities": "Entitée ou groupe d'entitées",
+				"delta": "Delta (nombre de jours)"
 			}
 		}
 	}
