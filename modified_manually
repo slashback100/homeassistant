@@ -1,0 +1,8 @@
+Calendrier Google:
+#/opt/domo/homeassistant/lib/python3.8/site-packages/homeassistant/components/google/__init__.py 
+#ligne 181
+/opt/domo/homeassistant2/lib/python3.8/site-packages/oauth2client/_helper.py : commenter la validation sur le symlink
+
+lib_pyton3.8_site-packages_homeassistant_components_shopping_list_init.py_patch 
+        #save_json(self.hass.config.path(PERSISTENCE), self.items)
+        save_json("/mnt/extHdd/.shopping_list.json", self.items)

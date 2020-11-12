@@ -1,0 +1,8 @@
+  - alias: StartOf HA
+    trigger:
+      - platform: event
+        event_type: homeassistant_start
+    condition: "{{ is_state('switch.prog_kodi', 'off') }}"
+    action:
+      - service: switch.turn_on
+        entity_id: switch.prog_kodi

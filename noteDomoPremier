@@ -1,0 +1,88 @@
+OUT
+a 2 -> escalier
+a 3 -> extérieur bureau
+a 4 -> noémie
+a 5 -> grenier
+a 6 -> ambiance hall
+a 7 -> couloir hall
+a 8 -> elise
+a 9 -> bureau
+a 49 > salle jeu
+
+b 7 prise sdb 
+b 2 dressing
+b 3 chambre par
+b 4 terrasse hauteur
+b 5 sdb
+b 6 eviers sdb
+
+
+
+IN
+
+1 2
+5 6
+4 3
+
+sdj
+1 a 30
+2
+3
+4
+5
+6
+bureau
+1 a 38
+2 a 40
+4 a 25
+3 a 23
+5 a 27
+6 a 29
+hall
+1 a 15
+2 a 14
+3 a 22
+4 a 24
+5 a 26
+6 a 28
+elise
+1 a 32
+2 a 34
+3a 36
+noémie
+1 a 31
+2 a 33
+3 a 35
+4 a 37
+5 a 39
+6 a 41
+sdb
+1 b 21
+2 b 20
+3 b 19
+4 b 18
+5
+6
+hall trappe
+1 a 21
+2 a 20
+19
+18
+17
+16
+chambre entree
+1 b 28
+30
+32
+34
+36
+38
+dress
+b 26
+lit
+b 17
+16
+15
+14
+22
+24

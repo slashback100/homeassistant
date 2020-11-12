@@ -1,0 +1,191 @@
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_cuisineentree"
+    command_topic: "cmd/etage1a/out/2"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_cuisine_plafond"
+    command_topic: "cmd/etage1a/out/3"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_sam_plafond"
+    command_topic: "cmd/etage1a/out/4"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_salon_plafond"
+    command_topic: "cmd/etage1a/out/5"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_escalier_ambiance"
+    command_topic: "cmd/etage1a/out/6"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_hall_plafond"
+    command_topic: "cmd/etage1a/out/7"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_toilette"
+    command_topic: "cmd/etage1a/out/8"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_buanderie"
+    command_topic: "cmd/etage1a/out/9"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_garage_chris"
+    command_topic: "cmd/etage1a/out/49"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_garage_mel"
+    command_topic: "cmd/etage1a/out/11"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_facade_avant"
+    command_topic: "cmd/etage1a/out/12"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_escalier"
+    command_topic: "cmd/etage2a/out/2"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_terrasse_bas"
+    command_topic: "cmd/etage2a/out/3"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_noemie"
+    command_topic: "cmd/etage2a/out/4"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_grenier"
+    command_topic: "cmd/etage2a/out/5"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_hall_ambiance"
+    command_topic: "cmd/etage2a/out/6"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_hall_nuit"
+    command_topic: "cmd/etage2a/out/7"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_elise"
+    command_topic: "cmd/etage2a/out/8"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_bureau"
+    command_topic: "cmd/etage2a/out/9"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_salle_jeu"
+    command_topic: "cmd/etage2a/out/49"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_dressing"
+    command_topic: "cmd/etage2b/out/2"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_chambre_parents"
+    command_topic: "cmd/etage2b/out/3"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_terrasse_haut"
+    command_topic: "cmd/etage2b/out/4"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_sdb"
+    command_topic: "cmd/etage2b/out/5"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_sdb_eviers"
+    command_topic: "cmd/etage2b/out/6"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_escalier_cave"
+    command_topic: "cmd/etage0a/out/5"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_cave_technique"
+    command_topic: "cmd/etage0a/out/4"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_cave_jardin"
+    command_topic: "cmd/etage0a/out/3"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_atelier_mel"
+    command_topic: "cmd/etage0a/out/2"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_bar"
+    command_topic: "cmd/etage0a/out/7"
+    unique_id: "l_bar"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_billard_chauffage_fond"
+    command_topic: "cmd/etage0a/out/12"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_billard_chauffage_entree"
+    command_topic: "cmd/etage0a/out/11"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_atelier_mel_chauffage"
+    command_topic: "cmd/etage0a/out/13"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_billard"
+    command_topic: "cmd/etage0a/out/8"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_urinoir"
+    command_topic: "cmd/etage0a/out/9"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_cinema_chauffage"
+    command_topic: "cmd/etage0a/out/48"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_cinema_lampe"
+    command_topic: "cmd/etage0a/out/1"
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_kicker"
+    command_topic: "cmd/etage0a/out/49"
