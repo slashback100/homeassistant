@@ -1,0 +1,19 @@
+shell_command:
+  start_motion: ssh pi@cam 'sudo /usr/sbin/service motion start'
+  stop_motion: ssh pi@cam 'sudo /usr/sbin/service motion stop'
+  #  vol_minus: /opt/domo/modules/sendCommandAndroid.sh volminug
+  #  vol_plus: /opt/domo/modules/sendCommandAndroid.sh volplus
+  #  mel_home: /opt/domo/tools/melHomeOrNot home
+  #  mel_not_home: /opt/domo/tools/melHomeOrNot not_home
+  renew_ssl: ~/certbot/certbot-auto_v2 renew --quiet --no-self-upgrade --standalone --preferred-challenges http-01 --pre-hook "sudo systemctl stop home-assistant.service" --post-hook "sudo systemctl start home-assistant.service"
+  tts_meteo_salon: /opt/domo/modules/tts.sh  "Actuellement, {{ states('sensor.meteo_summary') }}. Aujourd'hui, {{ states('sensor.meteo_summary_0d') }}, la température actuelle est de {{ state_attr('weather.dark_sky', 'temperature') | round(0) }} degré. La température minimale prévue est de {{ state_attr('weather.dark_sky', 'forecast')[1]['templow'] | round }} degrés et la température maximale de {{ state_attr('weather.dark_sky', 'forecast')[0]['temperature'] | round }} degrés. Il faut actuellement {{ states('sensor.maison_vers_bxl') }} minutes pour aller à Bruxelles en passant par la {{ state_attr('sensor.maison_vers_bxl', 'route') | regex_replace('-','et') }}. Bonne journée !" salon
+  tts_salon: /opt/domo/modules/tts.sh  "{{ states('input_text.text_for_tts') }}" salon
+  tts_meteo_sdb: /opt/domo/modules/tts.sh  "Actuellement, {{ states('sensor.meteo_summary') }}. Aujourd'hui, {{ states('sensor.meteo_summary_0d') }}, la température actuelle est de {{ state_attr('weather.dark_sky', 'temperature') | round(0) }} degré. La température minimale prévue est de {{ state_attr('weather.dark_sky', 'forecast')[1]['templow'] | round }} degrés et la température maximale de {{ state_attr('weather.dark_sky', 'forecast')[0]['temperature'] | round }} degrés. Bonne journée !" sdb
+  ringexthaut: /opt/domo/modules/ring.sh extHaut
+  ringextbas: /opt/domo/modules/ring.sh extBas
+  curl: >-
+      /usr/bin/curl {{ args|default('-sS') }} -X {{ method|default('get')|upper }} {%- for k in headers %} -H "{{ k }}: {{ headers[k] }}"{% endfor %} {{- (' -d \'' ~ payload|tojson ~ '\'') if payload }} {{ url }} > {{ stream|default('/dev/null') }}
+  youtubeonkodi: >-
+      /opt/domo/tools/kodi-cli -k {{ states('input_select.kodi_ip') }} -s "{{ states('input_text.youtube_search_criteria') }}"
+
+

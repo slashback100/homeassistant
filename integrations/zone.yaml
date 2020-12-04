@@ -1,0 +1,21 @@
+zone:
+  - name: NN
+    latitude: 50.834996
+    longitude: 4.337171
+    radius: 50
+    icon: mdi:worker
+  - name: Vermeg
+    latitude: 50.846542621266003
+    longitude: 4.3683864563446004
+    radius: 50
+    icon: mdi:worker
+#  - name: Lotissement
+#    latitude: 
+#    longitude: 
+#    radius: 500
+#    icon: mdi:home
+  - name: Home
+    latitude: !secret lat
+    longitude: !secret long 
+    radius: 120
+    icon: mdi:home

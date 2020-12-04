@@ -1,0 +1,19 @@
+  - alias: SonetteAutomatioNight
+    trigger:
+      - platform: time
+        at: "20:00:00"
+    action:
+      - service: automation.turn_off
+        entity_id: automation.sonette_bing
+      - service: automation.turn_on
+        entity_id: automation.sonette_lampe_sam
+  - alias: SonetteAutomatioDay
+    trigger:
+      - platform: time
+        at: "07:00:00"
+    action:
+      - service: automation.turn_on
+        entity_id: automation.sonette_bing
+      - service: automation.turn_off
+        entity_id: automation.sonette_lampe_sam
+

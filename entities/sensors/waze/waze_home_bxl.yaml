@@ -1,0 +1,5 @@
+    platform: waze_travel_time
+    name: maison_vers_bxl
+    origin: !secret lat_long
+    destination: 50.846312, 4.368580
+    region: 'EU'

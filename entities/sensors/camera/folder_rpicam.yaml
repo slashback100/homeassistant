@@ -1,0 +1,3 @@
+    platform: folder
+    folder: /mnt/rpicam
+    filter: "*.avi"

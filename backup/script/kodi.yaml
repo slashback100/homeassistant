@@ -1,0 +1,170 @@
+#https://github.com/Norien/Home-Assistant-Config/blob/master/packages/kodi_control.yaml
+kodi_defaults:
+    sequence:
+      - service: shell_command.curl
+        data: &defaults
+          url: "http://192.168.0.175:8080/jsonrpc"
+          method: "post"
+          headers:    
+            content-type: "application/json"
+kodi_playpause:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Player.PlayPause"
+            params:
+              playerid: 1
+
+kodi_play:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Player.PlayPause"
+            params:
+              playerid: 1
+              play: true
+
+kodi_pause:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Player.PlayPause"
+            params:
+              playerid: 1
+              play: false
+
+kodi_stop:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Player.Stop"
+            params:
+              playerid: 1
+
+kodi_next:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Player.GoTo"
+            params:
+              playerid: 1
+              to: "next"
+
+kodi_previous:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Player.GoTo"
+            params:
+              playerid: 1
+              to: "previous"
+
+kodi_seek_forward:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Player.Seek"
+            params:
+              playerid: 1
+              value: "smallforward"
+
+kodi_seek_backward:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Player.Seek"
+            params:
+              playerid: 1
+              value: "smallbackward"
+
+kodi_nav_back:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Input.Back"
+
+kodi_nav_select:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Input.Select"
+
+kodi_nav_left:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Input.Left"
+
+kodi_nav_right:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Input.Right"
+
+kodi_nav_up:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Input.Up"
+
+kodi_nav_down:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            jsonrpc: "2.0"
+            id: 1
+            method: "Input.Down"

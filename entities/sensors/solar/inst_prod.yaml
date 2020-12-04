@@ -1,0 +1,6 @@
+    platform: rest
+    resource: http://192.168.0.110/solar_api/v1/GetPowerFlowRealtimeData.fcgi
+    name: Production instantanée
+    value_template: '{{ value_json.Body.Data.Site.P_PV | int }}'
+    unit_of_measurement: "W"
+    scan_interval: 315360000

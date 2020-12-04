@@ -1,0 +1,6 @@
+exterieur:
+    name: Lampes exterieurs
+    entities:
+            - light.l_facade_avant
+            - light.l_terrasse_bas
+            - light.l_terrasse_haut

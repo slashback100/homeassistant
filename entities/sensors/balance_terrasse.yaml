@@ -1,0 +1,11 @@
+    platform: mqtt
+    name: "BalanceTerrasseBas"
+    state_topic: "cmd/extBasMusic/balance"
+    value_template: >-
+           {% if value == "left" %}
+                Cave
+           {% elif value == "right" %}
+                Terrasse
+           {% else %}
+                Cave et Terrasse
+           {% endif %}

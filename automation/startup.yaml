@@ -4,6 +4,7 @@
       - platform: homeassistant
         event: start
     action:
+      # set the garages as being closed
       - service: mqtt.publish
         data:
             topic: cmd/etage1a/in/45

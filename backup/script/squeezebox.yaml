@@ -1,0 +1,76 @@
+#https://github.com/Norien/Home-Assistant-Config/blob/master/packages/kodi_control.yaml
+squeeze_defaults:
+    sequence:
+      - service: shell_command.curl
+        data: &defaults
+          url: "http://192.168.0.175:9000/jsonrpc.js"
+          method: "post"
+          headers:    
+            content-type: "application/json"
+squeeze_sync_salon_terrassebas:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            id: 0
+            method: "slim.request"
+            params:
+              - b8:27:eb:fa:f6:b5
+              - 
+                - sync
+                - b8:27:eb:65:7d:6b
+squeeze_unsync_salon:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            id: 0
+            method: "slim.request"
+            params:
+              - b8:27:eb:fa:f6:b5
+              - 
+                - sync
+                - "-"
+squeeze_sync_salon_terrassehaut:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            id: 0
+            method: "slim.request"
+            params:
+              - b8:27:eb:fa:f6:b5
+              - 
+                - sync
+                - b8:27:eb:42:2d:c6
+squeeze_unsync_terrassehaut:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            id: 0
+            method: "slim.request"
+            params:
+              - b8:27:eb:42:2d:c6
+              - 
+                - sync
+                - "-"
+squeeze_sync_terrassehaut_terrassebas:
+    sequence:
+      - service: shell_command.curl
+        data:
+          <<: *defaults
+          payload:
+            id: 0
+            method: "slim.request"
+            params:
+              - b8:27:eb:42:2d:c6
+              - 
+                - sync
+                - b8:27:eb:65:7d:6b
+
+

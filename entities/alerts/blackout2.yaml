@@ -1,0 +1,11 @@
+  blackout2:
+      name: "Coupure de courant 2"
+      message: "Coupure de courant depuis {{ relative_time (states.binary_sensor.kodi_rpi.last_changed) }} (alert blackout2)"
+      done_message: "Le courant est revenu"
+      entity_id: binary_sensor.kodi_rpi
+      skip_first: false
+      repeat: 10
+      state: 'off'
+      notifiers:
+#        - ios_chris
+        - mobile_app_iphone

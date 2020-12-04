@@ -1,0 +1,73 @@
+  - name: "prise_ext_terrasse"
+    platform: mqtt
+    command_topic: "cmd/etage1a/out/13"
+    state_topic: "cmd/etage1a/out/13"
+    retain: true
+    state_on: 'ON'
+    state_off: 'OFF'
+    payload_on: 'ON'
+    payload_off: 'OFF'
+  - name: "sdb_prise"
+    platform: mqtt
+    command_topic: "cmd/etage2b/out/7"
+    state_topic: "cmd/etage2b/out/7"
+    retain: true
+    state_on: 'ON'
+    state_off: 'OFF'
+    payload_on: 'ON'
+    payload_off: 'OFF'
+  - name: "prise_ext_partere"
+    platform: mqtt
+    command_topic: "cmd/etage0a/out/6"
+    state_topic: "cmd/etage0a/out/6"
+    retain: true
+    state_on: 'ON'
+    state_off: 'OFF'
+    payload_on: 'ON'
+    payload_off: 'OFF'
+  - name: "prise_ext_avant"
+    platform: mqtt
+    command_topic: "cmd/etage1a/out/48"
+    state_topic: "cmd/etage1a/out/48"
+    retain: true
+    state_on: 'ON'
+    state_off: 'OFF'
+    payload_on: 'ON'
+    payload_off: 'OFF'
+    # Chauffages
+  - platform: mqtt
+    state_on: 'ON'
+    state_off: 'OFF'
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "billard_chauffage_fond"
+    command_topic: "cmd/etage0a/out/12"
+    state_topic: "cmd/etage0a/out/12"
+    retain: true
+  - platform: mqtt
+    state_on: 'ON'
+    state_off: 'OFF'
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "billard_chauffage_entree"
+    command_topic: "cmd/etage0a/out/11"
+    state_topic: "cmd/etage0a/out/11"
+    retain: true
+  - platform: mqtt
+    state_on: 'ON'
+    state_off: 'OFF'
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "atelier_mel_chauffage"
+    command_topic: "cmd/etage0a/out/13"
+    state_topic: "cmd/etage0a/out/13"
+    retain: true
+  - platform: mqtt
+    state_on: 'ON'
+    state_off: 'OFF'
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "cinema_chauffage"
+    command_topic: "cmd/etage0a/out/48"
+    state_topic: "cmd/etage0a/out/48"
+    retain: true

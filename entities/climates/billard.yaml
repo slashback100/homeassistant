@@ -1,0 +1,18 @@
+    platform: mqtt
+    name: Chauffage du Billard
+    payload_on: "ON"
+    payload_off: "OFF"
+    power_command_topic: cmd/etage0a/out/12
+    #    action_topic: cmd/etage0a/out/12
+    current_temperature_topic: cmd/esp_billard/temp
+    temperature_command_topic: log/info/set_temp_chauf_billard
+    retain: true
+    max_temp: 25
+    min_temp: 15
+    temp_step: 1
+    precision: 1.0
+    modes:
+      - "auto"
+      - "off"
+      - "heat"
+    initial: 20

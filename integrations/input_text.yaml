@@ -1,0 +1,5 @@
+input_text:
+    youtube_search_criteria:
+       name: 'Criteria for youtube search'
+    text_for_tts:
+       name: 'Text à lire via tts'

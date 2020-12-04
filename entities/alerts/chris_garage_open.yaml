@@ -1,0 +1,18 @@
+  chris_garage_open:
+      name: Garage de Christophe est ouvert
+      message: "Le garage de Christophe est ouvert depuis {{ relative_time (states.binary_sensor.garage_de_chris.last_changed) }}"
+      done_message: Le garage de Christophe s'est fermé
+      entity_id: binary_sensor.garage_de_chris
+      state: 'on'
+      repeat:
+        - 1
+        - 2
+        - 5
+        - 30
+        - 60
+      skip_first: true
+      notifiers:
+#        - ios_chris
+        - mobile_app_iphone
+#        - mail
+

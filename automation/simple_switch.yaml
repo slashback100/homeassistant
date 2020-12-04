@@ -360,14 +360,6 @@
     action:
       - service: light.toggle
         entity_id: light.l_urinoir
-  - alias: SwitchBureau
-    trigger:
-      - platform: mqtt
-        topic: cmd/etage2a/in/23
-        payload: 'ON'
-    action:
-      - service: light.toggle
-        entity_id: light.l_bureau
 #  - alias: SwichCinema
 #    trigger:
 #      - platform: mqtt

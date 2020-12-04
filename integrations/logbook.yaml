@@ -1,0 +1,6 @@
+logbook:
+    exclude:
+       entities:
+         - automation.reset_arduino_watchdog
+         - automation.getproduction
+         - automation.refreshcam

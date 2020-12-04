@@ -1,0 +1,9 @@
+
+http:
+    ssl_certificate: /etc/letsencrypt/live/slashbackdomo.ddns.net/fullchain.pem
+    ssl_key: /etc/letsencrypt/live/slashbackdomo.ddns.net/privkey.pem
+    server_port: 4294
+    ip_ban_enabled: true
+    login_attempts_threshold: 5
+    #base_url: slashbackdomo.ddns.net
+    # https://www.home-assistant.io/docs/ecosystem/certificates/lets_encrypt/

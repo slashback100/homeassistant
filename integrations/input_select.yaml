@@ -1,0 +1,7 @@
+input_select:
+    kodi_ip:
+       name: 'Ip of kodi'
+       options:
+         - Salon
+         - Cinema
+       initial: Salon

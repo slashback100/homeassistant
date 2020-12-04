@@ -1,0 +1,17 @@
+  mel_garage_open:
+      name: Garage de Mel est ouvert
+      message: "Le garage de Mel est ouvert depuis {{ relative_time (states.binary_sensor.garage_de_mel.last_changed) }}"
+      done_message: Le garage de Mel s'est fermé
+      entity_id: binary_sensor.garage_de_mel
+      state: 'on'
+      repeat:
+        - 1
+        - 2
+        - 5
+        - 30
+        - 60
+      skip_first: true
+      notifiers:
+        - mobile_app_iphone
+          #- pushbullet_mel
+        - mobile_app_sm_a520f

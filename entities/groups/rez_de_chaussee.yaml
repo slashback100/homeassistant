@@ -1,0 +1,14 @@
+rez_de_chaussee:
+    name: Lampes du rez-de-chaussée
+    entities:
+            - light.l_buanderie
+            - light.l_cuisine_plafond
+            - light.l_cuisineentree
+            - light.l_escalier
+            - light.l_escalier_ambiance
+            - light.l_garage_chris
+            - light.l_garage_mel
+            - light.l_hall_plafond
+            - light.l_salon_plafond
+            - light.l_sam_plafond
+            - light.l_toilette

@@ -1,0 +1,5 @@
+    platform: google_translate
+    language: 'fr'
+    base_url: https://slashbackdomo.ddns.net:4294
+    cache_dir: /tmp/
+    service_name: google_say

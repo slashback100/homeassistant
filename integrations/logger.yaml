@@ -1,0 +1,10 @@
+logger:
+    #default: error
+    default: debug
+    logs:
+        homeassistant.components.kodi.media_player: fatal
+        homeassistant.components.kodi: fatal
+        #homeassistant.components.homekit: debug
+        #pyhap: debug
+    #        homeassistant.core: debug
+    #        homeassistant.components.mqtt: debug

@@ -1,0 +1,13 @@
+premier_etage:
+    name: Lampes du premier etage
+    entities:
+            - light.l_bureau
+            - light.l_chambre_parents
+            - light.l_dressing
+            - light.l_elise
+            - light.l_hall_ambiance
+            - light.l_hall_nuit
+            - light.l_noemie
+            - light.l_salle_jeu
+            - light.l_sdb
+            - light.l_sdb_eviers

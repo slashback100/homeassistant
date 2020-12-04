@@ -1,0 +1,12 @@
+input_boolean:
+        #voiture_a_brancher:
+        #      name: "Voiture à la maison mais pas branchée"
+        #      initial: off
+        #      icon: mdi:power-plug
+        #mel_borrowed_mercedes:
+        #      #name: "Mel a emprunter la Mercedes"
+        #      #initial: off
+        #      #icon: mdi:car
+    premiere_gelee:
+          name: "Première gelée"
+          icon: mdi:snowflake

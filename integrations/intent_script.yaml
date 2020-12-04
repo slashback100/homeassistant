@@ -1,0 +1,10 @@
+intent_script:
+    TexteDansSalon:
+        speech:
+            text: "Ok"
+        action:
+          - service: input_text.set_value
+            data:
+                entity_id: input_text.text_for_tts
+                value: "{{myTxt}}"
+          - service: shell_command.tts_salon

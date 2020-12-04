@@ -1,0 +1,4 @@
+grenier:
+    name: Lampes du grenier
+    entities:
+            - light.l_grenier

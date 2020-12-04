@@ -1,0 +1,6 @@
+    platform: kodi
+    name: Mediacenter Cinéma
+    host: 192.168.0.175
+    enable_websocket: false
+    # tcp_port: 9090
+    #test websocket with username/password ? and port ?

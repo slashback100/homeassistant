@@ -1,0 +1,13 @@
+    platform: kodi
+    name: Mediacenter Salon
+    host: 192.168.0.205
+    enable_websocket: false
+    turn_on_action:
+      - service: switch.turn_on
+        data:
+            entity_id: switch.prog_kodi
+    turn_off_action:
+      - service: switch.turn_off
+        data:
+            entity_id: switch.prog_kodi
+    # tcp_port: 9090

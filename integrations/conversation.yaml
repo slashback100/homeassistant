@@ -1,0 +1,4 @@
+conversation:
+    intents:
+        TexteDansSalon:
+                - Dire ce texte [dans le salon] [:] {myTxt}

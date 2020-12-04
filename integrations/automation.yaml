@@ -1,0 +1,3 @@
+# https://www.home-assistant.io/docs/automation/
+automation: !include ../automations.yaml
+automation mine: !include_dir_merge_list ../automation

@@ -1,0 +1,4 @@
+    platform: mqtt
+    name: "Humidité dans le Cinéma"
+    state_topic: "cmd/esp_cinema/hygro"
+    unit_of_measurement: '%'
