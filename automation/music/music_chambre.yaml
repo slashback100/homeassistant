@@ -1,0 +1,24 @@
+  - alias: SwitchMusicChambreMinus
+    initial_state: 'on'
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.chambre_music_minus
+            long_click_action:
+              - service: media_player.media_play_pause
+                entity_id: media_player.chambre
+            short_click_action:
+              - service: media_player.volume_down
+                entity_id: media_player.chambre
+  - alias: SwitchMusicChambrePlus
+    initial_state: 'on'
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.chambre_music_plus
+            long_click_action:
+              - service: media_player.media_next_track
+                entity_id: media_player.chambre
+            short_click_action:
+              - service: media_player.volume_up
+                entity_id: media_player.chambre

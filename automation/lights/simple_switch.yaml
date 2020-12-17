@@ -1,0 +1,391 @@
+### Switches ###
+  - alias: SwichBuanderie1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/35
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_buanderie
+  - alias: SwichBuanderie2
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/36
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_garage_chris
+  - alias: SwichBuanderie3
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/34
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_buanderie
+  - alias: SwichBuanderie4
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/37
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_buanderie
+  - alias: SwichCuisine1 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/14
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_buanderie
+  - alias: SwichCuisine2
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/15
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_cuisine_plafond
+  - alias: SwichCuisine4
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/17
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_escalier_ambiance
+  - alias: SwichCuisine7
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/20
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+  - alias: SwichCuisine8
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/21
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_salon_plafond
+  - alias: SwichCuisine5 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/18
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_escalier
+  - alias: SwichCuisine6 
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/19
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_cuisineentree
+  - alias: SwitchGarageChris3
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/40
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_garage_chris
+  - alias: SwichHall1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/28
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_facade_avant
+  - alias: SwichHall2
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/29
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_hall_plafond
+#  - alias: SwichHall6 # voir long_press
+  - alias: Switchportearriere1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/26
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_terrasse_bas
+  - alias: Switchportearriere2
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/27
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_terrasse_haut
+  - alias: SwitchSAM1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/31
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+  - alias: SwitchSAM2
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/32
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_hall_plafond
+  - alias: SwitchSAM4
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/33
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_salon_plafond
+  - alias: SwitchSAM6
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/58
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_escalier_cave
+  - alias: SwichToilette
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage1a/in/30
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_toilette
+  - alias: SwichHallNuit1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2a/in/15
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_hall_nuit
+  - alias: SwichHallNuit3
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2a/in/22
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_escalier_ambiance
+  - alias: SwichHallNuit4
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2a/in/24
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_hall_ambiance
+  - alias: SwichHallNuit5
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2a/in/26
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_salle_jeu
+  - alias: SwichHallNuit6
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2a/in/28
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_escalier
+  - alias: SwichElise1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2a/in/32
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_elise
+  - alias: SwichNoemie1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2a/in/31
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_noemie
+  - alias: SwichDressing
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2b/in/26
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_dressing
+  - alias: SwichChambre1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2b/in/28
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_chambre_parents
+  - alias: SwichChambre3
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2b/in/32
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_hall_ambiance
+  - alias: SwichLit1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2b/in/17
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_chambre_parents
+  - alias: SwichLit2
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2b/in/16
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_dressing
+  - alias: SwichSdb1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2b/in/25
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_sdb
+  - alias: SwichSdb2
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2b/in/23
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_sdb_eviers
+  - alias: SwichHallTrappe1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2a/in/21
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_hall_nuit
+  - alias: SwichHallTrappe4
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2a/in/18
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_hall_ambiance
+  - alias: SwichHallTrappe2
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage2a/in/20
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_grenier
+  - alias: SwichCaveEscalier1
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/43
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_escalier_cave
+  - alias: SwichCaveEscalier2
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/42
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_billard
+  - alias: SwichCaveEscalier3
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/41
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_cave_jardin
+  - alias: SwichCaveEscalier5
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/39
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_kicker
+  - alias: SwichCaveEscalier6
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/38
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_atelier_mel
+  - alias: SwichBar
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/35
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_bar
+  - alias: SwichUrinoir
+    trigger:
+      - platform: mqtt
+        topic: cmd/etage0a/in/34
+        payload: 'ON'
+    action:
+      - service: light.toggle
+        entity_id: light.l_urinoir
+#  - alias: SwichCinema
+#    trigger:
+#      - platform: mqtt
+#        topic: cmd/etage0a/in/33
+#        payload: 'ON'
+#    action:
+#      - service: light.toggle
+#        entity_id: light.l_cinema_lampe
+#  - alias: SwichCavePorteExt
+#    trigger:
+#      - platform: mqtt
+#        topic: cmd/etage0a/in/37
+#        payload: 'ON'
+#    action:
+#      - service: light.toggle
+#        entity_id: light.l_cave_jardin
+
+        #  - alias: TestMqtt 
+#    trigger:
+#      - platform: mqtt
+#        topic: cmd/etage1a/out/#
+#        payload: 'ON'
+#    condition:
+#    action:
+#      - delay: 00:01:00
+#      - service: script.turn_off_last_light
+#        data:
+#            arduinoid: etage1a
+

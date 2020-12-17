@@ -1,0 +1,16 @@
+  - alias: SwitchBureau
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.bureau
+            short_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_bureau
+            long_click_action:
+              - service: light.turn_off
+                data:
+                    entity_id: light.l_bureau
+              - service: light.turn_on
+                data:
+                    entity_id: light.l_salle_jeu

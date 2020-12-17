@@ -1,0 +1,56 @@
+  - id: comingHome
+    alias: "Comming Home"
+    initial_state: true
+    trigger:
+        platform: state
+        entity_id: person.christophe
+        to: 'home'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Ouvir le garage ?"
+            data:
+                push:
+                    category: 'ouvrirgarage'
+ 
+  - id: melComingHome
+    alias: "Mel Comming Home"
+    initial_state: true
+    trigger:
+        platform: state
+        entity_id: person.melanie
+        to: 'home'
+    action:
+      - service: notify.mobile_app_iphone_de_melanie
+        data:
+            message: "Ouvir le garage ?"
+            data:
+                push:
+                    category: 'ouvrirgarage'
+ 
+  - id: comingHomeAtNight
+    alias: "Comming Home At Night"
+    trigger:
+        platform: state
+        entity_id: person.christophe
+        to: 'home'
+         # or "leave"
+    condition:
+        condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+            after_offset: "+00:01:00"
+          - condition: sun
+            before: sunrise
+    action:
+      - service: light.turn_on
+        entity_id: light.l_facade_avant
+      - delay: '00:05:00' #wait 5 min
+      - service: light.turn_off
+        data:
+            entity_id: light.l_facade_avant
+        #- service: notify.mail
+        #        data: 
+        #   title: "#test"
+        #   message: "Welcome home"

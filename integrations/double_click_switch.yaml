@@ -1,0 +1,13 @@
+blueprint:
+    domain: automation
+    name: double_click
+    description: Double and Simple click action
+    input:
+        switch_id: 
+            name: Switch Id
+            description: The switch entity id
+        simple_click_service:
+        simple_click_data:
+        double_click_service:
+        double_click_data:
+

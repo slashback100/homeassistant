@@ -1,0 +1,10 @@
+  - id: leavingCRAC
+    alias: "Leaving CRAC"
+    trigger:
+        platform: state
+        entity_id: person.melanie
+        from: 'CRAC'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Mel quitte le CRAC"

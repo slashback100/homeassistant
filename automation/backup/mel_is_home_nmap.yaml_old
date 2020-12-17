@@ -1,0 +1,14 @@
+  - id: mel_home_nmap
+    alias: "Galaxy is at home, so is mel"
+    trigger:
+        platform: state
+        entity_id: device_tracker.galaxy_a5_2017
+        from: 'not_home'
+        to: 'home'
+        #    condition:
+        #        condition: template
+        #        value_template: "{{ (as_timestamp(now()) - as_timestamp(states.person.mel.last_updated)) / 60 > 1 }}"
+    action:
+      - service: python_script.changemelpresence
+        data:
+            presence: "home"

@@ -1,0 +1,8 @@
+  - alias: SwichHallHautOFF # turn off rdc
+    initial_state: 'on'
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.hall_eteindre_bas
+            long_click_action:
+              - service: script.switch_off_rez

@@ -1,0 +1,5 @@
+    name: "chambre_entree_music_minus"
+    platform: mqtt
+    state_topic: cmd/etage2b/in/36
+    payload_off: "OFF"
+    payload_on: "ON"

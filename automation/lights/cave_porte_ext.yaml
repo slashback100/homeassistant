@@ -1,0 +1,14 @@
+  - alias: SwitchCavePorteExt
+    initial_state: 'on'
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.cave_porte_ext
+            short_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_cave_jardin
+            long_click_action:
+              - service: light.turn_off
+                data:
+                    entity_id: group.caves

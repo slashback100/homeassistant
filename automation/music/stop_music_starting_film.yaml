@@ -1,0 +1,12 @@
+  - alias: TurnOffMusicWhenStartingFilm
+    trigger:
+      - platform: state
+        entity_id: media_player.mediacenter_salon
+        to: 'playing'
+    condition:
+      - condition: state
+        state: 'playing'
+        entity_id: media_player.max2play_2
+    action:
+      - service: media_player.media_pause
+        entity_id: media_player.max2play_2

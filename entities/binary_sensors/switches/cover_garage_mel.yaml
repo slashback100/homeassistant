@@ -1,0 +1,5 @@
+    name: "cover_garage_mel"
+    platform: mqtt
+    state_topic: cmd/etage1a/in/39
+    payload_off: "OFF"
+    payload_on: "ON"

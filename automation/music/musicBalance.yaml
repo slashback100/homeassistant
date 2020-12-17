@@ -1,0 +1,102 @@
+#Salon
+  - id: salonBalanceLeft
+    alias: "Balance à gauche dans le salon"
+    trigger:
+      - platform: mqtt
+        topic: "dummy/topic/salonBalanceLeft"
+        payload: 'ON'
+    action:
+      - service: mqtt.publish
+        data:
+            topic: "cmd/salonMusic/balance"
+            payload: 'left'
+  - id: salonBalanceRight
+    alias: "Balance à droite dans le salon"
+    trigger:
+      - platform: mqtt
+        topic: "dummy/topic/salonBalanceRight"
+        payload: 'ON'
+    action:
+      - service: mqtt.publish
+        data:
+            topic: "cmd/salonMusic/balance"
+            payload: 'right'
+  - id: salonBalanceBoth
+    alias: "Balance au milieu dans le salon"
+    trigger:
+      - platform: mqtt
+        topic: "dummy/topic/salonBalanceBoth"
+        payload: 'ON'
+    action:
+      - service: mqtt.publish
+        data:
+            topic: "cmd/salonMusic/balance"
+            payload: 'both'
+# Terrasse Haut
+  - id: extHautBalanceLeft
+    alias: "Balance à gauche Terrasse Haut"
+    trigger:
+      - platform: mqtt
+        topic: "dummy/topic/extHautBalanceLeft"
+        payload: 'ON'
+    action:
+      - service: mqtt.publish
+        data:
+            topic: "cmd/extHautMusic/balance"
+            payload: 'left'
+  - id: extHautBalanceRight
+    alias: "Balance à droite Terrasse Haut"
+    trigger:
+      - platform: mqtt
+        topic: "dummy/topic/extHautBalanceRight"
+        payload: 'ON'
+    action:
+      - service: mqtt.publish
+        data:
+            topic: "cmd/extHautMusic/balance"
+            payload: 'right'
+  - id: extHautBalanceBoth
+    alias: "Balance au milieu Terrasse Haut"
+    trigger:
+      - platform: mqtt
+        topic: "dummy/topic/extHautBalanceBoth"
+        payload: 'ON'
+    action:
+      - service: mqtt.publish
+        data:
+            topic: "cmd/extHautMusic/balance"
+            payload: 'both'
+# Terrasse Bas
+  - id: extBasBalanceLeft
+    alias: "Balance à gauche Terrasse Bas"
+    trigger:
+      - platform: mqtt
+        topic: "dummy/topic/extBasBalanceLeft"
+        payload: 'ON'
+    action:
+      - service: mqtt.publish
+        data:
+            topic: "cmd/extBasMusic/balance"
+            payload: 'left'
+  - id: extBasBalanceRight
+    alias: "Balance à droite Terrasse Bas"
+    trigger:
+      - platform: mqtt
+        topic: "dummy/topic/extBasBalanceRight"
+        payload: 'ON'
+    action:
+      - service: mqtt.publish
+        data:
+            topic: "cmd/extBasMusic/balance"
+            payload: 'right'
+  - id: extBasBalanceBoth
+    alias: "Balance au milieu Terrasse Bas"
+    trigger:
+      - platform: mqtt
+        topic: "dummy/topic/extBasBalanceBoth"
+        payload: 'ON'
+    action:
+      - service: mqtt.publish
+        data:
+            topic: "cmd/extBasMusic/balance"
+            payload: 'both'

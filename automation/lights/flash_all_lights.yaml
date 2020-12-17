@@ -1,0 +1,17 @@
+  - id: flashAllLights
+    alias: "Flash all lights"
+    initial_state: true
+    trigger:
+        platform: mqtt
+        topic: /nonexisting/topic
+        payload: 'ON'
+    action:
+        repeat:
+           count: 10
+           sequence:
+             - service: light.toggle
+               entity_id: group.light_for_flash
+             - delay: '00:00:10'
+             - service: light.toggle
+               entity_id: group.light_for_flash
+             - delay: '00:00:01'

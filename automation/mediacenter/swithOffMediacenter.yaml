@@ -1,0 +1,10 @@
+  - alias: SwitchOffMediacenter
+    initial_state: 'on'
+    trigger:
+      - platform: state
+        entity_id: media_player.mediacenter_salon
+        to: 'idle'
+        for: "00:15:00"
+    action:
+      - service: switch.turn_off
+        entity_id: switch.prog_kodi

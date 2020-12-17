@@ -1,0 +1,24 @@
+  - id: mercedes_pas_branchee_alerte
+    alias: "Mercedes pas branchée"
+    trigger:
+      - platform: state
+        entity_id: device_tracker.mercedes
+        to: 'home'
+        for:
+            minutes: 5
+    condition:
+      - condition: state
+        entity_id: sensor.mercedes_statut_de_charge
+        state: 'CHARGE_CABLE_UNPLUGGED'
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.voiture_a_brancher
+  - id: mercedes_branchee
+    alias: "Mercedes branchée"
+    trigger:
+      - platform: state
+        entity_id: sensor.mercedes_statut_de_charge
+        from: 'CHARGE_CABLE_UNPLUGGED'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.voiture_a_brancher

@@ -1,0 +1,24 @@
+  - alias: SwitchBasEscalierOff
+    initial_state: 'on'
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.turn_off_cave
+            long_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_atelier_mel,light.l_bar,light.l_billard,light.l_cave_jardin,light.l_cave_technique,light.l_cinema_lampe,light.l_kicker,light.l_urinoir
+  - alias: SwitchHautEscalierOff
+    initial_state: 'on'
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.cave_escalier
+            short_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_escalier_cave
+            long_click_action:
+              - service: light.turn_off
+                data:
+                    entity_id: group.caves

@@ -1,0 +1,5 @@
+quiestla:
+    name: Personnes du foyer
+    entities:
+        - person.christophe
+        - person.melanie

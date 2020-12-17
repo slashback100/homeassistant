@@ -1,0 +1,29 @@
+  # two click in same second and ON -> turn off in 30 sec
+  # else, turn OFF after 1 sec
+  - alias: SwitchGarageChris1
+    initial_state: 'on'
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.cover_garage_chris
+            short_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_garage_chris
+            long_click_action:
+              - service: cover.toggle
+                data:
+                    entity_id: cover.garage_de_chris
+  - alias: SwitchGarageChris2
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.cover_garage_mel
+            short_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_garage_mel
+            long_click_action:
+              - service: cover.toggle
+                data:
+                    entity_id: cover.garage_de_mel

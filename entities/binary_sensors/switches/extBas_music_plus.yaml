@@ -1,0 +1,5 @@
+    name: "extBas_music_plus"
+    platform: mqtt
+    state_topic: cmd/etage1a/in/57
+    payload_off: "OFF"
+    payload_on: "ON"

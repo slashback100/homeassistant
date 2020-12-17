@@ -1,0 +1,12 @@
+  - id: "HDD space"
+    alias: "[System] SD Card Space at 90%"
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.disk_use_percent
+        above: 89
+    action:
+      - service: persistent_notification.create
+        data:
+          title: Low SD Card Space
+          message: "SD card usage is at {{ states.sensor.disk_use_percent_.state }}%"
+          notification_id: low_disk_space

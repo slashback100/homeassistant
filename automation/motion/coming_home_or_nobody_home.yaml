@@ -1,0 +1,22 @@
+  - id: someoneAtHome
+    alias: "Someone is coming home"
+    trigger:
+        platform: state
+        entity_id: group.quiestla
+        to: 'home'
+    action:
+      - service: shell_command.stop_motion
+  - id: nobodyAtHome
+    alias: "Nobody's home"
+    trigger:
+      - platform: state
+        entity_id: person.melanie
+        from: 'home'
+        to: 'not_home'
+      - platform: state
+        entity_id: person.christophe
+        from: 'home'
+        to: 'not_home'
+    condition: '{{ states("person.christophe") != "home" and states("person.melanie") != "home" }}'
+    action:
+      - service: shell_command.start_motion

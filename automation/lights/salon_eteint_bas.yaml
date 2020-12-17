@@ -1,0 +1,10 @@
+  # two click in same second and ON -> turn off in 30 sec
+  # else, turn OFF after 1 sec
+  - alias: SwichCuisine9OFF # turn off rdc
+    initial_state: 'on'
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.eteindre_bas
+            long_click_action:
+              - service: script.switch_off_rez

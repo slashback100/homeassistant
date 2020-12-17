@@ -1,0 +1,13 @@
+  - alias: SwichCaveTechnique
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.cave_tech
+            short_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_cave_technique
+            long_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_billard

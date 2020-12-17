@@ -1,0 +1,6 @@
+
+   platform: ping
+   host: 192.168.0.175
+   name: kodi rpi
+   scan_interval: 60
+   count: 1

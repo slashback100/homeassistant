@@ -1,0 +1,5 @@
+    name: "cave_porte_ext"
+    platform: mqtt
+    state_topic: cmd/etage0a/in/37
+    payload_off: "OFF"
+    payload_on: "ON"

@@ -1,0 +1,65 @@
+  - id: garageChrisMotion
+    alias: "Détection mouvement garage de Chris"
+    initial_state: false
+    trigger:
+        platform: state
+        entity_id: sensor.motion_detected_garage_chris
+        from: 'OFF'
+        to: 'ON'
+    condition:
+        condition: template
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(states.switch.camera_rpi.last_updated)) / 60 > 5 }}"
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Mouvement détecté dans le garage"
+  - id: newPhotoVideoCam
+    alias: "New image created by motion detection"
+    initial_state: false
+    trigger:     
+        platform: event
+        event_type: folder_watcher
+        event_data:
+           event_type: created 
+    condition:
+        condition: template
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(states.switch.camera_rpi.last_updated)) / 60 > 5 }}"
+    action:
+        service: notify.mail
+        data_template:
+            title: New image captured!
+            message: "Created {{ trigger.event.data.file }} path {{ trigger.event.data.path }}"
+            data:
+                images:
+                  - "{{ trigger.event.data.path }}"
+  - id: newPhotoVideoCam_2
+    alias:  "New image created by motion detection"
+#    initial_state: false
+    trigger:     
+        platform: state
+        #entity_id: sensor.rpicam
+        entity_id: sensor.last_cam_file
+    condition:
+        condition: template
+        value_template: "{{ (as_timestamp(now()) - as_timestamp(states.switch.camera_rpi.last_updated)) / 60 > 5 }}"
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Mouvement détecté dans le garage"
+      - service: notify.mail
+        data_template:
+            title: "Motion detected"
+            message: "Motion detected, here is the last video"
+            data:
+                html: >
+                        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                                        <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+                                        <head/>
+                                        <body>
+                                        <img src="cid:{{ states('sensor.last_cam_img') }}" />
+                                        <a href="sftp://slashback.no-ip.org:8762//mnt/extHdd/rpicam/{{ states('sensor.last_cam_file') }}">Video</a>
+                                        </body>
+                                        </html>
+
+                images:
+                  - '/mnt/rpicam/{{ states("sensor.last_cam_img") }}'

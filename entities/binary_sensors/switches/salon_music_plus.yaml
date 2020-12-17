@@ -1,0 +1,5 @@
+    name: "salon_music_plus"
+    platform: mqtt
+    state_topic: cmd/etage1a/in/25
+    payload_off: "OFF"
+    payload_on: "ON"

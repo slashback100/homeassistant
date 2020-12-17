@@ -1,0 +1,8 @@
+  - alias: SwichCuisine10OFF # turn off rdc
+    initial_state: 'on'
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.eteindre_haut
+            long_click_action:
+              - service: script.switch_off_haut
