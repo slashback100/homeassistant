@@ -1,9 +1,0 @@
-  - alias: SwitchCuisine12_tst
-    initial_state: 'on'
-    trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/25
-        payload: 'OFF'
-    action:
-      - wait_for_trigger:
-        - platform

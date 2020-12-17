@@ -1,3 +1,15 @@
 # https://www.home-assistant.io/docs/automation/
 automation: !include ../automations.yaml
 automation mine: !include_dir_merge_list ../automation
+automation short_long_click:
+    use_blueprint:
+        path: simple_double_click.yaml
+        input:
+            switch_id: binary_sensor.bureau
+            long_click_action:
+              - service: light.turn_on
+                entity_id: light.l_bureau
+            short_click_action: 
+                service: light.turn_off
+                entity_id: light.l_bureau
+

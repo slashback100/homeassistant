@@ -1,6 +1,0 @@
-
-   platform: ping
-   host: 192.168.0.200
-   name: etage1a
-   scan_interval: 60
-   count: 1

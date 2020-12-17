@@ -1,7 +1,0 @@
-
-   platform: mqtt
-   name: garage_de_mel
-   device_class: garage_door
-   state_topic: cmd/etage1a/in/45
-   payload_on: "OFF"
-   payload_off: "ON"

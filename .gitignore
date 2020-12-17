@@ -7,3 +7,4 @@ secrets.yaml
 .ios.conf
 .google.token
 home-assistant.log
+known_devices.yaml
