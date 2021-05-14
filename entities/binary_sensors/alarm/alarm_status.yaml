@@ -1,0 +1,11 @@
+    platform: template
+    sensors:
+        alarme_activee:
+            friendly_name: "Alarme activée"
+            icon_template: "mdi:lock"
+            value_template:  > 
+              {% if is_state('sensor.statut_de_l_alarme', 'disabled') %}
+                false
+              {% else %}
+                true
+              {% endif %}

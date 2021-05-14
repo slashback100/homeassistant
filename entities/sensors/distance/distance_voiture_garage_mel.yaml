@@ -1,0 +1,6 @@
+    platform: mqtt
+    name: "distance voiture garage mel"
+    state_topic: cmd/esp_garage_mel_dist/distance
+    icon: 'mdi:diameter-outline'
+    unit_of_measurement: cm
+    #value_template: "{% if value != 'activate/disactivate' %} {{ value }} {% endif %}"

@@ -1,0 +1,53 @@
+  - id: proposeClosingCoverChris
+    alias: "Proposer fermeture garage chris quand arrive garage"
+    initial_state: true
+    trigger:
+        platform: state
+        entity_id: binary_sensor.voiture_presente_garage_chris
+        to: 'on'
+        for: '00:00:01'
+    action:
+      - choose:
+          - conditions: "{{ states('person.christophe') and now().timestamp() - states.person.christophe.last_changed.timestamp()  < 60 }}"          
+            sequence:
+              - service: notify.mobile_app_iphone
+                data:
+                    message: "Fermer le garage de Christophe ?"
+                    data:
+                        push:
+                            category: 'fermergaragechris'
+          - conditions: "{{ states('person.melanie') and now().timestamp() - states.person.melanie.last_changed.timestamp()  < 60 }}"          
+            sequence:
+              - service: notify.mobile_app_iphone_de_melanie
+                data:
+                    message: "Fermer le garage de Christophe ?"
+                    data:
+                        push:
+                            category: 'fermergaragechris'
+  - id: proposeClosingCoverMel
+    alias: "Proposer fermeture garage mel quand arrive garage"
+    initial_state: true
+    trigger:
+        platform: state
+        entity_id: binary_sensor.voiture_presente_garage_mel
+        to: 'on'
+        for: '00:00:01'
+    action:
+      - choose:
+          - conditions: "{{ states('person.christophe') and now().timestamp() - states.person.christophe.last_changed.timestamp()  < 60 }}"          
+            sequence:
+              - service: notify.mobile_app_iphone
+                data:
+                    message: "Fermer le garage de Mel ?"
+                    data:
+                        push:
+                            category: 'fermergaragemel'
+          - conditions: "{{ states('person.melanie') and now().timestamp() - states.person.melanie.last_changed.timestamp()  < 60 }}"          
+            sequence:
+              - service: notify.mobile_app_iphone_de_melanie
+                data:
+                    message: "Fermer le garage de Mel ?"
+                    data:
+                        push:
+                            category: 'fermergaragemel'
+ 

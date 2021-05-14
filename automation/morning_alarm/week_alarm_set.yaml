@@ -1,0 +1,9 @@
+  - id: change_week_alarm
+    alias: change_week_alarm
+    trigger:
+      - platform: state
+        entity_id: input_datetime.alarm_weekday
+    action:
+      - service: shell_command.change_week_alarm
+          
+          

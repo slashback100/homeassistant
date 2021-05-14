@@ -9,3 +9,4 @@ secrets.yaml
 .google.token
 home-assistant.log
 known_devices.yaml
+custom_components

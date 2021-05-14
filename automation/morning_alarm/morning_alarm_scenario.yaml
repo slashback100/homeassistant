@@ -1,0 +1,42 @@
+  - id: morning_alarm_scenario
+    alias: morning_alarm_scenario
+    trigger:
+      - platform: template
+        value_template: >
+            {%- if states('sensor.today_chambre_parents_alarm') != "" -%}
+              {{ now().strftime("%H:%M") == states('sensor.today_chambre_parents_alarm') }}
+            {%- else -%}
+              False
+            {%- endif -%}
+    condition:
+      - condition: state
+        entity_id: switch.reveil_chambre
+        state: 'on'
+      - condition: time
+        after: '07:00:00'
+        before: '10:00:00'
+    action:
+      - delay: '00:05:00'
+      - service: light.turn_on
+        data:
+            entity_id: light.l_dressing
+            brightness_pct: 5 
+      - service: light.turn_on
+        data:
+            entity_id: light.l_escalier
+      - service: media_player.media_play
+        data:
+            entity_id: media_player.salle_de_bain_2
+      - delay: '00:01:00'
+      - service: light.turn_on
+        data:
+            entity_id: light.l_dressing
+            brightness_pct: 10
+     # - service: light.turn_on
+     #   data:
+     #       entity_id: light.l_noemie
+     #       brightness_pct: 5 
+     # - service: light.turn_on
+     #   data:
+     #       entity_id: light.l_elise
+     #       brightness_pct: 5 

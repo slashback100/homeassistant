@@ -1,0 +1,7 @@
+    platform: history_stats
+    name: running_time_today
+    entity_id: sensor.iphone_activity_2
+    state: "Running"
+    type: time
+    start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+    end: "{{now()}}"

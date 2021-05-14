@@ -1,0 +1,9 @@
+  - id: send_notif_new_ip_banned
+    alias: "Send Notif if a new ip has been banned"
+    trigger:
+        platform: state
+        entity_id: sensor.ip_bans_file
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Une ip a été bannie ({{trigger.to_state.state}})"

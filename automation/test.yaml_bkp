@@ -1,0 +1,12 @@
+  - alias: test
+    variables: 
+        area: bureauxx
+    trigger:
+      - platform: template
+        value_template: >
+          {% set area = "bureau" %}
+          {{is_state('light.l_'~area, 'on')}}
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Test"

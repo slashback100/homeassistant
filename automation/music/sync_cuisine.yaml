@@ -1,0 +1,29 @@
+  - alias: SyncUnsyncKitchen
+    id: SyncUnsyncKitchen
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.cuisine_sync
+            short_click_action:
+              - choose:
+                  - conditions: "{{ state_attr('media_player.cuisine', 'sync_group') | count > 0}}"
+                    sequence:
+                      - service: squeezebox.unsync
+                        data:
+                            entity_id: media_player.cuisine
+                default:
+                  - service: squeezebox.sync
+                    data:
+                        entity_id: media_player.max2play_2
+                        other_player: media_player.cuisine
+            long_click_action:
+              - service: squeezebox.unsync
+                data:
+                    entity_id: media_player.cuisine
+              - service: media_player.media_pause
+                data:
+                    entity_id: media_player.max2play_2
+              - service: media_player.media_play
+                data:
+                    entity_id: media_player.cuisine
+

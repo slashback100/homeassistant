@@ -1,0 +1,146 @@
+  - alias: sonette_bas_notif
+    id: sonette_bas_notif
+    mode: single 
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.sonette_bas
+            short_click_action:
+              - service: notify.mobile_app_iphone
+                data:
+                    message: "Quelqu'un sonne à la porte d'en bas"
+              - service: notify.mobile_app_iphone_de_melanie
+                data:
+                    message: "Quelqu'un sonne à la porte d'en bas"
+              - delay:
+                    milliseconds: 5000
+  - alias: sonette_bas_notif_critical
+    id: sonette_bas_notif_critical
+    mode: single 
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.sonette_bas
+            short_click_action:
+              - service: notify.mobile_app_iphone
+                data:
+                    message: "Quelqu'un sonne à la porte d'en bas"
+                    data:
+                        push:
+                            sound:
+                                name: "Ringtone_2_Haptic-sashimi.caf"
+                                critical: 1
+                                volume: 0.5
+              - service: notify.mobile_app_iphone_de_melanie
+                data:
+                    message: "Quelqu'un sonne à la porte d'en bas"
+              - delay:
+                    milliseconds: 5000
+  - alias: sonette_bas_lampe_sam
+    id: sonette_bas_lampe_sam
+    mode: single 
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.sonette_bas
+            short_click_action:
+              - service: light.toggle
+                entity_id: light.l_sam_plafond
+              - delay:
+                    milliseconds: 700
+              - service: light.toggle
+                entity_id: light.l_sam_plafond
+              - delay:
+                    milliseconds: 700
+              - service: light.toggle
+                entity_id: light.l_sam_plafond
+              - delay:
+                    milliseconds: 700
+              - service: light.toggle
+                entity_id: light.l_sam_plafond
+              - delay:
+                    milliseconds: 5000
+  - alias: sonette_bas_lampe_billard
+    id: sonette_bas_lampe_billard
+    mode: single 
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.sonette_bas
+            short_click_action:
+              - service: light.toggle
+                entity_id: light.l_billard
+              - delay:
+                    milliseconds: 700
+              - service: light.toggle
+                entity_id: light.l_billard
+              - delay:
+                    milliseconds: 700
+              - service: light.toggle
+                entity_id: light.l_billard
+              - delay:
+                    milliseconds: 700
+              - service: light.toggle
+                entity_id: light.l_billard
+              - delay:
+                    milliseconds: 5000
+  - alias: sonette_bas_ext_bas_force
+    id: sonette_bas_ext_bas_force
+    mode: single 
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.sonette_bas
+            short_click_action:
+              - service: shell_command.ringextbas
+              - delay:
+                    milliseconds: 5000
+  - alias: sonette_bas_ext_bas_ifplaying
+    id: sonette_bas_ext_bas_ifplaying
+    mode: single 
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.sonette_bas
+            short_click_action:
+              - choose:
+                  - conditions:
+                      - condition: state
+                        entity_id: media_player.terrassebas_2
+                        state: playing 
+                    sequence:
+                      - service: shell_command.ringextbas
+                      - delay:
+                            milliseconds: 5000
+  - alias: sonette_bas_allumer_atelier
+    id: sonette_bas_allumer_atelier
+    mode: single 
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.sonette_bas
+            short_click_action:
+              - choose:
+                  - conditions:
+                      - condition: state
+                        entity_id: light.l_cave_jardin
+                        state: 'off'
+                    sequence:
+                      - service: light.turn_on
+                        entity_id: light.l_cave_jardin
+                      - delay:
+                            seconds: 90
+                      - service: light.turn_off
+                        entity_id: light.l_cave_jardin
+                      - delay:
+                            milliseconds: 5000
+  - alias: sonette_bas_long
+    id: sonette_bas_long
+    mode: single 
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.sonette_bas
+            long_click_action:
+              - service: light.toggle
+                entity_id: light.l_cave_jardin

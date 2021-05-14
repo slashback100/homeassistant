@@ -1,0 +1,7 @@
+    platform: rest
+    resource: http://192.168.0.175/test.json
+    name: test json
+    value_template:  '{{ "ok" }}'
+    json_attributes_path: '$[1]'
+    json_attributes:
+      - free

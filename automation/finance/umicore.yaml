@@ -1,0 +1,11 @@
+  - id: Umicore Seuil
+    alias: "Seuil atteind pour Umicore"
+    trigger:
+        platform: numeric_state
+        entity_id: yahoofinance.umi_br
+        above: 48.34
+        below: 1000
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Umicore est à {{states('yahoofinance.umi_br')}} €"

@@ -1,0 +1,10 @@
+    platform: rest
+    name: alarm_week_activated
+    resource_template: http://192.168.0.175:9000/jsonrpc.js
+    method: POST
+    payload: '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["alarms",0,25000,"filter:all"]]}'
+    headers:
+        Content-Type: application/json
+            #{{value_json.result.alarms_loop |  selectattr('repeat','eq','1') | selectattr('dow','eq','1,2,3,4,5') | map(attribute='enabled') |list|first == '1'}}
+    value_template: >-
+            {{value_json.result.alarms_loop |  selectattr('id','eq', states('input_text.alarm_week_id')) | map(attribute='enabled') |list|first == '1' }}

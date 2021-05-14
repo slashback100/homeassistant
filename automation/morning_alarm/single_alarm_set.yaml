@@ -1,0 +1,7 @@
+  - id: change_single_alarm
+    alias: change_single_alarm
+    trigger:
+      - platform: state
+        entity_id: input_datetime.alarm_single
+    action:
+      - service: shell_command.change_single_alarm

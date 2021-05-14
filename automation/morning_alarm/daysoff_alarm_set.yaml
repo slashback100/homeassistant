@@ -1,0 +1,7 @@
+  - id: change_daysoff_alarm
+    alias: change_daysoff_alarm
+    trigger:
+      - platform: state
+        entity_id: input_datetime.alarm_daysoff
+    action:
+      - service: shell_command.change_daysoff_alarm

@@ -1,0 +1,28 @@
+  - id: watchdog_fired_reset_etage0a
+    alias: "Watchdog triggered the reset of etage0a"
+    trigger:
+        platform: mqtt
+        topic: 'log/error/esp_watchdog_etage0a'
+        payload: 'Reset of the arduino mega triggered'
+    action:
+      - service: counter.increment
+        data:
+            entity_id: counter.reset_of_basement_domo
+      - service: persistent_notification.create
+        data:
+            message: "Reset de l'arduino de la cave"
+            title: "Watchdog"
+  - id: watchdog_fired_reset_etage1a
+    alias: "Watchdog triggered the reset of etage1a"
+    trigger:
+        platform: mqtt
+        topic: 'log/error/esp_watchdog_etage1a'
+        payload: 'Reset of the arduino mega triggered'
+    action:
+      - service: counter.increment
+        data:
+            entity_id: counter.reset_of_rdc_domo
+      - service: persistent_notification.create
+        data:
+            message: "Reset de l'arduino du rez-de-chausée"
+            title: "Watchdog"

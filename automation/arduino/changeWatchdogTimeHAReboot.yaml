@@ -1,0 +1,32 @@
+  - id: changeWatchdogTimeoutShutingDown
+    alias: "Set high watchdog before shutting down"
+    trigger:
+        #platform: event
+        #event_type: home_assistant_stop
+        platform: homeassistant
+        event: shutdown
+    action:
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage0a/watchdog'
+            payload: '999999'
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage1a/watchdog'
+            payload: '999999'
+  - id: changeWatchdogTimeoutStartup
+    alias: "Set normal watchdog  shutting down"
+    trigger:
+        #platform: event
+        #event_type: home_assistant_start
+        platform: homeassistant
+        event: start
+    action:
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage0a/watchdog'
+            payload: '70'
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage1a/watchdog'
+            payload: '70'

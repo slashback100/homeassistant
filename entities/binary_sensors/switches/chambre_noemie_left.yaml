@@ -1,0 +1,5 @@
+    name: "noemie_left"
+    platform: mqtt
+    state_topic: cmd/etage2a/in/31
+    payload_off: "OFF"
+    payload_on: "ON"

@@ -1,0 +1,31 @@
+  - alias: "Turn on Light if less x cm" 
+    id: turn_on_Light_if_less_x_cm 
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.distance_voiture_garage_mel
+        below: 16 # 16 cm
+    action:
+      - service: light.turn_on
+        entity_id: light.l_garage_mel
+      - delay:
+          seconds: 60
+      - service: light.turn_off
+        entity_id: light.l_garage_mel
+  - alias: activate_distance_cover_off
+    id: activate_distance_cover_off
+    trigger: 
+      - platform: state
+        entity_id: cover.garage_de_mel
+        to: closed
+    action:
+      - service: switch.turn_off
+        entity_id: switch.activation_detecteur_de_distance_garage_mel
+  - alias: activate_distance_cover_on
+    id: activate_distance_cover_on
+    trigger: 
+      - platform: state
+        entity_id: cover.garage_de_mel
+        to: open
+    action:
+      - service: switch.turn_on
+        entity_id: switch.activation_detecteur_de_distance_garage_mel

@@ -1,0 +1,7 @@
+  platform: template
+  sensors:
+     umicore:
+        friendly_name: Umicore
+        unit_of_measurement: '€'
+        value_template: "{{ states('yahoofinance.umi_br') }}"
+

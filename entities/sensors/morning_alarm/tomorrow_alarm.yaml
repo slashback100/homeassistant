@@ -1,0 +1,22 @@
+    platform: rest
+    name: tomorrow_chambre_parents_alarm
+    resource_template: http://192.168.0.175:9000/jsonrpc.js
+    method: POST
+    payload: '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["alarms",0,25000,"filter:all"]]}'
+    headers:
+        Content-Type: application/json
+    value_template: >
+        {% set ns = namespace(first=1) %}
+        {%- for alarm in value_json.result.alarms_loop if alarm.enabled == "1" -%}
+          {# check if the alarm is active for tomorrow day of week#}
+          {%- if ((now().strftime("%w") |int +1)~"")  in alarm.dow and ns.first == 1-%} 
+            {%- set h = (alarm.time|int /60/60)|int -%} 
+            {%- set m = (alarm.time|int/60 - h*60)|int -%}
+            {%- set h = "0"~h if h<10 else ""~h %}
+            {%- set m = "0"~m if m<10 else ""~m %}
+            {{h~":"~m}}
+            {%- set ns.first = 0 -%}
+          {%-endif -%}
+        {%-endfor -%}
+
+

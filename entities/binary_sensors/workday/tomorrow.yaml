@@ -1,0 +1,5 @@
+   platform: workday
+   name: is_tomorrow_workday
+   country: BE
+   days_offset: 1
+

@@ -1,0 +1,18 @@
+  - alias: activate_distance_cover_chris_off
+    id: activate_distance_cover_chris_off
+    trigger: 
+      - platform: state
+        entity_id: cover.garage_de_chris
+        to: closed
+    action:
+      - service: switch.turn_off
+        entity_id: switch.activation_detecteur_de_distance_garage_chris
+  - alias: activate_distance_cover_chris_on
+    id: activate_distance_cover_chris_on
+    trigger: 
+      - platform: state
+        entity_id: cover.garage_de_chris
+        to: open
+    action:
+      - service: switch.turn_on
+        entity_id: switch.activation_detecteur_de_distance_garage_chris

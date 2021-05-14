@@ -1,0 +1,36 @@
+  - id: afterReload
+    alias: 'Restore state after reload'
+    trigger:
+      - platform: homeassistant
+        event: start
+      - platform: event 
+        event_type: event_mqtt_reloaded
+    action:
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage1a/in/46 #cover chris
+            payload: "ON"
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage1a/in/45 #cover mel
+            payload: "ON"
+      - service: scene.create # activating the distance_garage_mel may trigger the light. Store and restore its state after
+        data:
+            scene_id: garage_mel
+            snapshot_entities:
+              - light.l_garage_mel
+      - service: switch.turn_on
+        data:
+            entity_id: 
+              - switch.activation_detecteur_de_distance_garage_mel      
+              - switch.activation_detecteur_de_distance_garage_chris      
+      - delay: '00:00:01'
+      - service: scene.turn_on
+        data:
+            entity_id: scene.garage_mel
+      - delay: '00:00:02'
+      - service: switch.turn_off
+        data:
+            entity_id: 
+              - switch.activation_detecteur_de_distance_garage_mel      
+              - switch.activation_detecteur_de_distance_garage_chris      

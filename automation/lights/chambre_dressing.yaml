@@ -1,0 +1,41 @@
+  - alias: SwitchChamobre_dressing
+    id: SwitchChamobre_dressing
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.chambre_lit_dressing
+            short_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_dressing
+            long_click_action:
+              - choose: #si la lammpe n'est pas à 100% -> augmenter la luminosité
+                  - conditions: "{{ state_attr('light.l_dressing', 'brightness') | float < 255 }}"
+                    sequence:
+                      - repeat:
+                            sequence:
+                              - service: light.turn_on
+                                data:
+                                  entity_id: light.l_dressing
+                                  brightness_step_pct: 5
+                              - delay: 0.2
+                            until: #tant que le bouton est appuyé et la lampe pas encore à 100%
+                              - condition: template
+                                value_template: "{{ is_state('binary_sensor.chambre_lit_dressing', 'off') or state_attr('light.l_dressing', 'brightness') | float == 255 }}"
+                default: #sinon, baisser la luminosité 
+                  - repeat:
+                        sequence:
+                          - service: light.turn_on
+                            data:
+                              entity_id: light.l_dressing
+                              brightness_step_pct: -5
+                          - delay: 0.2
+                        until: #tant que le bouton est appuyé et la lampe pas encoe à 0%
+                          - condition: template
+                            value_template: "{{ is_state('binary_sensor.chambre_lit_dressing', 'off') or state_attr('light.l_dressing', 'brightness') == None or state_attr('light.l_dressing', 'brightness') | float == 0 }}"
+                  - choose:
+                      - conditions: "{{ state_attr('light.l_dressing', 'brightness') == 0 or state_attr('light.l_dressing', 'brightness') == None }}"
+                        sequence:
+                          - service: light.turn_off
+                            data:
+                              entity_id: light.l_dressing

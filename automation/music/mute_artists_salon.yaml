@@ -1,0 +1,10 @@
+  - alias: MuteSalonForSomeArtists
+    id: MuteSalonForSomeArtists
+    mode: queued
+    max: 2
+    use_blueprint:
+      path: mute_artist.yaml
+      input:
+        music_player: media_player.max2play_2
+        blacklist: input_text.artist_blacklist
+        person: person.christophe

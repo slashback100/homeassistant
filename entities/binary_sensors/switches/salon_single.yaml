@@ -1,0 +1,5 @@
+    name: "sam_single"
+    platform: mqtt
+    state_topic: cmd/etage1a/in/61
+    payload_off: "OFF"
+    payload_on: "ON"

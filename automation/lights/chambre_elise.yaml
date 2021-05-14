@@ -1,0 +1,80 @@
+  - alias: SwitchEliseLeft
+    id: SwitchEliseLeft
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.elise_left
+            short_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_elise
+              - choose:
+                  - conditions: "{{ is_state('calendar.aide_menagere', 'on') and is_state('light.l_elise', 'on') }}"
+                    sequence:
+                      - service: light.turn_on
+                        data:
+                            entity_id: light.l_elise
+                            brightness: "255"
+                default:
+                  - choose:
+                      - conditions: "{{ is_state('light.l_elise', 'on') and state_attr('light.l_elise', 'brightness') | float < 5 }}"
+                        sequence:
+                          - service: light.turn_on
+                            data:
+                                entity_id: light.l_elise
+                                brightness: "{{ (0.05 * 255) | int }}" #5%
+            long_click_action:
+              #diminuer la luminosité
+              - repeat:
+                    sequence:
+                      - service: light.turn_on
+                        data:
+                          entity_id: light.l_elise
+                          brightness_step_pct: -5
+                      - delay: 0.2
+                    until: #tant que le bouton est appuyé et la lampe pas encoe à 0%
+                      - condition: template
+                        value_template: "{{ is_state('binary_sensor.elise_left', 'off') or state_attr('light.l_elise', 'brightness') == None or state_attr('light.l_elise', 'brightness') | float == 0 }}"
+              - choose:
+                  - conditions: "{{ state_attr('light.l_elise', 'brightness') == 0 or state_attr('light.l_elise', 'brightness') == None }}"
+                    sequence:
+                      - service: light.turn_off
+                        data:
+                          entity_id: light.l_elise
+  - alias: SwitchEliseRight
+    id: SwitchEliseRight
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.elise_right
+            short_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_elise
+              - choose:
+                  - conditions: "{{ is_state('calendar.aide_menagere', 'on') and is_state('light.l_elise', 'on') }}"
+                    sequence:
+                      - service: light.turn_on
+                        data:
+                            entity_id: light.l_elise
+                            brightness: "255"
+                default:
+                  - choose:
+                      - conditions: "{{ is_state('light.l_elise', 'on') and state_attr('light.l_elise', 'brightness') | float < 5 }}"
+                        sequence:
+                          - service: light.turn_on
+                            data:
+                                entity_id: light.l_elise
+                                brightness: "{{ (0.05 * 255) | int }}" #5%
+            long_click_action:
+              #augmenter la luminosité
+              - repeat:
+                    sequence:
+                      - service: light.turn_on
+                        data:
+                          entity_id: light.l_elise
+                          brightness_step_pct: 5
+                      - delay: 0.2
+                    until: #tant que le bouton est appuyé et la lampe pas encore à 100%
+                      - condition: template
+                        value_template: "{{ is_state('binary_sensor.elise_right', 'off') or state_attr('light.l_elise', 'brightness') | float == 255 }}"

@@ -1,0 +1,3 @@
+    platform: file
+    name: "ip bans file"
+    file_path: /mnt/extHdd/ip_bans.yaml
