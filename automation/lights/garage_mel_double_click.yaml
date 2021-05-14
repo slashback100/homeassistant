@@ -1,12 +1,13 @@
   # two click in same second and ON -> turn off in 30 sec
   # else, turn OFF after 1 sec
   - alias: SwitchGarageMelSwitchOff
+    id: SwitchGarageMelSwitchOff
     initial_state: 'on'
     use_blueprint:
         path: clicks.yaml
         input:
             switch_id: binary_sensor.garage_mel
-            short_click_actions:
+            short_click_action:
               - service: light.toggle
                 entity_id: light.l_garage_mel
             long_click_action:

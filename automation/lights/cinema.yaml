@@ -1,15 +1,21 @@
-  - alias: SwitchCinema1v2
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.cinema
-        to: 'on'
-    action:
-      - wait_template: "{{ is_state('binary_sensor.cinema', 'off') }}"
-        timeout: 0.3
-        continue_on_timeout: true
-      - choose:
-          - conditions: "{{ not wait.completed }}" # long click
-            sequence:
+  - alias: SwitchCinema
+    id: SwitchCinema
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.cinema
+            short_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_cinema_lampe
+              - choose:
+                  - conditions: "{{ is_state('light.l_cinema_lampe', 'on') and state_attr('light.l_cinema_lampe', 'brightness') | float < 20 }}"
+                    sequence:
+                      - service: light.turn_on
+                        data:
+                            entity_id: light.l_cinema_lampe
+                            brightness: "{{ (0.40 * 255) | int }}"  #40%
+            long_click_action:
               - choose: #si la lammpe n'est pas à 100% -> augmenter la luminosité
                   - conditions: "{{ state_attr('light.l_cinema_lampe', 'brightness') | float < 255 }}"
                     sequence:
@@ -35,86 +41,17 @@
                           - condition: template
                             value_template: "{{ is_state('binary_sensor.cinema', 'off') or state_attr('light.l_cinema_lampe', 'brightness') == None or state_attr('light.l_cinema_lampe', 'brightness') | float == 0 }}"
                   - choose:
-                      - conditions: "{{ state_attr('light.l_cinema_lampe', 'brightness') == 0 }}"
+                      - conditions: "{{ state_attr('light.l_cinema_lampe', 'brightness') == 0 or state_attr('light.l_cinema_lampe', 'brightness') == None }}"
                         sequence:
                           - service: light.turn_off
                             data:
                               entity_id: light.l_cinema_lampe
-
-        default:  
-          - wait_template: "{{ is_state('binary_sensor.cinema', 'on') }}" # second click?
-            timeout: 0.3
-            continue_on_timeout: true
-          - choose:
-              - conditions: "{{ not wait.completed }}" #single click
-                sequence:
-                  - choose:
-                      - conditions: "{{ is_state('light.l_cinema_lampe', 'on')  }}"
-                        sequence:
-                          - service: light.turn_off
-                            data:
-                                entity_id: light.l_cinema_lampe
-                     #- conditions: "{{ is_state('light.l_cinema_lampe', 'off') and state_attr('light.l_cinema_lampe', 'brightness') == None }}"
-                    default:
-                      - service: light.turn_on
-                        data:
-                            entity_id: light.l_cinema_lampe
-                      - choose:
-                          - conditions: "{{ state_attr('light.l_cinema_lampe', 'brightness') | float < 10 }}"
-                            sequence: 
-                              - service: light.turn_on
-                                data:
-                                    entity_id: light.l_cinema_lampe
-                                    brightness_pct: 40
-            default: # double click
+            double_click_action:
               - service: light.toggle
                 entity_id: light.l_billard
-  - alias: SwitchCinema1
-    initial_state: false
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.cinema
-        to: 'on'
-    action:
-      - wait_template: "{{ is_state('binary_sensor.cinema', 'off') }}"
-        timeout: 0.3
-        continue_on_timeout: true
-      - choose:
-          - conditions: "{{ not wait.completed }}"
-            sequence:
-              - service: light.toggle
-                entity_id: light.l_billard
-        default:  
-          - choose:
-              - conditions: "{{ is_state('light.l_cinema_lampe', 'on')  }}"
-                sequence:
-                  - service: light.turn_off
-                    data:
-                        entity_id: light.l_cinema_lampe
-             #- conditions: "{{ is_state('light.l_cinema_lampe', 'off') and state_attr('light.l_cinema_lampe', 'brightness') == None }}"
-            default:
-              - service: light.turn_on
-                data:
-                    entity_id: light.l_cinema_lampe
-              - choose:
-                  - conditions: "{{ state_attr('light.l_cinema_lampe', 'brightness') < 10 }}"
-                    sequence: 
-                      - service: light.turn_on
-                        data:
-                            entity_id: light.l_cinema_lampe
-                            brightness_pct: 40
-   #- alias: SwitchCinemaOFF
-   #trigger:
-   #   - platform: mqtt
-   #     topic: cmd/etage0a/out/1
-   #     payload: 'OFF'
-   # action:
-   #   - service: mqtt.publish
-   #     data:
-   #         topic: cmd/etage0a/out/1
-   #         payload: 0
 
   - alias: turnOnLightWhenStop
+    id: turnOnLightWhenStop
     trigger:
       - platform: state
         entity_id: media_player.mediacenter_cinema
@@ -129,6 +66,7 @@
             transition: "00:00:05"
 
   - alias: turnOffLightWhenPlay
+    id: turnOffLightWhenPlay
     trigger:
       - platform: state
         entity_id: media_player.mediacenter_cinema

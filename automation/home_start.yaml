@@ -1,4 +1,5 @@
-  - alias: StartOf HA
+  - id: startofha
+    alias: StartOf HA
     trigger:
       - platform: event
         event_type: homeassistant_start

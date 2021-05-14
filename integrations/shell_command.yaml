@@ -15,5 +15,17 @@ shell_command:
       /usr/bin/curl {{ args|default('-sS') }} -X {{ method|default('get')|upper }} {%- for k in headers %} -H "{{ k }}: {{ headers[k] }}"{% endfor %} {{- (' -d \'' ~ payload|tojson ~ '\'') if payload }} {{ url }} > {{ stream|default('/dev/null') }}
   youtubeonkodi: >-
       /opt/domo/tools/kodi-cli -k {{ states('input_select.kodi_ip') }} -s "{{ states('input_text.youtube_search_criteria') }}"
+      # store id of the alarm 154b41e2 pour week, 6c069c8b pour ponctuel, xx pour days of
+  change_week_alarm: >-
+      /usr/bin/curl -H 'Content-Type: application/json' -X POST -d '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["alarm","update","id:{{states('input_text.alarm_week_id')}}","enabled:1","time:{{(as_timestamp(strptime("01/01/1970 "~states('input_datetime.alarm_weekday')~" UTC", '%d/%m/%Y %H:%M:%S %Z')) +60*60)| int}}","dow:1,2,3,4,5","url:file:///mnt/extHdd/Playlist/RadioReveil.m3u","repeat:1"]]}' 'http://192.168.0.175:9000/jsonrpc.js'
+  change_daysoff_alarm: >-
+      /usr/bin/curl -H 'Content-Type: application/json' -X POST -d '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["alarm","update","id:{{states('input_text.alarm_daysoff_id')}}","enabled:1","time:{{(as_timestamp(strptime("01/01/1970 "~states('input_datetime.alarm_daysoff')~" UTC", '%d/%m/%Y %H:%M:%S %Z')) +60*60)| int}}","dow:0,6","url:file:///mnt/extHdd/Playlist/RadioReveil.m3u","repeat:1"]]}' 'http://192.168.0.175:9000/jsonrpc.js'
+  change_single_alarm: >-
+      /usr/bin/curl -H 'Content-Type: application/json' -X POST -d '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["alarm","update","id:{{states('input_text.alarm_single_id')}}","enabled:1","time:{{(as_timestamp(strptime("01/01/1970 "~states('input_datetime.alarm_single')~" UTC", '%d/%m/%Y %H:%M:%S %Z')) +60*60)| int}}","dow:0,1,2,3,4,5,6","url:file:///mnt/extHdd/Playlist/RadioReveil.m3u","repeat:0"]]}' 'http://192.168.0.175:9000/jsonrpc.js'
 
-
+  disable_week_alarm: >-
+      /usr/bin/curl -H 'Content-Type: application/json' -X POST -d '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["alarm","update","id:{{states('input_text.alarm_week_id')}}","enabled:0"]]}' 'http://192.168.0.175:9000/jsonrpc.js'
+  disable_daysoff_alarm: >-
+      /usr/bin/curl -H 'Content-Type: application/json' -X POST -d '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["alarm","update","id:{{states('input_text.alarm_daysoff_id')}}","enabled:0"]]}' 'http://192.168.0.175:9000/jsonrpc.js'
+  disable_single_alarm: >-
+      /usr/bin/curl -H 'Content-Type: application/json' -X POST -d '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["alarm","update","id:{{states('input_text.alarm_single_id')}}","enabled:0"]]}' 'http://192.168.0.175:9000/jsonrpc.js'

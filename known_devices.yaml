@@ -476,3 +476,38 @@ e0_98_06_85_7c_c3:
   icon:
   picture:
   track: true
+
+esp_46c569:
+  name: ESP-46C569
+  mac: 48:3F:DA:46:C5:69
+  icon:
+  picture:
+  track: true
+
+48_3f_da_54_cc_62:
+  name: 48_3f_da_54_cc_62
+  mac: 48:3F:DA:54:CC:62
+  icon:
+  picture:
+  track: true
+
+b8_27_eb_e0_c1_5d:
+  name: b8_27_eb_e0_c1_5d
+  mac: B8:27:EB:E0:C1:5D
+  icon:
+  picture:
+  track: true
+
+48_3f_da_54_bf_f1:
+  name: 48_3f_da_54_bf_f1
+  mac: 48:3F:DA:54:BF:F1
+  icon:
+  picture:
+  track: true
+
+esp_54f64b:
+  name: ESP-54F64B
+  mac: 48:3F:DA:54:F6:4B
+  icon:
+  picture:
+  track: true

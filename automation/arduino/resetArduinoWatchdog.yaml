@@ -6,11 +6,11 @@
     action:
       - service: mqtt.publish
         data:
-            topic: 'cmd/etage0a/watchdog'
+            topic: 'cmd/etage0a/resetWatchdog'
             payload: 'ON'
       - service: mqtt.publish
         data:
-            topic: 'cmd/etage1a/watchdog'
+            topic: 'cmd/etage1a/resetWatchdog'
             payload: 'ON'
       - service: mqtt.publish
         data:

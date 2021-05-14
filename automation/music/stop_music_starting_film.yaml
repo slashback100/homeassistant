@@ -1,4 +1,5 @@
   - alias: TurnOffMusicWhenStartingFilm
+    id: TurnOffMusicWhenStartingFilm
     trigger:
       - platform: state
         entity_id: media_player.mediacenter_salon

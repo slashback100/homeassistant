@@ -11,16 +11,24 @@
     command_topic: "cmd/etage1a/out/3"
     retain: true
   - platform: mqtt
-    payload_off: 'OFF'
-    payload_on: 'ON'
+    payload_off: 'VOF' #VOF pour Variateur OFF
+    payload_on: 'VON' #VON pour Variateur ON
     name: "l_sam_plafond"
-    command_topic: "cmd/etage1a/out/4"
+    command_topic: "cmd/etage1a/out/0"
+    brightness_command_topic: "cmd/etage1a/out/0"
+    brightness_scale: 100
+    brightness_state_topic: "cmd/etage1a/out/0"
+    brightness_value_template: "{% if value != 'VOF' and value != 'VON' %} {{ value | float}} {% endif %}"
     retain: true
   - platform: mqtt
-    payload_off: 'OFF'
-    payload_on: 'ON'
+    payload_off: 'VOF' #VOF pour Variateur OFF
+    payload_on: 'VON' #VON pour Variateur ON
     name: "l_salon_plafond"
-    command_topic: "cmd/etage1a/out/5"
+    command_topic: "cmd/etage1a/out/1"
+    brightness_command_topic: "cmd/etage1a/out/1"
+    brightness_scale: 100
+    brightness_state_topic: "cmd/etage1a/out/1"
+    brightness_value_template: "{% if value != 'VOF' and value != 'VON' %} {{ value | float}} {% endif %}"
     retain: true
   - platform: mqtt
     payload_off: 'OFF'
@@ -77,10 +85,14 @@
     command_topic: "cmd/etage2a/out/3"
     retain: true
   - platform: mqtt
-    payload_off: 'OFF'
-    payload_on: 'ON'
+    payload_off: 'VOF' #VOF pour Variateur OFF
+    payload_on: 'VON' #VON pour Variateur ON
     name: "l_noemie"
-    command_topic: "cmd/etage2a/out/4"
+    command_topic: "cmd/etage2a/out/1"
+    brightness_command_topic: "cmd/etage2a/out/1"
+    brightness_scale: 100
+    brightness_state_topic: "cmd/etage2a/out/1"
+    brightness_value_template: "{% if value != 'VOF' and value != 'VON' %} {{ value | float}} {% endif %}"
     retain: true
   - platform: mqtt
     payload_off: 'OFF'
@@ -101,10 +113,14 @@
     command_topic: "cmd/etage2a/out/7"
     retain: true
   - platform: mqtt
-    payload_off: 'OFF'
-    payload_on: 'ON'
+    payload_off: 'VOF' #VOF pour Variateur OFF
+    payload_on: 'VON' #VON pour Variateur ON
     name: "l_elise"
-    command_topic: "cmd/etage2a/out/8"
+    command_topic: "cmd/etage2a/out/0"
+    brightness_command_topic: "cmd/etage2a/out/0"
+    brightness_scale: 100
+    brightness_state_topic: "cmd/etage2a/out/0"
+    brightness_value_template: "{% if value != 'VOF' and value != 'VON' %} {{ value | float}} {% endif %}"
     retain: true
   - platform: mqtt
     payload_off: 'OFF'
@@ -119,10 +135,14 @@
     command_topic: "cmd/etage2a/out/49"
     retain: true
   - platform: mqtt
-    payload_off: 'OFF'
-    payload_on: 'ON'
+    payload_off: 'VOF' #VOF pour Variateur OFF
+    payload_on: 'VON' #VON pour Variateur ON
     name: "l_dressing"
-    command_topic: "cmd/etage2b/out/2"
+    command_topic: "cmd/etage2b/out/0"
+    brightness_command_topic: "cmd/etage2b/out/0"
+    brightness_scale: 100
+    brightness_state_topic: "cmd/etage2b/out/0"
+    brightness_value_template: "{% if value != 'VOF' and value != 'VON' %} {{ value | float}} {% endif %}"
     retain: true
   - platform: mqtt
     payload_off: 'OFF'
@@ -178,7 +198,6 @@
     name: "l_bar"
     command_topic: "cmd/etage0a/out/7"
     retain: true
-    unique_id: "l_bar"
   - platform: mqtt
     payload_off: 'OFF'
     payload_on: 'ON'
@@ -195,10 +214,10 @@
     payload_off: 'VOF' #VOF pour Variateur OFF
     payload_on: 'VON' #VON pour Variateur ON
     name: "l_cinema_lampe"
-    command_topic: "cmd/etage0a/out/1"
-    brightness_command_topic: "cmd/etage0a/out/1"
+    command_topic: "cmd/etage0a/out/0"
+    brightness_command_topic: "cmd/etage0a/out/0"
     brightness_scale: 100
-    brightness_state_topic: "cmd/etage0a/out/1"
+    brightness_state_topic: "cmd/etage0a/out/0"
     brightness_value_template: "{% if value != 'VOF' and value != 'VON' %} {{ value | float}} {% endif %}"
     retain: true
   - platform: mqtt

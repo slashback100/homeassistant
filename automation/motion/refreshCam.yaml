@@ -1,4 +1,5 @@
   - alias: refreshCam
+    id: refreshCam
     initial_state: 'on'
     trigger:
         platform: time_pattern

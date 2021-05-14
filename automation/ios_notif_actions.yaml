@@ -1,4 +1,5 @@
-  - alias : Tout éteindre
+  - alias: Tout éteindre
+    id: Touteteindre
     trigger:
         platform: event
         event_type: ios.notification_action_fired
@@ -7,7 +8,8 @@
     action:
       - service: light.turn_off
         entity_id: all
-  - alias : OuvrirGarageMelEntreeZoneMaison
+  - alias: OuvrirGarageMelEntreeZoneMaison
+    id: OuvrirGarageMelEntreeZoneMaison
     trigger:
         platform: event
         event_type: ios.notification_action_fired
@@ -16,7 +18,8 @@
     action:
       - service: cover.open_cover
         entity_id: cover.garage_de_mel
-  - alias : OuvrirGarageChrisEntreeZoneMaison
+  - alias: OuvrirGarageChrisEntreeZoneMaison
+    id: OuvrirGarageChrisEntreeZoneMaison
     trigger:
         platform: event
         event_type: ios.notification_action_fired
@@ -25,7 +28,18 @@
     action:
       - service: cover.open_cover
         entity_id: cover.garage_de_chris
-  - alias : ProposerFermetureGarageChris
+  - alias: ProposerFermetureGarageMel
+    id: ProposerFermetureGarageMel
+    trigger:
+        platform: event
+        event_type: ios.notification_action_fired
+        event_data:
+            actionName: "FERMERGARAGEMEL"
+    action:
+      - service: cover.close_cover
+        entity_id: cover.garage_de_mel
+  - alias: ProposerFermetureGarageChris
+    id: ProposerFermetureGarageChris
     trigger:
         platform: event
         event_type: ios.notification_action_fired

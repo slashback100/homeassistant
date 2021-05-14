@@ -1,4 +1,5 @@
   - alias: 'Couper Lumière de Noël'
+    id: 'Couper Lumière de Noël'
     trigger:
     - platform: time
       at: '23:59'
@@ -7,6 +8,7 @@
       entity_id: switch.prise_ext_avant,switch.prise_ext_terrasse
     mode: single
   - alias: 'Allume Lumière de Noël'
+    id: 'Allume Lumière de Noël'
     trigger:
     - platform: numeric_state
       entity_id: sun.sun

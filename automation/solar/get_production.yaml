@@ -1,4 +1,5 @@
   - alias: getProduction
+    id: getProduction
     initial_state: 'on'
     trigger:
         platform: time_pattern

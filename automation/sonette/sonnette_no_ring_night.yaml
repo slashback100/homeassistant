@@ -1,4 +1,5 @@
   - alias: SonetteAutomationNight
+    id: SonetteAutomationNight
     trigger:
       - platform: time
         at: "20:00:00"
@@ -8,6 +9,7 @@
       - service: automation.turn_on
         entity_id: automation.sonette_lampe_sam
   - alias: SonetteAutomatioDay
+    id: SonetteAutomatioDay
     trigger:
       - platform: time
         at: "07:00:00"

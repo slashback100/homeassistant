@@ -70,25 +70,24 @@ async def async_mysetup(hass, entities, deltaStr, refreshInterval):
         for entity in entities:
             #to make it asyncable, not sure it is needed
             await asyncio.sleep(0)
-            if entity[0:5] == "group": # if the domain of the entity is a group:
-                try:
-                    #get the list of the associated entities
-                    group_entities = hass.states.get(entity).attributes["entity_id"]
-                except Exception as e:
-                    _LOGGER.error("Error when trying to identify entity %s: %s", entity, e)
-                else:
-                    #and call recursively, in case a group contains a group
-                    group_entities_expanded = await async_expand_entities(group_entities)
-                    _LOGGER.debug("State %s", group_entities_expanded)
-                    for tmp in group_entities_expanded:
-                        entities_new.append(tmp)
-            else:
+            try:
+                #get the list of the associated entities
+                #the entity_id attribute will be filled for groups or light groups
+                group_entities = hass.states.get(entity).attributes["entity_id"]
+            except Exception as e:
+                _LOGGER.debug("Entity %s has no attribute entity_id, it is not a group or a light group", entity)
                 try:
                     hass.states.get(entity)
                 except Exception as e:
                     _LOGGER.error("Error when trying to identify entity %s: %s", entity, e)
                 else:
                     entities_new.append(entity)
+            else:
+                #and call recursively, in case a group contains a group
+                group_entities_expanded = await async_expand_entities(group_entities)
+                _LOGGER.debug("State %s", group_entities_expanded)
+                for tmp in group_entities_expanded:
+                    entities_new.append(tmp)
         return entities_new
 
     async def handle_presence_simulation(call, restart=False):
@@ -196,6 +195,21 @@ async def async_mysetup(hass, entities, deltaStr, refreshInterval):
 
     async def update_entity(entity_id, state):
         """ Switch the entity """
+        # use service scene.apply ?? https://www.home-assistant.io/integrations/scene/
+        """
+        service_data = {}
+        service_data[entity_id]["state"] = state.state
+        if "brightness" in state.attributes:
+            service_data[entity_id]["bigthness"] = state.attributes["brigthness"]
+        if "rgb_color" in state.attributes:
+            service_data[entity_id]["rgb_color"] = state.attributes["rgb_color"]
+        if "current_position" in state.attributes:
+            service_data[entity_id]["position"] = state.attributes["position"]
+        if "current_tilt_position" in state.attributes:
+            service_data[entity_id]["tilt_position"] = state.attributes["tilt_position"]
+        service_data = {"entities": service_data}
+        await hass.services.async_call("scene", "apply", service_data, blocking=False)
+        """
         # get the domain of the entity
         domain = entity_id.split('.')[0]
         #prepare the data of the services
@@ -219,21 +233,21 @@ async def async_mysetup(hass, entities, deltaStr, refreshInterval):
                 blocking = False
             if state.state == "closed":
                 _LOGGER.debug("Closing cover %s", entity_id)
-                #await hass.services.async_call("cover", "close_cover", service_data, blocking=blocking)
+                await hass.services.async_call("cover", "close_cover", service_data, blocking=blocking)
             elif state.state == "open":
                 if "current_position" in state.attributes:
                     service_data["position"] = state.attributes["current_position"]
                     _LOGGER.debug("Changing cover %s position to %s", entity_id, state.attributes["current_position"])
-                    #await hass.services.async_call("cover", "set_cover_position", service_data, blocking=blocking)
+                    await hass.services.async_call("cover", "set_cover_position", service_data, blocking=blocking)
                     del service_data["position"]
                 else: #no position info, just open it
                     _LOGGER.debug("Opening cover %s", entity_id)
-                    #await hass.services.async_call("cover", "open_cover", service_data, blocking=blocking)
+                    await hass.services.async_call("cover", "open_cover", service_data, blocking=blocking)
             if state.state in ["closed", "open"]: #nothing to do if closing or opening. Wait for the status to be 'stabilized'
                 if "current_tilt_position" in state.attributes:
                     service_data["tilt_position"] = state.attributes["current_tilt_position"]
                     _LOGGER.debug("Changing cover %s tilt position to %s", entity_id, state.attributes["current_tilt_position"])
-                    #await hass.services.async_call("cover", "set_cover_tilt_position", service_data, blocking=False)
+                    await hass.services.async_call("cover", "set_cover_tilt_position", service_data, blocking=False)
                     del service_data["tilt_position"]
         else:
             _LOGGER.debug("Switching entity %s to %s", entity_id, state.state)

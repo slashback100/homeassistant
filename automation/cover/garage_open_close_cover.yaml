@@ -1,6 +1,7 @@
   # two click in same second and ON -> turn off in 30 sec
   # else, turn OFF after 1 sec
   - alias: SwitchGarageChris1
+    id: SwitchGarageChris1
     initial_state: 'on'
     use_blueprint:
         path: clicks.yaml
@@ -15,6 +16,7 @@
                 data:
                     entity_id: cover.garage_de_chris
   - alias: SwitchGarageChris2
+    id: SwitchGarageChris2
     use_blueprint:
         path: clicks.yaml
         input:

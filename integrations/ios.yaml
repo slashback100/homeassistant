@@ -16,7 +16,16 @@ ios:
                 authenticationRequired: yes
                 destructive: no
                 behavior: 'default'
-          - name: "Fermere le garage de Chris"
+          - name: "Fermer le garage de Mel"
+            identifier: 'fermergaragemel'
+            actions:
+              - identifier: 'FERMERGARAGEMEL'
+                title: 'Fermer'
+                activationMode: 'background'
+                authenticationRequired: yes
+                destructive: yes
+                behavior: 'default'
+          - name: "Fermer le garage de Chris"
             identifier: 'fermergaragechris'
             actions:
               - identifier: 'FERMERGARAGECHRIS'

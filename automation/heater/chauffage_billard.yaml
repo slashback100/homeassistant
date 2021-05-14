@@ -1,4 +1,5 @@
   - alias: SyncChauffageBillardON
+    id: SyncChauffageBillardON
     trigger:
       - platform: state
         entity_id: switch.billard_chauffage_fond
@@ -7,6 +8,7 @@
       - service: switch.turn_on
         entity_id: switch.billard_chauffage_entree
   - alias: SyncChauffageBillardOFF
+    id: SyncChauffageBillardOFF
     trigger:
       - platform: state
         entity_id: switch.billard_chauffage_fond
@@ -15,6 +17,7 @@
       - service: switch.turn_off
         entity_id: switch.billard_chauffage_entree
   - alias: ClimateBillard_autoMode_off
+    id: ClimateBillard_autoMode_off
     trigger:
       - platform: state
         entity_id:  climate.chauffage_du_billard
@@ -33,6 +36,7 @@
           - switch.billard_chauffage_entree
           - switch.billard_chauffage_fond
   - alias: ClimateBillard_autoMode_on
+    id: ClimateBillard_autoMode_on
     trigger:
       - platform: state
         entity_id:  climate.chauffage_du_billard

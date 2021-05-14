@@ -1,6 +1,7 @@
   # two click in same second and ON -> turn off in 30 sec
   # else, turn OFF after 1 sec
   - alias: SwitchMusicExtBasMinus
+    id: SwitchMusicExtBasMinus
     initial_state: 'on'
     use_blueprint:
         path: clicks.yaml
@@ -13,6 +14,7 @@
               - service: media_player.volume_down
                 entity_id: media_player.terrassebas_2
   - alias: SwitchMusicExtBasPlus
+    id: SwitchMusicExtBasPlus
     initial_state: 'on'
     use_blueprint:
         path: clicks.yaml

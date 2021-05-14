@@ -1,1 +1,11 @@
 counter:
+  reset_of_basement_domo: 
+    initial: 0
+    step: 1
+    restore: true
+    icon: mdi:alert
+  reset_of_rdc_domo: 
+    initial: 0
+    step: 1
+    restore: true
+    icon: mdi:alert

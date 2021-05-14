@@ -1,4 +1,5 @@
   - alias: SwichCuisine10OFF # turn off rdc
+    id: SwichCuisine10OFF # turn off rdc
     initial_state: 'on'
     use_blueprint:
         path: clicks.yaml

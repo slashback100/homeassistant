@@ -1,31 +1,41 @@
-  # two click in same second and ON -> turn off in 30 sec
-  # else, turn OFF after 1 sec
   - alias: SwitchMusicSdbMinus
-    initial_state: 'on'
+    id: SwitchMusicSdbMinus
     use_blueprint:
         path: clicks.yaml
         input:
             switch_id: binary_sensor.sdb_music_plus
-            short_click_action:
-              - service: media_player.volume_play_pause
-                entity_id: media_player.salle_de_bain_2
             long_click_action:
               - choose:
-                  - conditions: "{{ states('media_player.salle_de_bain_2') in ['paused', 'idle'] }}"
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
                     sequence:
-                      - service: shell_command.tts_meteo_sdb
-                default:
-                  - service: media_player.volume_down
-                    entity_id: media_player.salle_de_bain_2
+                      - service: media_player.media_play_pause
+                        entity_id: media_player.salle_de_bain_2
+            short_click_action:
+              - choose:
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                    sequence:
+                      - choose:
+                          - conditions: "{{ states('media_player.salle_de_bain_2') in ['paused', 'idle'] }}"
+                            sequence:
+                              - service: shell_command.tts_meteo_sdb
+                        default:
+                          - service: media_player.volume_down
+                            entity_id: media_player.salle_de_bain_2
   - alias: SwitchMusicSdbPlus
-    initial_state: 'on'
+    id: SwitchMusicSdbPlus
     use_blueprint:
         path: clicks.yaml
         input:
             switch_id: binary_sensor.sdb_music_minus
             short_click_action:
-              - service: media_player.volume_up
-                entity_id: media_player.salle_de_bain_2
+              - choose:
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                    sequence:
+                      - service: media_player.volume_up
+                        entity_id: media_player.salle_de_bain_2
             long_click_action:
-              - service: media_player.volume_next_track
-                entity_id: media_player.salle_de_bain_2
+              - choose:
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                    sequence:
+                      - service: media_player.media_next_track
+                        entity_id: media_player.salle_de_bain_2

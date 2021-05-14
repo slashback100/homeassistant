@@ -1,5 +1,5 @@
     name: "sdb_music_minus"
     platform: mqtt
-    state_topic: cmd/etage2b/in/18
+    state_topic: cmd/etage2b/in/19
     payload_off: "OFF"
     payload_on: "ON"

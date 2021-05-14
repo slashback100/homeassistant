@@ -41,8 +41,9 @@ trigger:
     entity_id: !input switch_id
     to: 'on'
 action:
-  - variables:
+  - variables: # create variable cause we need those in templates
         switch_id: !input switch_id
+        double_click_action: !input double_click_action
   - wait_template: "{{ is_state(switch_id, 'off') }}"
     timeout: !input delay
     continue_on_timeout: true
@@ -50,10 +51,14 @@ action:
       - conditions: "{{ not wait.completed }}" # long click
         sequence: !input long_click_action
     default:  
-      - wait_template: "{{ is_state(switch_id, 'on') }}" # second click?
-        timeout: !input delay
-        continue_on_timeout: true
       - choose:
-          - conditions: "{{ not wait.completed }}" #single click
-            sequence: !input short_click_action
-        default: !input double_click_action  # double click
+          - conditions: "{{ double_click_action | length > 0 }}" #only wait for second click if a n action is defined for it to be more reactive
+            sequence:
+              - wait_template: "{{ is_state(switch_id, 'on') }}" # second click?
+                timeout: !input delay
+                continue_on_timeout: true
+              - choose:
+                  - conditions: "{{ not wait.completed }}" #single click
+                    sequence: !input short_click_action
+                default: !input double_click_action  # double click
+        default: !input short_click_action

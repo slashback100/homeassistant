@@ -1,6 +1,7 @@
   # two click in same second and ON -> turn off in 30 sec
   # else, turn OFF after 1 sec
   - alias: SwichCuisine9OFF # turn off rdc
+    id: SwichCuisine9OFF # turn off rdc
     initial_state: 'on'
     use_blueprint:
         path: clicks.yaml

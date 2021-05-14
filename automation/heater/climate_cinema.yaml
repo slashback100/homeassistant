@@ -1,4 +1,5 @@
   - alias: ClimateCinema_autoMode_off
+    id: ClimateCinema_autoMode_off
     trigger:
       - platform: state
         entity_id:  climate.chauffage_du_cinema
@@ -15,6 +16,7 @@
       - service: switch.turn_off
         entity_id: switch.cinema_chauffage
   - alias: ClimateCinema_autoMode_on
+    id: ClimateCinema_autoMode_on
     trigger:
       - platform: state
         entity_id:  climate.chauffage_du_cinema

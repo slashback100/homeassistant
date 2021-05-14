@@ -155,7 +155,7 @@ light.l_prise_ext_terrasse:
 light.l_billard_chauffage_fond:
   friendly_name: Chauffage Billard Fond
   icon: mdi:radiator
-light.l_bar:
+light.:
   friendly_name: Bar
 light.l_billard_chauffage_entree:
   icon: mdi:radiator

@@ -175,10 +175,10 @@
   - platform: mqtt
     payload_off: 'OFF'
     payload_on: 'ON'
-    name: "l_bar"
+    name: ""
     command_topic: "cmd/etage0a/out/7"
     retain: true
-    unique_id: "l_bar"
+    unique_id: ""
   - platform: mqtt
     payload_off: 'OFF'
     payload_on: 'ON'

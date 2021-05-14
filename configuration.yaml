@@ -6,6 +6,7 @@ homeassistant:
   allowlist_external_dirs:
     - /mnt/rpicam
     - /home/homeassistant/test
+    - /mnt/extHdd
   auth_providers:
     - type: homeassistant
     - type: trusted_networks
