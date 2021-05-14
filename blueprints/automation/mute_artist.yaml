@@ -1,0 +1,52 @@
+blueprint:
+    name: Mute Music For Some Artists
+    description: "If the artist of the playing song is an artist of a black list, mute until the song is over. Warning: automation should be set with mode: queued and max: 2"
+    domain: automation
+    input:
+      music_player:
+        name: Music player
+        description: The music to listen and to mute/unmute
+        selector:
+          entity:
+            domain: media_player
+      blacklist:
+        name: The input_text of the blacklist
+        description: The input text containing the list of the artist to mute, the artist should be separated with comma
+        selector:
+          entity:
+            domain: input_text
+      person:
+        name: Person
+        description: The mute will be done only if this person is at home
+        selector:
+          entity:
+            domain: person
+
+trigger:
+  platform: state
+  entity_id: !input music_player
+  attribute: media_artist
+
+variables:
+  blacklist: !input blacklist
+  person: !input person
+condition:
+  - "{{ person is undefined or is_state(person, 'home') }}"
+  - >
+    {% for artist in states(blacklist).split(",") if artist | lower in trigger.to_state.attributes.media_artist | lower %}
+      True
+    {% endfor %}
+action:
+ - service: media_player.volume_mute
+   data:
+     entity_id: !input music_player
+     is_volume_muted: true
+ - wait_for_trigger:
+     platform: state
+     entity_id: !input music_player
+     attribute: media_artist
+ - service: media_player.volume_mute
+   data:
+     entity_id: !input music_player
+     is_volume_muted: false
+

@@ -1,0 +1,2 @@
+wget -O- https://map.influencair.be/irceline 2> /dev/null | jq '.data[] | select(.id|test("I-1195")) |.sensors'
+wget -O- --post-data='token=LI4HMSZHGEQUF26TSN3C5ZATKMSW2LKZ7B4VWMYEAQAAA%253D%253D%253D&id=3008' 'https://api.waqi.info/api/feed/@3008/aqi.json'
