@@ -1,0 +1,10 @@
+utility_meter:
+#    solar_power_15:
+#        source: sensor.production_total
+#        cycle: quarter-hourly
+#    solar_power_daily:
+#        source: sensor.production_total
+#        cycle: daily
+#    solar_power_monthly:
+#        source: sensor.production_total
+#        cycle: monthly

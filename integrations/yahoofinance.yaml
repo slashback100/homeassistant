@@ -1,0 +1,6 @@
+yahoofinance:
+    symbols: 
+      - UMI.BR
+    scan_interval:
+      minutes: 5
+    show_trending_icon: true
