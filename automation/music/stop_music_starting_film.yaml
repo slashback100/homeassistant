@@ -4,10 +4,14 @@
       - platform: state
         entity_id: media_player.mediacenter_salon
         to: 'playing'
-    condition:
-      - condition: state
-        state: 'playing'
-        entity_id: media_player.max2play_2
     action:
-      - service: media_player.media_pause
-        entity_id: media_player.max2play_2
+      - choose:
+          - conditions: "{{ is_state('media_player.max2play_2', 'playing') }}"
+            sequence:
+              - service: media_player.media_pause
+                entity_id: media_player.max2play_2
+      - service: input_text.set_value
+        data:
+            entity_id: input_text.hyperion_args
+            value: "-x"
+      - service: shell_command.hyperion_remote

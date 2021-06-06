@@ -511,3 +511,17 @@ esp_54f64b:
   icon:
   picture:
   track: true
+
+9c_b6_54_df_da_ae:
+  name: 9c_b6_54_df_da_ae
+  mac: 9C:B6:54:DF:DA:AE
+  icon:
+  picture:
+  track: true
+
+pc_goddmela_n:
+  name: PC-GODDMELA-N
+  mac: E0:D4:64:6C:D5:77
+  icon:
+  picture:
+  track: true

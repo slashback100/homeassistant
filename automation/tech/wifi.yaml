@@ -4,6 +4,12 @@
         platform: time
         at: '00:00:00'
     action:
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.hyperion_args
+          value: "-c 000000"
+      - service: shell_command.hyperion_remote
+      - service: shell_command.hyperion_stop #if no more wifi, not possible to stop tv led lights, so turning it off
       - service: switch.turn_off
         data:
             entity_id: switch.unifi_rdc
@@ -22,3 +28,4 @@
             #- service: switch.turn_on
             #  data:
             #      entity_id: switch.unifi_cave
+      - service: shell_command.hyperion_start #if wifi is back, restore hyperion
