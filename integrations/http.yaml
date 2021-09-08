@@ -1,7 +1,11 @@
 
 http:
-    ssl_certificate: /etc/letsencrypt/live/slashbackdomo.ddns.net/fullchain.pem
-    ssl_key: /etc/letsencrypt/live/slashbackdomo.ddns.net/privkey.pem
+    #ssl_certificate: /etc/letsencrypt/live/slashbackdomo.ddns.net/fullchain.pem
+    #ssl_key: /etc/letsencrypt/live/slashbackdomo.ddns.net/privkey.pem
+    ssl_certificate: /home/homeassistant/certbot/certboot-venv/conf/live/slashbackdomo.ddns.net/fullchain.pem
+    ssl_key: /home/homeassistant/certbot/certboot-venv/conf/live/slashbackdomo.ddns.net/privkey.pem
+    #ssl_certificate: /etc/letsencrypt/live/slashbackdomo.ddns.net/fullchain.pem
+    #ssl_key: /etc/letsencrypt/live/slashbackdomo.ddns.net/privkey.pem
     server_port: 4294
     ip_ban_enabled: true
     login_attempts_threshold: 5

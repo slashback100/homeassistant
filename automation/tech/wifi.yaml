@@ -8,14 +8,18 @@
         data:
           entity_id: input_text.hyperion_args
           value: "-c 000000"
+      - service: automation.turn_off
+        data:
+          entity_id: automation.dim_led_cuisine_sun_elevation
+          stop_actions: true
+      - service: light.turn_off
+        data:
+          entity_id: light.wled
       - service: shell_command.hyperion_remote
       - service: shell_command.hyperion_stop #if no more wifi, not possible to stop tv led lights, so turning it off
       - service: switch.turn_off
         data:
             entity_id: switch.unifi_rdc
-            #- service: switch.turn_off
-            #  data:
-            #      entity_id: switch.unifi_cave
   - id: wifi_on
     alias: "Turn on wifi"
     trigger:
@@ -25,7 +29,8 @@
       - service: switch.turn_on
         data:
             entity_id: switch.unifi_rdc
-            #- service: switch.turn_on
-            #  data:
-            #      entity_id: switch.unifi_cave
       - service: shell_command.hyperion_start #if wifi is back, restore hyperion
+      - delay: 300
+      - service: automation.turn_on
+        data:
+          entity_id: automation.dim_led_cuisine_sun_elevation

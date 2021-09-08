@@ -3,10 +3,9 @@ from custom_components.hacs.enums import HacsCategory
 from custom_components.hacs.helpers.classes.exceptions import HacsException
 from custom_components.hacs.helpers.classes.repository import HacsRepository
 from custom_components.hacs.helpers.functions.information import find_file_name
-from custom_components.hacs.helpers.functions.logger import getLogger
 
 
-class HacsTheme(HacsRepository):
+class HacsThemeRepository(HacsRepository):
     """Themes in HACS."""
 
     def __init__(self, full_name):

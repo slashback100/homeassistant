@@ -226,3 +226,9 @@
     name: "l_kicker"
     command_topic: "cmd/etage0a/out/49"
     retain: true
+  - platform: mqtt
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "l_billard_spots"
+    command_topic: "cmd/etage0a/out/68"
+    retain: true

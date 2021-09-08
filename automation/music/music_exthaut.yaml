@@ -9,10 +9,10 @@
             switch_id: binary_sensor.extHaut_music_minus
             long_click_action:
               - service: media_player.media_play_pause
-                entity_id: media_player.terrassehaut_2
+                entity_id: media_player.terrassehaut
             short_click_action:
               - service: media_player.volume_down
-                entity_id: media_player.terrassehaut_2
+                entity_id: media_player.terrassehaut
   - alias: SwitchMusicExtHautPlus
     id: SwitchMusicExtHautPlus
     initial_state: 'on'
@@ -22,7 +22,7 @@
             switch_id: binary_sensor.extHaut_music_plus
             long_click_action:
               - service: media_player.media_next_track
-                entity_id: media_player.terrassehaut_2
+                entity_id: media_player.terrassehaut
             short_click_action:
               - service: media_player.volume_up
-                entity_id: media_player.terrassehaut_2
+                entity_id: media_player.terrassehaut

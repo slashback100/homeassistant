@@ -6,4 +6,4 @@ homekit:
               - cover
                 #- climate
               - media_player
-              - camera
+                #- camera

@@ -1,7 +1,7 @@
 recorder:
-    db_url: sqlite:////home/homeassistant/.homeassistant/home_dev.db
+    #db_url: sqlite:////home/homeassistant/.homeassistant/home_dev.db
     #db_url: sqlite:////opt/domo/homeassistant_dev_conf/home_dev.db
-    #db_url: !secret db_url
+    db_url: !secret db_url
     exclude:
         entities:
           - sensor.since_last_boot

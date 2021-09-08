@@ -1,13 +1,12 @@
-from hacs_frontend.version import VERSION as FE_VERSION
 from hacs_frontend import locate_dir
+from hacs_frontend.version import VERSION as FE_VERSION
 
-from custom_components.hacs.helpers.functions.logger import getLogger
-from custom_components.hacs.webresponses.frontend import HacsFrontendDev
 from custom_components.hacs.helpers.functions.information import get_frontend_version
 from custom_components.hacs.share import get_hacs
+from custom_components.hacs.utils.logger import getLogger
+from custom_components.hacs.webresponses.frontend import HacsFrontendDev
 
 from ...enums import HacsSetupTask
-
 
 URL_BASE = "/hacsfiles"
 
@@ -42,8 +41,16 @@ async def async_setup_frontend():
     hass.data["frontend_extra_module_url"].add("/hacsfiles/iconset.js")
 
     # Register www/community for all other files
+    use_cache = hacs.core.lovelace_mode == "storage"
+    hacs.log.info(
+        "%s mode, cache for /hacsfiles/: %s",
+        hacs.core.lovelace_mode,
+        use_cache,
+    )
     hass.http.register_static_path(
-        URL_BASE, hass.config.path("www/community"), cache_headers=False
+        URL_BASE,
+        hass.config.path("www/community"),
+        cache_headers=use_cache,
     )
 
     hacs.frontend.version_running = FE_VERSION
@@ -63,7 +70,7 @@ async def async_setup_frontend():
                     "name": "hacs-frontend",
                     "embed_iframe": True,
                     "trust_external": False,
-                    "js_url": "/hacsfiles/frontend/entrypoint.js",
+                    "js_url": f"/hacsfiles/frontend/entrypoint.js?hacstag={FE_VERSION}",
                 }
             },
             require_admin=True,

@@ -3,7 +3,7 @@
     trigger:
         platform: numeric_state
         entity_id: yahoofinance.umi_br
-        above: 48.34
+        above: 59.9
         below: 1000
     action:
       - service: notify.mobile_app_iphone

@@ -54,3 +54,10 @@
     ignore_availability: true
     name: "Jours f\xE9ri\xE9s en Belgique"
     track: false
+
+- cal_id: jshk265qle18ej26ljf7o068lg@group.calendar.google.com
+  entities:
+  - device_id: loisir_loncin
+    ignore_availability: true
+    name: Loisir Loncin
+    track: false

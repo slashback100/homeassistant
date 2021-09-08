@@ -60,6 +60,8 @@ class HacsCommon:
     categories = []
     default = []
     installed = []
+    renamed_repositories = {}
+    archived_repositories = []
     skip = []
 
 
@@ -71,13 +73,15 @@ class System:
     ha_version = None
     disabled = False
     running = False
-    lovelace_mode = "storage"
+    lovelace_mode = "yaml"
 
 
 class Hacs(HacsBase, HacsHelpers):
     """The base class of HACS, nested throughout the project."""
 
-    repositories = []
+    _repositories = []
+    _repositories_by_id = {}
+    _repositories_by_full_name = {}
     repo = None
     data_repo = None
     data = None
@@ -90,30 +94,67 @@ class Hacs(HacsBase, HacsHelpers):
     recuring_tasks = []
     common = HacsCommon()
 
+    @property
+    def repositories(self):
+        """Return the full repositories list."""
+        return self._repositories
+
+    def async_set_repositories(self, repositories):
+        """Set the list of repositories."""
+        self._repositories = []
+        self._repositories_by_id = {}
+        self._repositories_by_full_name = {}
+
+        for repository in repositories:
+            self.async_add_repository(repository)
+
+    def async_set_repository_id(self, repository, repo_id):
+        """Update a repository id."""
+        existing_repo_id = str(repository.data.id)
+        if existing_repo_id == repo_id:
+            return
+        if existing_repo_id != "0":
+            raise ValueError(
+                f"The repo id for {repository.data.full_name_lower} is already set to {existing_repo_id}"
+            )
+        repository.data.id = repo_id
+        self._repositories_by_id[repo_id] = repository
+
+    def async_add_repository(self, repository):
+        """Add a repository to the list."""
+        if repository.data.full_name_lower in self._repositories_by_full_name:
+            raise ValueError(
+                f"The repo {repository.data.full_name_lower} is already added"
+            )
+        self._repositories.append(repository)
+        repo_id = str(repository.data.id)
+        if repo_id != "0":
+            self._repositories_by_id[repo_id] = repository
+        self._repositories_by_full_name[repository.data.full_name_lower] = repository
+
+    def async_remove_repository(self, repository):
+        """Remove a repository from the list."""
+        if repository.data.full_name_lower not in self._repositories_by_full_name:
+            return
+        self._repositories.remove(repository)
+        repo_id = str(repository.data.id)
+        if repo_id in self._repositories_by_id:
+            del self._repositories_by_id[repo_id]
+        del self._repositories_by_full_name[repository.data.full_name_lower]
+
     def get_by_id(self, repository_id):
         """Get repository by ID."""
-        try:
-            for repository in self.repositories:
-                if str(repository.data.id) == str(repository_id):
-                    return repository
-        except (Exception, BaseException):  # pylint: disable=broad-except
-            pass
-        return None
+        return self._repositories_by_id.get(str(repository_id))
 
     def get_by_name(self, repository_full_name):
         """Get repository by full_name."""
-        try:
-            repository_full_name_lower = repository_full_name.lower()
-            for repository in self.repositories:
-                if repository.data.full_name_lower == repository_full_name_lower:
-                    return repository
-        except (Exception, BaseException):  # pylint: disable=broad-except
-            pass
-        return None
+        if repository_full_name is None:
+            return None
+        return self._repositories_by_full_name.get(repository_full_name.lower())
 
     def is_known(self, repository_id):
         """Return a bool if the repository is known."""
-        return str(repository_id) in [str(x.data.id) for x in self.repositories]
+        return str(repository_id) in self._repositories_by_id
 
     @property
     def sorted_by_name(self):
@@ -253,7 +294,7 @@ class Hacs(HacsBase, HacsHelpers):
             self.log.debug("Queue is already running")
             return
 
-        can_update = await get_fetch_updates_for(self.github)
+        can_update = await get_fetch_updates_for(self.githubapi)
         self.log.debug(
             "Can update %s repositories, items in queue %s",
             can_update,
@@ -349,7 +390,11 @@ class Hacs(HacsBase, HacsHelpers):
         """Get repositories from category."""
         repositories = await async_get_list_from_default(category)
         for repo in repositories:
+            if self.common.renamed_repositories.get(repo):
+                repo = self.common.renamed_repositories[repo]
             if is_removed(repo):
+                continue
+            if repo in self.common.archived_repositories:
                 continue
             repository = self.get_by_name(repo)
             if repository is not None:

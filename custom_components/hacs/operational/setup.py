@@ -1,6 +1,7 @@
 """Setup HACS."""
 from datetime import datetime
-from aiogithubapi import AIOGitHubAPIException, GitHub
+
+from aiogithubapi import AIOGitHubAPIException, GitHub, GitHubAPI
 from homeassistant.const import EVENT_HOMEASSISTANT_STARTED
 from homeassistant.const import __version__ as HAVERSION
 from homeassistant.core import CoreState
@@ -14,7 +15,7 @@ from custom_components.hacs.const import (
     INTEGRATION_VERSION,
     STARTUP,
 )
-from custom_components.hacs.enums import HacsDisabledReason, HacsStage
+from custom_components.hacs.enums import HacsDisabledReason, HacsStage, LovelaceMode
 from custom_components.hacs.hacsbase.configuration import Configuration
 from custom_components.hacs.hacsbase.data import HacsData
 from custom_components.hacs.helpers.functions.constrains import check_constrains
@@ -127,7 +128,7 @@ async def async_hacs_startup():
 
     try:
         lovelace_info = await system_health_info(hacs.hass)
-    except (TypeError, HomeAssistantError):
+    except (TypeError, KeyError, HomeAssistantError):
         # If this happens, the users YAML is not valid, we assume YAML mode
         lovelace_info = {"mode": "yaml"}
     hacs.log.debug(f"Configuration type: {hacs.configuration.config_type}")
@@ -135,6 +136,9 @@ async def async_hacs_startup():
     hacs.log.info(STARTUP)
     hacs.core.config_path = hacs.hass.config.path()
     hacs.system.ha_version = HAVERSION
+
+    hacs.system.lovelace_mode = lovelace_info.get("mode", "yaml")
+    hacs.core.lovelace_mode = LovelaceMode(lovelace_info.get("mode", "yaml"))
 
     # Setup websocket API
     await async_setup_hacs_websockt_api()
@@ -145,16 +149,28 @@ async def async_hacs_startup():
     # Clear old storage files
     await async_clear_storage()
 
-    hacs.system.lovelace_mode = lovelace_info.get("mode", "yaml")
-    hacs.enable()
+    # Setup GitHub API clients
+    session = async_create_clientsession(hacs.hass)
+
+    ## Legacy client
     hacs.github = GitHub(
         hacs.configuration.token,
-        async_create_clientsession(hacs.hass),
+        session,
         headers=HACS_GITHUB_API_HEADERS,
     )
+
+    ## New GitHub client
+    hacs.githubapi = GitHubAPI(
+        token=hacs.configuration.token,
+        session=session,
+        **{"client_name": f"HACS/{INTEGRATION_VERSION}"},
+    )
+
     hacs.data = HacsData()
 
-    can_update = await get_fetch_updates_for(hacs.github)
+    hacs.enable()
+
+    can_update = await get_fetch_updates_for(hacs.githubapi)
     if can_update is None:
         hacs.log.critical("Your GitHub token is not valid")
         hacs.disable(HacsDisabledReason.INVALID_TOKEN)

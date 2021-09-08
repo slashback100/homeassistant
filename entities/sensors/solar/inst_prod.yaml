@@ -4,3 +4,4 @@
     value_template: '{{ value_json.Body.Data.Site.P_PV | int }}'
     unit_of_measurement: "W"
     scan_interval: 315360000
+    #state_class: measurement

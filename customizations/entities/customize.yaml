@@ -189,5 +189,5 @@ media_player.chambre:
   device_class: speaker
 media_player.terrassebas_2:
   device_class: speaker
-media_player.terrassehaut_2:
+media_player.terrassehaut:
   device_class: speaker

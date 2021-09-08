@@ -8,7 +8,7 @@
             long_click_action:
               - service: light.turn_off
                 data:
-                    entity_id: light.l_atelier_mel,light.l_bar,light.l_billard,light.l_cave_jardin,light.l_cave_technique,light.l_cinema_lampe,light.l_kicker,light.l_urinoir
+                    entity_id: light.l_atelier_mel,light.l_bar,light.l_billard,light.l_cave_jardin,light.l_cave_technique,light.l_cinema_lampe,light.l_kicker,light.l_urinoir,light.l_billard_spots,light.wled_2
   - alias: SwitchHautEscalierOff
     id: SwitchHautEscalierOff
     initial_state: 'on'

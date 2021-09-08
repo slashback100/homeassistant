@@ -525,3 +525,24 @@ pc_goddmela_n:
   icon:
   picture:
   track: true
+
+9c_9c_1f_47_9d_93:
+  name: 9c_9c_1f_47_9d_93
+  mac: 9C:9C:1F:47:9D:93
+  icon:
+  picture:
+  track: true
+
+e8_db_84_9a_dd_4e:
+  name: e8_db_84_9a_dd_4e
+  mac: E8:DB:84:9A:DD:4E
+  icon:
+  picture:
+  track: true
+
+e8_db_84_9b_57_de:
+  name: e8_db_84_9b_57_de
+  mac: E8:DB:84:9B:57:DE
+  icon:
+  picture:
+  track: true

@@ -19,6 +19,6 @@ for_presence_simulation:
       - light.l_sdb_eviers
       - light.l_bureau
       - light.l_facade_avant
-      - light.l_terrasse_haut
-      - light.l_terrasse_bas
+#      - light.l_terrasse_haut
+#      - light.l_terrasse_bas
 

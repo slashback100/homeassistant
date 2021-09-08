@@ -279,15 +279,6 @@
     action:
       - service: light.toggle
         entity_id: light.l_escalier_cave
-  - alias: SwichCaveEscalier2
-    id: SwichCaveEscalier2
-    trigger:
-      - platform: mqtt
-        topic: cmd/etage0a/in/42
-        payload: 'ON'
-    action:
-      - service: light.toggle
-        entity_id: light.l_billard
   - alias: SwichCaveEscalier3
     id: SwichCaveEscalier3
     trigger:

@@ -35,3 +35,5 @@ light_all:
             - light.l_terrasse_haut
             - light.l_toilette
             - light.l_urinoir
+            - light.wled_2
+            - light.l_billard_spots

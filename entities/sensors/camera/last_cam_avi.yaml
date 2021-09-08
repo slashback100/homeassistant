@@ -1,3 +1,5 @@
     platform: command_line
     name: last_cam_file
     command: "ls -tr /mnt/rpicam/*avi 2> /dev/null | grep -v lastsnap | tail -n 1 | sed -E 's/^.*\\///'"
+    command_timeout: 10
+    scan_interval: 315360000

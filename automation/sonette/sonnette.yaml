@@ -188,7 +188,7 @@
         payload: 'ON'
     condition:
       - condition: state
-        entity_id: media_player.terrassehaut_2
+        entity_id: media_player.terrassehaut
         state: playing 
     action:
       - service: shell_command.ringexthaut
