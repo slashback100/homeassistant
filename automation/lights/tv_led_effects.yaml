@@ -1,0 +1,29 @@
+  - alias: TV Led Effects
+    id: tv_led_effects
+    trigger:
+      - platform: state
+        entity_id: input_select.tv_led_effects
+    action:
+      - choose:
+          - conditions: "{{is_state('input_select.tv_led_effects', 'No effect')}}"
+            sequence:
+              - service: input_text.set_value
+                data:
+                  entity_id: input_text.hyperion_args
+                  value: "-e 000000"
+              - service: shell_command.hyperion_remote
+              - service: input_text.set_value
+                data:
+                  entity_id: input_text.hyperion_args
+                  value: "-x"
+              - service: shell_command.hyperion_remote
+        default:
+          - service: light.turn_on
+            data:
+              entity_id: light.tv_led
+          - service: input_text.set_value
+            data:
+              entity_id: input_text.hyperion_args
+              value: >-
+                 {{ '-e "'~states('input_select.tv_led_effects')~'"' }}
+          - service: shell_command.hyperion_remote

@@ -1,0 +1,38 @@
+  - alias: SwitchBillard
+    id: SwitchBillard
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.billard
+            short_click_action:
+              - choose: 
+                  - conditions: "{{ is_state('light.l_billard', 'off') and is_state('light.l_billard_spots', 'off') and states('light.wled_2') in ('off', 'unavailable') and is_state('light.l_bar', 'off') }}" 
+                    sequence:
+                      - service: light.turn_on
+                        entity_id: light.l_billard_spots,light.wled_2,light.l_bar
+                  - conditions: "{{ is_state('light.l_billard', 'off') and is_state('light.l_billard_spots', 'on') and is_state('light.wled_2', 'on')  }}" 
+                    sequence:
+                      - service: light.turn_on
+                        entity_id: light.l_billard
+                      - service: light.turn_off
+                        entity_id: light.l_billard_spots
+                  - conditions: "{{ is_state('light.l_billard', 'on') and is_state('light.l_billard_spots', 'off') and is_state('light.wled_2', 'on')  }}" 
+                    sequence:
+                      - service: light.turn_off
+                        entity_id: light.wled_2
+                  - conditions: "{{ is_state('light.l_billard', 'on') and is_state('light.l_billard_spots', 'off') and is_state('light.wled_2', 'off')  }}" 
+                    sequence:
+                      - service: light.turn_off
+                        entity_id: light.l_billard
+                      - service: light.turn_on
+                        entity_id: light.l_billard_spots
+                  - conditions: "{{ is_state('light.l_billard', 'off') and is_state('light.l_billard_spots', 'on') and is_state('light.wled_2', 'off')  }}" 
+                    sequence:
+                      - service: light.turn_on
+                        entity_id: light.wled_2
+                default:
+                  - service: light.toggle
+                    entity_id: light.l_billard
+            long_click_action:
+              - service: light.turn_off
+                entity_id: light.l_billard, light.l_billard_spots, light.l_kicker, light.l_bar, light.wled_2 

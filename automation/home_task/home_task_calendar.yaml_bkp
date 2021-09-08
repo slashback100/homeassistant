@@ -1,0 +1,140 @@
+  - alias: FiltreDoubleFlux
+    id: FiltreDoubleFlux
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and now().month % 3 == 1 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Aspirer les filtres de la ventillation double flux"
+            title: "Entretien"
+  - alias: VannesSanitaireChauffage
+    id: VannesSanitaireChauffage
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and now().month % 3 == 1 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Tourner les vannes sanitaire et chauffage"
+            title: "Entretien"
+  - alias: SelAdouciceur
+    id: SelAdouciceur
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and now().month %3 == 2 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Vérifier le sel dans l'adoucisseur"
+            title: "Entretien"
+  - alias: FiltreMachineALaver
+    id: FiltreMachineALaver
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and now().month % 6 == 5 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Nettoyer le filtre de la machine à laver"
+            title: "Entretien"
+  - alias: FiltreLaveVaiselle
+    id: FiltreLaveVaiselle
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and now().month % 3 == 2 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Nettoyer le filtre du lave-vaiselle"
+            title: "Entretien"
+  - alias: PressionChaudiere
+    id: PressionChaudiere
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Vérifier la pression de la chaudière"
+            title: "Entretien"
+  - alias: RemplacerFiltre VMC
+    id: FiltreVMC
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and now().month == 1 and now().year % 2 == 0 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Remplacer les filtres de la VMC"
+            title: "Entretien"
+  - alias: EntretienEscalier
+    id: EntretienEscalier
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and now().month == 1 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Huiler l'escalier"
+            title: "Entretien"
+  - alias: CouperHaies
+    id: CouperHaies
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ (now().day == 5 and now().month == 6) or (now().day == 20 and now().month == 9) }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Tailler les buis"
+            title: "Entretien"
+  - alias: CouperBuis
+    id: CouperBuis
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and (now().month == 6 or now().month == 9) }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Tailler les buis"
+            title: "Entretien"

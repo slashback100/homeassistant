@@ -1,0 +1,143 @@
+  - platform: template
+    lights:
+      tv_led:
+        friendly_name: "Tv Led"
+        effect_list_template: >-
+            {{ ["Cinema brighten lights"
+            ,"Cinema dim lights"
+            ,"Knight rider"
+            ,"Blue mood blobs"
+            ,"Cold mood blobs"
+            ,"Full color mood blobs"
+            ,"Green mood blobs"
+            ,"Red mood blobs"
+            ,"Warm mood blobs"
+            ,"Police Lights Single"
+            ,"Police Lights Solid"
+            ,"Rainbow mood"
+            ,"Rainbow swirl fast"
+            ,"Rainbow swirl"
+            ,"Random"
+            ,"Running dots"
+            ,"System Shutdown"
+            ,"Snake"
+            ,"Sparks Color"
+            ,"Sparks"
+            ,"Strobe blue"
+            ,"Strobe Raspbmc"
+            ,"Strobe white"
+            ,"Color traces"
+            ,"X-Mas"
+            ,"No effect"] }}
+        effect_template: "{{ state_attr('light.tv_led', 'effect') }}"
+        set_effect: 
+          - service: input_text.set_value
+            data:
+              entity_id: input_text.hyperion_args
+              value: >-
+                 {{ '-e "'~effect~'"' }}
+          - service: shell_command.hyperion_remote
+        turn_on: 
+          - service: input_text.set_value
+            data:
+              entity_id: input_text.hyperion_args
+              value: >-
+                {% set brightness = states('input_number.tv_led_brightness') | int / 100 %}
+                {% set r = (states('input_number.tv_led_r')|int * brightness) | int %}
+                {% set g = (states('input_number.tv_led_g')|int * brightness) | int %}
+                {% set b = (states('input_number.tv_led_b')|int * brightness) | int %}
+                -c {{'0' * (2-(('%0x' | format(r)) | length)) ~ ('%0x' | format(r))}}{{'0' * (2-(('%0x' | format(g)) | length)) ~ ('%0x' | format(g))}}{{'0' * (2-(('%0x' | format(b)) | length)) ~ ('%0x' | format(b))}}
+          - service: shell_command.hyperion_remote
+          - service: input_text.set_value
+            data:
+              entity_id: input_select.tv_led_effect
+              value: "No effect"
+        turn_off:
+          - service: input_text.set_value
+            data:
+              entity_id: input_text.hyperion_args
+              value: "-c 000000"
+          - service: shell_command.hyperion_remote
+          - service: input_text.set_value
+            data:
+              entity_id: input_text.hyperion_args
+              value: "-x -p 100"
+          - service: shell_command.hyperion_remote
+          - service: input_text.set_value
+            data:
+              entity_id: input_select.tv_led_effect
+              value: "No effect"
+        level_template: "{{ (states('intput_number.tv_led_brightness') | int * 255 / 100) | int}}"
+        set_level:
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.tv_led_brightness
+              value: "{{(brightness * 100 / 255) | int}}"
+          - service: input_text.set_value
+            data:
+              entity_id: input_text.hyperion_args
+              value: >-
+                {% set brightness = states('input_number.tv_led_brightness') | int / 100 %}
+                {% set r = (states('input_number.tv_led_r')|int * brightness) | int %}
+                {% set g = (states('input_number.tv_led_g')|int * brightness) | int %}
+                {% set b = (states('input_number.tv_led_b')|int * brightness) | int %}
+                -c {{'0' * (2-(('%0x' | format(r)) | length)) ~ ('%0x' | format(r))}}{{'0' * (2-(('%0x' | format(g)) | length)) ~ ('%0x' | format(g))}}{{'0' * (2-(('%0x' | format(b)) | length)) ~ ('%0x' | format(b))}}
+          - service: shell_command.hyperion_remote
+          - service: input_text.set_value
+            data:
+              entity_id: input_select.tv_led_effect
+              value: "No effect"
+        set_color:
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.tv_led_r
+              value: >-
+                {% set m=1-s/100 %}
+                {% if h<60 or h>=300 %}
+                  {% set r = s/100 %}
+                {% elif (h >= 60 and h< 120) or (h>=240 and h<300) %}
+                  {% set r = s/100*(1-(((h/60)%2-1) | abs))  %}
+                {% else %} 
+                  {% set r = 0 %}
+                {% endif %}
+                {{ ((r+m)*255)|int }}
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.tv_led_g
+              value: >-
+                {% set m=1-s/100 %}
+                {% if h>=60 and h<180 %}
+                  {% set g = s/100 %}
+                {% elif h < 60  or (h<240 and h>=180) %}
+                  {% set g = s/100*(1-(((h/60)%2-1) | abs))  %}
+                {% else %} 
+                  {% set g = 0 %}
+                {% endif %}
+                {{ ((g+m)*255) | int }}
+          - service: input_number.set_value
+            data:
+              entity_id: input_number.tv_led_b
+              value: >-
+                {% set m=1-s/100 %}
+                {% if h>=180 and h<300 %}
+                  {% set b = s/100 %}
+                {% elif (h <180 and h>=120) or h>=300 %}
+                  {% set b = s/100*(1-(((h/60)%2-1) | abs))  %}
+                {% else %} 
+                  {% set b = 0 %}
+                {% endif %}
+                {{ ((b+m)*255) | int }}
+          - service: input_text.set_value
+            data:
+              entity_id: input_text.hyperion_args
+              value: >-
+                {% set brightness = states('input_number.tv_led_brightness') | int / 100 %}
+                {% set r = (states('input_number.tv_led_r')|int * brightness) | int %}
+                {% set g = (states('input_number.tv_led_g')|int * brightness) | int %}
+                {% set b = (states('input_number.tv_led_b')|int * brightness) | int %}
+                -c {{'0' * (2-(('%0x' | format(r)) | length)) ~ ('%0x' | format(r))}}{{'0' * (2-(('%0x' | format(g)) | length)) ~ ('%0x' | format(g))}}{{'0' * (2-(('%0x' | format(b)) | length)) ~ ('%0x' | format(b))}}
+          - service: shell_command.hyperion_remote
+          - service: input_text.set_value
+            data:
+              entity_id: input_select.tv_led_effect
+              value: "No effect"

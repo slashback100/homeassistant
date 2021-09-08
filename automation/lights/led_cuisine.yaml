@@ -1,0 +1,12 @@
+  - alias: Led Cuisine Turn Off Automation
+    id: led_cuisine_turn_off_automation
+    #force turn off of the automation if the led is turned off to avoid it is reset to on
+    #it will be reset to on the morning
+    trigger:
+      - platform: state
+        entity_id: light.wled
+        to: 'off'
+    action:
+      - service: automation.turn_off
+        data:
+          entity_id: automation.dim_led_cuisine_sun_elevation

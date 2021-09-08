@@ -1,0 +1,13 @@
+  - alias: Dim Led Cuisine Sun Elevation
+    id: dim_led_cuisine_sun_elevation
+    description: ''
+    use_blueprint:
+      path: EvTheFuture/dim_lights_based_on_sun_elevation.yaml
+      input:
+        target_lights:
+          entity_id: light.wled
+        max_brightness: 70
+        allowance: 20
+        turn_on: true
+        turn_off: true
+

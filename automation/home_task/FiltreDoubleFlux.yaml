@@ -1,0 +1,14 @@
+  - alias: FiltreDoubleFlux
+    id: FiltreDoubleFlux
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and now().month % 3 == 1 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Aspirer les filtres de la ventillation double flux"
+            title: "Entretien"

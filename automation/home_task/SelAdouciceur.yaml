@@ -1,0 +1,14 @@
+  - alias: SelAdouciceur
+    id: SelAdouciceur
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and now().month %3 == 2 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Vérifier le sel dans l'adoucisseur"
+            title: "Entretien"

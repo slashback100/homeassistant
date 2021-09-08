@@ -1,0 +1,20 @@
+  - alias: SwitchHyperionWithToWithoutGrabber
+    id: SwitchHyperionWithToWithoutGrabber
+    trigger:
+      - platform: state
+        entity_id: switch.prog_kodi
+        to: 'off'
+    action:
+      - service: shell_command.hyperion_stop
+      - delay: 2
+      - service: shell_command.hyperion_nograbber_start
+  - alias: SwitchHyperionWithoutToWithGrabber
+    id: SwitchHyperionWithoutToWithGrabber
+    trigger:
+      - platform: state
+        entity_id: switch.prog_kodi
+        to: 'on'
+    action:
+      - service: shell_command.hyperion_nograbber_stop
+      - delay: 2
+      - service: shell_command.hyperion_start

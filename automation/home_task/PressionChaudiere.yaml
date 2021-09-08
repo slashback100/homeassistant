@@ -1,0 +1,14 @@
+  - alias: PressionChaudiere
+    id: PressionChaudiere
+    initial_state: 'on'
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Vérifier la pression de la chaudière"
+            title: "Entretien"
