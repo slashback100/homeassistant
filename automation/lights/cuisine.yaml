@@ -1,0 +1,12 @@
+  - alias: SwichCuisine2
+    id: SwichCuisine2
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.cuisine
+            short_click_action:
+              - service: light.toggle
+                entity_id: light.l_cuisine_plafond
+            long_click_action:
+              - service: light.toggle
+                entity_id: light.wled

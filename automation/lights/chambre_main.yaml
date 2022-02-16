@@ -1,0 +1,18 @@
+  # two click in same second and ON -> turn off in 30 sec
+  # else, turn OFF after 1 sec
+  - alias: SwitchChambreMain
+    id: SwitchChambreMain
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.chambre_main
+            short_click_action:
+              - service: light.toggle
+                target: 
+                  entity_id: light.l_chambre_parents
+            long_click_action:
+              - service: light.turn_off
+                target: 
+                  entity_id: 
+                    - light.l_chambre_parents
+                    - light.l_dressing

@@ -1,0 +1,16 @@
+  - id: changeWatchdogTimeoutInput
+    alias: "Set watchdog time according to input text arduino watchdog"
+    trigger:
+        platform: state
+        entity_id: input_number.arduino_watchdog
+    action:
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage0a/watchdog'
+            payload: "{{ states('input_number.arduino_watchdog') | int }}"
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage1a/watchdog'
+            payload: "{{ states('input_number.arduino_watchdog')  | int }}"
+            retain: true

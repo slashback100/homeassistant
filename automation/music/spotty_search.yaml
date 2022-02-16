@@ -1,0 +1,14 @@
+  - alias: SpottySearch
+    id: SpottySearch
+    trigger:
+      - platform: state
+        entity_id: input_text.spotty_rechercher
+    condition:
+      - condition: template
+        value_template: "{{ states('input_text.spotty_rechercher') != ''}}"
+    action:
+      - service: script.search_and_play_spotty_salon
+        data:
+          to_search: "{{ states('input_text.spotty_rechercher') }}"
+        
+

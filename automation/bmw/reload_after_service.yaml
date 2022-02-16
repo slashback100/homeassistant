@@ -1,0 +1,45 @@
+  - id: bmw_refresh_after_service_call
+    alias: "Refresh state after a service call"
+    trigger:
+      - platform: event
+        event_type: call_service
+        event_data:
+          domain: lock
+    condition:
+      - condition: template
+        value_template: '{{ "lock.420i_lock" in trigger.event.data.service_data.entity_id }}'
+    action:
+      #while until binary_sensor.420i_door_lock_state is off (== locked)
+      - service: system_log.write
+        data:
+          message: "entering in action"
+      - repeat:
+            while: <-
+                  {%- if (trigger.event.data.service == 'lock') -%}
+                    {{- is_state('binary_sensor.420i_door_lock_state', 'on') -}}
+                  {%- else -%}
+                    {{- is_state('binary_sensor.420i_door_lock_state', 'off') -}}
+                  {%- endif -%}
+            sequence:
+              - delay: "00:00:05"
+              - service: bmw_connected_drive.update_state
+              - service: system_log.write
+                data:
+                  message: >-
+                    {{ "service called: " ~ trigger.event.data.service }}
+                  level: debug
+              - service: system_log.write
+                data:
+                  message: >-
+                    {{ "state: " ~ states('binary_sensor.420i_door_lock_state')}}
+                  level: debug
+              - service: system_log.write
+                data:
+                  message: >-
+                      {{- "until test result: " -}}
+                      {%- if (trigger.event.data.service == 'lock') -%}
+                        {{- is_state('binary_sensor.420i_door_lock_state', 'off') -}}
+                      {%- else -%}
+                        {{- is_state('binary_sensor.420i_door_lock_state', 'on') -}}
+                      {%- endif -%}
+                  level: debug

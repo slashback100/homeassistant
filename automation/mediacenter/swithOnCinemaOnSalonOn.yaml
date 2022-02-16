@@ -1,0 +1,18 @@
+  - alias: SwitchOnCinemaOnSalonOn
+    id: SwitchOnCinemaOnSalonOn
+    trigger:
+      - platform: state
+        entity_id: switch.prog_kodi
+        to: 'on'
+    action:
+      - service: switch.turn_on
+        entity_id: switch.cinema_active
+  - alias: SwitchOffCinemaOnSalonOff
+    id: SwitchOffCinemaOnSalonOff
+    trigger:
+      - platform: state
+        entity_id: switch.prog_kodi
+        to: 'off'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.cinema_active

@@ -1,0 +1,44 @@
+  - alias: ClimateSchedule
+    id: ClimateSchedule
+    trigger:
+      - platform: state
+        entity_id: input_boolean.thermostat_activated
+        to: 'on'
+      - platform: state
+        entity_id: input_datetime.thermostat_start
+      - platform: state
+        entity_id: input_datetime.thermostat_end
+      - platform: time
+        at: input_datetime.thermostat_start
+      - platform: time
+        at: input_datetime.thermostat_end
+    condition:
+      - condition: state
+        entity_id: input_boolean.thermostat_activated
+        state: 'on'
+    action:
+      - variables:
+          entity: >-
+            {% if( is_state('input_select.thermostat', 'Cinéma')) %}
+              climate.chauffage_du_cinema
+            {% else %}
+              climate.chauffage_du_billard
+            {% endif %}
+      - choose:
+          - conditions: >-
+              {% if ( states('input_datetime.thermostat_end') == "00:00:00" ) %}
+                {{ states('sensor.time')~':00'  >= states('input_datetime.thermostat_start') }}
+              {% else %}
+                {{ states('sensor.time')~':00'  >= states('input_datetime.thermostat_start') and states('sensor.time')~':00' < states('input_datetime.thermostat_end') }} 
+              {% endif %}
+            sequence: 
+              - service: climate.set_hvac_mode
+                data:
+                  entity_id: "{{ entity }}"
+                  hvac_mode: "auto"
+        default:
+          - service: climate.set_hvac_mode
+            data:
+              entity_id: "{{ entity }}"
+              hvac_mode: "off"
+

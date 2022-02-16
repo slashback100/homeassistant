@@ -1,0 +1,14 @@
+  - alias: SwitchSamMeuble
+    id: SwitchSamMeuble
+    use_blueprint:
+        path: clicks.yaml
+        input:
+            switch_id: binary_sensor.sam_meuble
+            short_click_action:
+              - service: light.toggle
+                data:
+                    entity_id: light.l_hall_plafond
+            long_click_action:
+              - service: switch.toggle
+                data:
+                    entity_id: switch.led_meuble_sam
