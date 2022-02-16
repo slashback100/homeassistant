@@ -3,7 +3,7 @@
     trigger:
         platform: state
         #entity_id: binary_sensor.kodi_rpi
-        entity_id: media_player.mediacenter_cinema
+        entity_id: media_player.cinema
         #from: 'idle'
         to: 'off'
     action:

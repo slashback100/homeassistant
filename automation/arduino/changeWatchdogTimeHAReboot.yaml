@@ -10,10 +10,12 @@
         data:
             topic: 'cmd/esp_watchdog_etage0a/watchdog'
             payload: '999999'
+            retain: true
       - service: mqtt.publish
         data:
             topic: 'cmd/esp_watchdog_etage1a/watchdog'
             payload: '999999'
+            retain: true
   - id: changeWatchdogTimeoutStartup
     alias: "Set normal watchdog  shutting down"
     trigger:
@@ -25,8 +27,10 @@
       - service: mqtt.publish
         data:
             topic: 'cmd/esp_watchdog_etage0a/watchdog'
-            payload: '70'
+            payload: '120'
+            retain: true
       - service: mqtt.publish
         data:
             topic: 'cmd/esp_watchdog_etage1a/watchdog'
-            payload: '70'
+            payload: '120'
+            retain: true

@@ -1,9 +1,31 @@
   - id: startofha
     alias: StartOf HA
+    initial_state: 'on'
     trigger:
-      - platform: event
-        event_type: homeassistant_start
-    condition: "{{ is_state('switch.prog_kodi', 'off') }}"
+      - platform: time_pattern
+        seconds: '/15'
+      #- platform: event
+      #  event_type: homeassistant_start
+      #- platform: event
+      #  event_type: homeassistant_started
+      #- platform: homeassistant
+      #  event: start
     action:
-      - service: switch.turn_on
-        entity_id: switch.prog_kodi
+      - choose:
+          - conditions: "{{ is_state('switch.prog_kodi', 'off') }}"
+            sequence:
+              - service: switch.turn_on
+                entity_id: switch.prog_kodi
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage1a/in/45
+            payload: 'ON'
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage1a/in/46
+            payload: 'ON'
+      - service: logger.set_default_level
+        data:
+            level: error
+      - service: automation.turn_off
+        entity_id: automation.startof_ha

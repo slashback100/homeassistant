@@ -1,7 +1,7 @@
 light_for_flash:
     name: Lampes à faire clignoter si intrusion
     entities:
-            - group.exterieur
+#            - group.exterieur
             - light.l_buanderie
             - light.l_cuisine_plafond
             - light.l_cuisineentree
@@ -9,4 +9,4 @@ light_for_flash:
             - light.l_hall_plafond
             - light.l_salon_plafond
             - light.l_sam_plafond
-            - light.l_toilette
+#            - light.l_toilette

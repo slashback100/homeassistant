@@ -23,7 +23,7 @@
   - platform: mqtt
     payload_off: 'VOF' #VOF pour Variateur OFF
     payload_on: 'VON' #VON pour Variateur ON
-    name: "l_salon_plafond"
+    name: "l_buanderie"
     command_topic: "cmd/etage1a/out/1"
     brightness_command_topic: "cmd/etage1a/out/1"
     brightness_scale: 100
@@ -51,20 +51,20 @@
   - platform: mqtt
     payload_off: 'OFF'
     payload_on: 'ON'
-    name: "l_buanderie"
-    command_topic: "cmd/etage1a/out/9"
+    name: "l_salon_plafond"
+    command_topic: "cmd/etage1a/out/5"
     retain: true
   - platform: mqtt
     payload_off: 'OFF'
     payload_on: 'ON'
     name: "l_garage_chris"
-    command_topic: "cmd/etage1a/out/49"
+    command_topic: "cmd/etage1a/out/48"
     retain: true
   - platform: mqtt
     payload_off: 'OFF'
     payload_on: 'ON'
     name: "l_garage_mel"
-    command_topic: "cmd/etage1a/out/11"
+    command_topic: "cmd/etage1a/out/4"
     retain: true
   - platform: mqtt
     payload_off: 'OFF'

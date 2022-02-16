@@ -8,11 +8,17 @@
         input:
             switch_id: binary_sensor.extBas_music_minus
             long_click_action:
-              - service: media_player.media_play_pause
-                entity_id: media_player.terrassebas_2
+              - choose:
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                    sequence:
+                      - service: media_player.media_play_pause
+                        entity_id: media_player.terrassebas_2
             short_click_action:
-              - service: media_player.volume_down
-                entity_id: media_player.terrassebas_2
+              - choose:
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                    sequence:
+                      - service: media_player.volume_down
+                        entity_id: media_player.terrassebas_2
   - alias: SwitchMusicExtBasPlus
     id: SwitchMusicExtBasPlus
     initial_state: 'on'
@@ -21,8 +27,14 @@
         input:
             switch_id: binary_sensor.extBas_music_plus
             long_click_action:
-              - service: media_player.media_next_track
-                entity_id: media_player.terrassebas_2
+              - choose:
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                    sequence:
+                      - service: media_player.media_next_track
+                        entity_id: media_player.terrassebas_2
             short_click_action:
-              - service: media_player.volume_up
-                entity_id: media_player.terrassebas_2
+              - choose:
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                    sequence:
+                      - service: media_player.volume_up
+                        entity_id: media_player.terrassebas_2

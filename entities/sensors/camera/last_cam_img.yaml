@@ -1,5 +1,0 @@
-    platform: command_line
-    name: last_cam_img
-    command: "ls -tr /mnt/rpicam/*jpg 2> /dev/null | grep -v lastsnap | tail -n 1 | sed -E 's/^.*\\///'"
-    command_timeout: 10
-    scan_interval: 315360000

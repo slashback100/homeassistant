@@ -7,15 +7,21 @@
             switch_id: binary_sensor.salon_music_minus
             short_click_action:
               - choose:
-                  - conditions: "{{ states('media_player.max2play_2') in ['paused', 'idle'] }}"
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
                     sequence:
-                      - service: shell_command.tts_meteo_salon
-                default:
-                  - service: media_player.volume_down
-                    entity_id: media_player.max2play_2
+                      - choose:
+                          - conditions: "{{ states('media_player.max2play_2') in ['paused', 'idle'] }}"
+                            sequence:
+                              - service: shell_command.tts_meteo_salon
+                        default:
+                          - service: media_player.volume_down
+                            entity_id: media_player.max2play_2
             long_click_action:
-              - service: media_player.media_play_pause
-                entity_id: media_player.max2play_2
+              - choose:
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                    sequence:
+                      - service: media_player.media_play_pause
+                        entity_id: media_player.max2play_2
   - alias: SwitchCuisine11
     id: SwitchCuisine11
     initial_state: 'on'
@@ -24,11 +30,17 @@
         input:
             switch_id: binary_sensor.salon_music_plus
             short_click_action:
-              - service: media_player.volume_up
-                entity_id: media_player.max2play_2
+              - choose:
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                    sequence:
+                      - service: media_player.volume_up
+                        entity_id: media_player.max2play_2
             long_click_action:
-              - service: media_player.media_next_track
-                entity_id: media_player.max2play_2
+              - choose:
+                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                    sequence:
+                      - service: media_player.media_next_track
+                        entity_id: media_player.max2play_2
   - alias: TurnOffMediaCenter
     id: TurnOffMediaCenter
     trigger:

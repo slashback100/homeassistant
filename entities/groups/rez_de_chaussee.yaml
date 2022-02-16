@@ -12,3 +12,4 @@ rez_de_chaussee:
             - light.l_salon_plafond
             - light.l_sam_plafond
             - light.l_toilette
+            - light.meuble_de_la_salle_a_manger

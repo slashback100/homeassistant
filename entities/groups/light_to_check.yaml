@@ -36,4 +36,6 @@ light_to_check:
             - light.l_toilette
             - light.l_urinoir
             - light.wled_2
+            - light.wled_3
             - light.l_billard_spots
+            - light.meuble_de_la_salle_a_manger

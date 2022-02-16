@@ -12,6 +12,16 @@
            command_off: "ssh pi@prog 'sudo service kodi stop'"
            command_state: "ssh pi@prog 'sudo service kodi status' | grep '(running)' > /dev/null 2>&1"
            friendly_name: Media Center du Salon
+#  - platform: command_line
+#    switches:
+#       cinema_active:
+#           command_on: >-
+#                ssh -p 8762 osmc@192.168.0.175 'sudo kill -SIGCONT $(ps aux | grep kodi.bin | grep -v LIRC | grep -v grep | awk "{print \$2}")'
+#           command_off: >-
+#                ssh -p 8762 osmc@192.168.0.175 'sudo kill -SIGSTOP $(ps aux | grep kodi.bin | grep -v LIRC | grep -v grep | awk "{print \$2}")'
+#           command_state: >-
+#                ssh -p 8762 osmc@192.168.0.175 '! [[ $(ps aux | grep kodi.bin | grep -v LIRC | grep -v grep | awk "{print \$8}") =~ T.* ]]'
+#           friendly_name: Cinema actif
   - platform: command_line
     switches:
        away_mode:
@@ -37,37 +47,3 @@
            command_state: >-
                    /usr/bin/curl -s -X "POST" -H "Constent-Type: application/json" -d '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["playerpref","alarmsEnabled","?"]]}' "http://192.168.0.175:9000/jsonrpc.js" | grep '"_p2":"1"' > /dev/null
            friendly_name: Réveil de la chambre
-  - platform: command_line
-    switches:
-       guest_wifi:
-           command_on: >-
-                   cookie=$(wget -S -qO- --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.0.211:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && curl -X PUT --insecure -d '{"_id":"5f0632183c19442b91f77843","enabled":false,"security":"open","wep_idx":1,"wpa_mode":"wpa2","wpa_enc":"ccmp","usergroup_id":"5f0629f93c19442546751c91","dtim_mode":"default","dtim_ng":1,"dtim_na":1,"minrate_ng_enabled":true,"minrate_ng_advertising_rates":false,"minrate_ng_data_rate_kbps":6000,"minrate_ng_cck_rates_enabled":true,"minrate_na_enabled":false,"minrate_na_advertising_rates":false,"minrate_na_data_rate_kbps":6000,"mac_filter_enabled":false,"mac_filter_policy":"allow","mac_filter_list":[],"name_combine_enabled":true,"name_combine_suffix":"_IoT","bc_filter_enabled":true,"bc_filter_list":[],"group_rekey":3600,"hotspot2conf_enabled":false,"bss_transition":true,"auth_cache":true,"schedule_reversed":false,"name":"wifi_network_guest","is_guest":true,"wlangroup_id":"5f0629f93c19442546751c92","radius_das_enabled":false,"fast_roaming_enabled":false,"schedule":[],"minrate_ng_mgmt_rate_kbps":6000,"minrate_na_mgmt_rate_kbps":6000,"minrate_ng_beacon_rate_kbps":6000,"minrate_na_beacon_rate_kbps":6000,"site_id":"5f0629f23c19442546751c80","x_iapp_key":"845f1c63c7a7f058668d27241d2b149f","schedule_enabled":false}' -H "Cookie: $cookie"  'https://192.168.0.211:8443/api/s/default/rest/wlanconf/60be722bc0e3eb5a16dfda75' && wget -S -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.0.211:8443/api/logout'
-           command_off: >-
-                   cookie=$(wget -S -qO- --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.0.211:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && curl -X PUT --insecure -d '{"name":"wifi_network_guest","ap_group_ids":["60be703dc0e3eb5a16dfda2c"],"enabled":false,"mcastenhance_enabled":false,"b_supported":false,"fast_roaming_enabled":false,"group_rekey":3600,"vlan_enabled":false,"vlan":3000,"hide_ssid":false,"x_wep":"","wep_idx":1,"radiusprofile_id":"","security":"open","schedule":[],"schedule_enabled":false,"wlan_band":"both","wpa_mode":"wpa2","is_guest":true,"uapsd_enabled":false,"no2ghz_oui":false,"minrate_ng_enabled":true,"minrate_ng_data_rate_kbps":6000,"minrate_ng_advertising_rates":false,"minrate_ng_cck_rates_enabled":true,"minrate_ng_beacon_rate_kbps":6000,"minrate_ng_mgmt_rate_kbps":1000,"minrate_na_enabled":false,"minrate_na_data_rate_kbps":6000,"minrate_na_advertising_rates":false,"minrate_na_mgmt_rate_kbps":6000,"dtim_mode":"default","dtim_na":3,"dtim_ng":3,"mac_filter_enabled":false,"mac_filter_policy":"allow","mac_filter_list":[],"radius_mac_auth_enabled":false,"radius_macacl_format":"none_lower","radius_macacl_empty_password":false,"bc_filter_enabled":false,"bc_filter_list":[],"radius_das_enabled":false,"_id":"60be722bc0e3eb5a16dfda75","usergroup_id":"60be703dc0e3eb5a16dfda23","networkconf_id":"60be703dc0e3eb5a16dfda22","iapp_enabled":true,"x_iapp_key":"9c78d4a83ca222336fa8800ae5cd0125"}'  -H "Cookie: $cookie"  'https://192.168.0.211:8443/api/s/default/rest/wlanconf/60be722bc0e3eb5a16dfda75' && wget -S -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.0.211:8443/api/logout'
-           command_state: >-
-                   cookie=$(wget -S -qO- --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.0.211:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && wget --no-check-certificate -S -qO-  --header="Cookie: $cookie" 'https://192.168.0.211:8443/api/s/default/rest/wlanconf/60be722bc0e3eb5a16dfda75' 2> /dev/null| jq '.data[0].enabled' && wget -S -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.0.211:8443/api/logout' > /dev/null 2>&1
-           value_template: '{{ value == "true" }}'
-           friendly_name: Wifi guest
-
-  - platform: command_line
-    switches:
-       unifi_rdc:
-           command_on: >-
-                   cookie=$(wget -S -qO- --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.0.211:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && curl -X PUT --insecure -d '{"disabled": false}' -H "Cookie: $cookie" "https://192.168.0.211:8443/api/s/default/rest/device/60be71d6c0e3eb5a16dfda57" && wget -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.0.211:8443/api/logout' > /dev/null
-           command_off: >-
-                   cookie=$(wget -S -qO- --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.0.211:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && curl -X PUT --insecure -d '{"disabled": true}' -H "Cookie: $cookie" "https://192.168.0.211:8443/api/s/default/rest/device/60be71d6c0e3eb5a16dfda57" && wget -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.0.211:8443/api/logout' > /dev/null
-           command_state: >-
-                   cookie=$(wget -S -qO- --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.0.211:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && wget -qO- --no-check-certificate --header="Cookie: $cookie" "https://192.168.0.211:8443/api/s/default/stat/device/fc:ec:da:8c:8b:24" | jq '.data[0].disabled' && wget -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.0.211:8443/api/logout' > /dev/null
-           value_template: '{{ value == "false" }}'
-           friendly_name: "Unifi Rez-de-chaussée"
-  - platform: command_line
-    switches:
-       unifi_cave:
-           command_on: >-
-                   cookie=$(wget -S -qO- --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.0.211:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && curl -X PUT --insecure -d '{"disabled": false}' -H "Cookie: $cookie" "https://192.168.0.211:8443/api/s/default/rest/device/60be7e49c0e3eb5d9494ff44" && wget -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.0.211:8443/api/logout' > /dev/null
-           command_off: >-
-                   cookie=$(wget -S -qO- --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.0.211:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && curl -X PUT --insecure -d '{"disabled": true}' -H "Cookie: $cookie" "https://192.168.0.211:8443/api/s/default/rest/device/60be7e49c0e3eb5d9494ff44" && wget -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.0.211:8443/api/logout' > /dev/null
-           command_state: >-
-                   cookie=$(wget -S -qO- --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.0.211:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && wget -qO- --no-check-certificate --header="Cookie: $cookie" "https://192.168.0.211:8443/api/s/default/stat/device/f0:9f:c2:73:69:90" | jq '.data[0].disabled' && wget -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.0.211:8443/api/logout' > /dev/null
-           value_template: '{{ value == "false" }}'
-           friendly_name: "Unifi Cave"

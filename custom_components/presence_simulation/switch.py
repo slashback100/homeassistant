@@ -101,8 +101,9 @@ class PresenceSimulationSwitch(SwitchEntity):
                 if prop in self.attr:
                     del self.attr[prop]
 
+    #def device_state_attributes(self):
     @property
-    def device_state_attributes(self):
+    def extra_state_attributes(self):
         """Returns the attributes list"""
         return self.attr
 
@@ -147,6 +148,15 @@ class PresenceSimulationSwitch(SwitchEntity):
         else:
             return False
 
+    async def set_random(self, random):
+        self.attr["random"] = random
+    async def random(self):
+        if 'random' in self.attr:
+            return self.attr['random']
+        else:
+            return 0
+
+
     async def reset_start_datetime(self):
         if "simulation_start" in self.attr:
             del self.attr["simulation_start"]
@@ -162,3 +172,7 @@ class PresenceSimulationSwitch(SwitchEntity):
     async def reset_restore_states(self):
         if "restore_states" in self.attr:
             del self.attr["restore_states"]
+
+    async def reset_random(self):
+        if "random" in self.attr:
+            del self.attr["random"]

@@ -1,5 +1,0 @@
-    platform: waze_travel_time
-    name: chris_vers_maison
-    origin: device_tracker.iphone
-    destination: !secret lat_long
-    region: 'EU'

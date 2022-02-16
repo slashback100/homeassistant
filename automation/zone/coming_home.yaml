@@ -10,8 +10,19 @@
         data:
             message: "Ouvir le garage ?"
             data:
-                push:
-                    category: 'ouvrirgarage'
+                actions:
+                  - action: 'OPENGARAGECHRIS'
+                    title: 'Ouvrir Garage de Chris'
+                    activationMode: 'background'
+                    authenticationRequired: yes
+                    destructive: no
+                    behavior: 'default'
+                  - action: 'OPENGARAGEMEL'
+                    title: 'Ouvrir Garage de Mel'
+                    activationMode: 'background'
+                    authenticationRequired: yes
+                    destructive: no
+                    behavior: 'default'
  
   - id: melComingHome
     alias: "Mel Comming Home: open garage?"
@@ -25,8 +36,19 @@
         data:
             message: "Ouvir le garage ?"
             data:
-                push:
-                    category: 'ouvrirgarage'
+                actions:
+                  - action: 'OPENGARAGECHRIS'
+                    title: 'Ouvrir Garage de Chris'
+                    activationMode: 'background'
+                    authenticationRequired: yes
+                    destructive: no
+                    behavior: 'default'
+                  - action: 'OPENGARAGEMEL'
+                    title: 'Ouvrir Garage de Mel'
+                    activationMode: 'background'
+                    authenticationRequired: yes
+                    destructive: no
+                    behavior: 'default'
  
   - id: comingHomeAtNight
     alias: "Comming Home At Night: turning on light"

@@ -1,6 +1,5 @@
 """Adds config flow for HACS."""
-import voluptuous as vol
-from aiogithubapi import GitHubException, GitHubDeviceAPI
+from aiogithubapi import GitHubDeviceAPI, GitHubException
 from aiogithubapi.common.const import OAUTH_USER_LOGIN
 from awesomeversion import AwesomeVersion
 from homeassistant import config_entries
@@ -8,21 +7,17 @@ from homeassistant.const import __version__ as HAVERSION
 from homeassistant.core import callback
 from homeassistant.helpers import aiohttp_client
 from homeassistant.helpers.event import async_call_later
+from homeassistant.loader import async_get_integration
+import voluptuous as vol
 
-from custom_components.hacs.const import (
-    CLIENT_ID,
-    DOMAIN,
-    INTEGRATION_VERSION,
-    MINIMUM_HA_VERSION,
-)
-from custom_components.hacs.helpers.functions.configuration_schema import (
-    RELEASE_LIMIT,
-    hacs_config_option_schema,
-)
-from custom_components.hacs.mixin import HacsMixin
+from .base import HacsBase
+from .const import CLIENT_ID, DOMAIN, MINIMUM_HA_VERSION
+from .enums import ConfigurationType
+from .utils.configuration_schema import RELEASE_LIMIT, hacs_config_option_schema
+from .utils.logger import get_hacs_logger
 
 
-class HacsFlowHandler(HacsMixin, config_entries.ConfigFlow, domain=DOMAIN):
+class HacsFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     """Config flow for HACS."""
 
     VERSION = 1
@@ -33,6 +28,7 @@ class HacsFlowHandler(HacsMixin, config_entries.ConfigFlow, domain=DOMAIN):
         self._errors = {}
         self.device = None
         self.activation = None
+        self.log = get_hacs_logger()
         self._progress_task = None
         self._login_device = None
 
@@ -62,20 +58,19 @@ class HacsFlowHandler(HacsMixin, config_entries.ConfigFlow, domain=DOMAIN):
                 async_call_later(self.hass, 1, _wait_for_activation)
                 return
 
-            response = await self.device.activation(
-                device_code=self._login_device.device_code
-            )
+            response = await self.device.activation(device_code=self._login_device.device_code)
             self.activation = response.data
             self.hass.async_create_task(
                 self.hass.config_entries.flow.async_configure(flow_id=self.flow_id)
             )
 
         if not self.activation:
+            integration = await async_get_integration(self.hass, DOMAIN)
             if not self.device:
                 self.device = GitHubDeviceAPI(
                     client_id=CLIENT_ID,
                     session=aiohttp_client.async_get_clientsession(self.hass),
-                    **{"client_name": f"HACS/{INTEGRATION_VERSION}"},
+                    **{"client_name": f"HACS/{integration.version}"},
                 )
             async_call_later(self.hass, 1, _wait_for_activation)
             try:
@@ -90,15 +85,17 @@ class HacsFlowHandler(HacsMixin, config_entries.ConfigFlow, domain=DOMAIN):
                     },
                 )
             except GitHubException as exception:
-                self.hacs.log.error(exception)
+                self.log.error(exception)
                 return self.async_abort(reason="github")
 
         return self.async_show_progress_done(next_step_id="device_done")
 
     async def _show_config_form(self, user_input):
         """Show the configuration form to edit location data."""
+
         if not user_input:
             user_input = {}
+
         if AwesomeVersion(HAVERSION) < MINIMUM_HA_VERSION:
             return self.async_abort(
                 reason="min_ha_version",
@@ -108,18 +105,12 @@ class HacsFlowHandler(HacsMixin, config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=vol.Schema(
                 {
-                    vol.Required(
-                        "acc_logs", default=user_input.get("acc_logs", False)
-                    ): bool,
-                    vol.Required(
-                        "acc_addons", default=user_input.get("acc_addons", False)
-                    ): bool,
+                    vol.Required("acc_logs", default=user_input.get("acc_logs", False)): bool,
+                    vol.Required("acc_addons", default=user_input.get("acc_addons", False)): bool,
                     vol.Required(
                         "acc_untested", default=user_input.get("acc_untested", False)
                     ): bool,
-                    vol.Required(
-                        "acc_disable", default=user_input.get("acc_disable", False)
-                    ): bool,
+                    vol.Required("acc_disable", default=user_input.get("acc_disable", False)): bool,
                 }
             ),
             errors=self._errors,
@@ -127,9 +118,7 @@ class HacsFlowHandler(HacsMixin, config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_device_done(self, _user_input):
         """Handle device steps"""
-        return self.async_create_entry(
-            title="", data={"token": self.activation.access_token}
-        )
+        return self.async_create_entry(title="", data={"token": self.activation.access_token})
 
     @staticmethod
     @callback
@@ -137,7 +126,7 @@ class HacsFlowHandler(HacsMixin, config_entries.ConfigFlow, domain=DOMAIN):
         return HacsOptionsFlowHandler(config_entry)
 
 
-class HacsOptionsFlowHandler(HacsMixin, config_entries.OptionsFlow):
+class HacsOptionsFlowHandler(config_entries.OptionsFlow):
     """HACS config flow options handler."""
 
     def __init__(self, config_entry):
@@ -150,16 +139,17 @@ class HacsOptionsFlowHandler(HacsMixin, config_entries.OptionsFlow):
 
     async def async_step_user(self, user_input=None):
         """Handle a flow initialized by the user."""
+        hacs: HacsBase = self.hass.data.get(DOMAIN)
         if user_input is not None:
             limit = int(user_input.get(RELEASE_LIMIT, 5))
             if limit <= 0 or limit > 100:
                 return self.async_abort(reason="release_limit_value")
             return self.async_create_entry(title="", data=user_input)
 
-        if self.hacs.configuration is None:
+        if hacs is None or hacs.configuration is None:
             return self.async_abort(reason="not_setup")
 
-        if self.hacs.configuration.config_type == "yaml":
+        if hacs.configuration.config_type == ConfigurationType.YAML:
             schema = {vol.Optional("not_in_use", default=""): str}
         else:
             schema = hacs_config_option_schema(self.config_entry.options)

@@ -20,3 +20,17 @@
       - service: notify.mobile_app_iphone
         data:
             message: "Alarme branchée et garage ouvert !"
+      - repeat:
+          count: 4
+          sequence:
+            - service: light.toggle
+              data:
+                entity_id: >-
+                  {% if (trigger.entity_id == "cover.garage_de_chris") %}
+                      light.l_garage_chris
+                  {% else %}
+                      light.l_garage_mel
+                  {% endif %}
+            - delay: 
+                seconds: 3
+                    

@@ -29,6 +29,7 @@
       - platform: mqtt
         topic: cmd/etage1a/in/47
         payload: 'ON'
+    condition: '{{ ( now() - timedelta(seconds = 5)) > state_attr("automation.watchdog_triggered_the_reset_of_etage1a", "last_triggered") }}'
     action:
       - service: mqtt.publish
         data:
@@ -49,6 +50,7 @@
       - platform: mqtt
         topic: cmd/etage1a/in/47
         payload: 'ON'
+    condition: '{{ ( now() - timedelta(seconds = 5)) > state_attr("automation.watchdog_triggered_the_reset_of_etage1a", "last_triggered") }}'
     action:
       - service: notify.mobile_app_iphone
         data:
@@ -65,6 +67,7 @@
       - platform: mqtt
         topic: cmd/etage1a/in/47
         payload: 'ON'
+    condition: '{{ ( now() - timedelta(seconds = 5)) > state_attr("automation.watchdog_triggered_the_reset_of_etage1a", "last_triggered") }}'
     action:
       - service: notify.mobile_app_iphone
         data:

@@ -239,11 +239,11 @@ trigger:
 - platform: state
   entity_id: sun.sun
   attribute: elevation
-- platform: event
-  event_type: call_service
-  event_data:
-    domain: light
-    service: turn_on
+#- platform: event
+#  event_type: call_service
+#  event_data:
+#    domain: light
+#    service: turn_on
 - platform: homeassistant
   event: start
 mode: queued

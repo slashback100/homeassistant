@@ -42,7 +42,7 @@
             data:
               entity_id: input_text.hyperion_args
               value: >-
-                {% set brightness = states('input_number.tv_led_brightness') | int / 100 %}
+                {% set brightness = states('input_number.tv_led_brightness') | default(100) | int / 100 %}
                 {% set r = (states('input_number.tv_led_r')|int * brightness) | int %}
                 {% set g = (states('input_number.tv_led_g')|int * brightness) | int %}
                 {% set b = (states('input_number.tv_led_b')|int * brightness) | int %}
@@ -67,7 +67,7 @@
             data:
               entity_id: input_select.tv_led_effect
               value: "No effect"
-        level_template: "{{ (states('intput_number.tv_led_brightness') | int * 255 / 100) | int}}"
+        level_template: "{{ (states('intput_number.tv_led_brightness') | default(100) | int * 255 / 100) | int}}"
         set_level:
           - service: input_number.set_value
             data:
@@ -77,7 +77,7 @@
             data:
               entity_id: input_text.hyperion_args
               value: >-
-                {% set brightness = states('input_number.tv_led_brightness') | int / 100 %}
+                {% set brightness = states('input_number.tv_led_brightness') | default(100) | int / 100 %}
                 {% set r = (states('input_number.tv_led_r')|int * brightness) | int %}
                 {% set g = (states('input_number.tv_led_g')|int * brightness) | int %}
                 {% set b = (states('input_number.tv_led_b')|int * brightness) | int %}
@@ -131,7 +131,7 @@
             data:
               entity_id: input_text.hyperion_args
               value: >-
-                {% set brightness = states('input_number.tv_led_brightness') | int / 100 %}
+                {% set brightness = states('input_number.tv_led_brightness') | default(100) | int / 100 %}
                 {% set r = (states('input_number.tv_led_r')|int * brightness) | int %}
                 {% set g = (states('input_number.tv_led_g')|int * brightness) | int %}
                 {% set b = (states('input_number.tv_led_b')|int * brightness) | int %}

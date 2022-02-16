@@ -17,7 +17,6 @@
     ignore_availability: true
     name: "Famille D\xE9sirant"
     track: true
-    max_results: 20
 
 #- cal_id: addressbook#contacts@group.v.calendar.google.com
 #  entities:

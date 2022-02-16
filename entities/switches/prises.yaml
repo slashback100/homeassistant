@@ -1,7 +1,7 @@
   - name: "prise_ext_terrasse"
     platform: mqtt
-    command_topic: "cmd/etage1a/out/13"
-    state_topic: "cmd/etage1a/out/13"
+    command_topic: "cmd/etage1a/out/11"
+    state_topic: "cmd/etage1a/out/11"
     retain: true
     state_on: 'ON'
     state_off: 'OFF'
@@ -27,8 +27,8 @@
     payload_off: 'OFF'
   - name: "prise_ext_avant"
     platform: mqtt
-    command_topic: "cmd/etage1a/out/48"
-    state_topic: "cmd/etage1a/out/48"
+    command_topic: "cmd/etage1a/out/49"
+    state_topic: "cmd/etage1a/out/49"
     retain: true
     state_on: 'ON'
     state_off: 'OFF'
@@ -70,4 +70,13 @@
     name: "cinema_chauffage"
     command_topic: "cmd/etage0a/out/48"
     state_topic: "cmd/etage0a/out/48"
+    retain: true
+  - platform: mqtt
+    state_on: 'ON'
+    state_off: 'OFF'
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "led_meuble_sam"
+    command_topic: "cmd/etage1a/out/9"
+    state_topic: "cmd/etage1a/out/9"
     retain: true

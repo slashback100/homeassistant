@@ -2,9 +2,9 @@
     id: Touteteindre
     trigger:
         platform: event
-        event_type: ios.notification_action_fired
+        event_type: mobile_app_notification_action
         event_data:
-            actionName: "OFF"
+            action: "OFF"
     action:
       - choose:
           - conditions: "{{ is_state('switch.presence_simulation', 'on') }}"
@@ -23,9 +23,9 @@
     id: OuvrirGarageMelEntreeZoneMaison
     trigger:
         platform: event
-        event_type: ios.notification_action_fired
+        event_type: mobile_app_notification_action
         event_data:
-            actionName: "OPENGARAGEMEL"
+            action: "OPENGARAGEMEL"
     action:
       - service: cover.open_cover
         entity_id: cover.garage_de_mel
@@ -33,9 +33,9 @@
     id: OuvrirGarageChrisEntreeZoneMaison
     trigger:
         platform: event
-        event_type: ios.notification_action_fired
+        event_type: mobile_app_notification_action
         event_data:
-            actionName: "OPENGARAGECHRIS"
+            action: "OPENGARAGECHRIS"
     action:
       - service: cover.open_cover
         entity_id: cover.garage_de_chris
@@ -43,9 +43,9 @@
     id: ProposerFermetureGarageMel
     trigger:
         platform: event
-        event_type: ios.notification_action_fired
+        event_type: mobile_app_notification_action
         event_data:
-            actionName: "FERMERGARAGEMEL"
+            action: "FERMERGARAGEMEL"
     action:
       - service: cover.close_cover
         entity_id: cover.garage_de_mel
@@ -53,9 +53,9 @@
     id: ProposerFermetureGarageChris
     trigger:
         platform: event
-        event_type: ios.notification_action_fired
+        event_type: mobile_app_notification_action
         event_data:
-            actionName: "FERMERGARAGECHRIS"
+            action: "FERMERGARAGECHRIS"
     action:
       - service: cover.close_cover
         entity_id: cover.garage_de_chris

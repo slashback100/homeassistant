@@ -41,8 +41,13 @@
               {{ "Lumière allumée: " }}
               {{ states['light'] | selectattr('state','eq', 'on') | map(attribute='attributes.friendly_name') | list | join(', ') }}
             data:
-                push:
-                    category: 'eteindretout'
+                actions:
+                  - action: 'OFF'
+                    title: 'Tout éteindre'
+                    activationMode: 'background'
+                    authenticationRequired: yes
+                    destructive: yes
+                    behavior: 'default'
   - id: leavingHome_ProposeCloseGarage
     mode: single
     alias: "Leaving Home Propose To Close Garage Chris"
@@ -59,6 +64,11 @@
         data:
             message: "Fermer le garage de Chris ?"
             data:
-                push:
-                    category: 'fermergaragechris'
+                actions:
+                  - action: 'FERMERGARAGECHRIS'
+                    title: 'Fermer'
+                    activationMode: 'background'
+                    authenticationRequired: yes
+                    destructive: yes
+                    behavior: 'default'
       - delay: "00:01:00"

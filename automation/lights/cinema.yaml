@@ -54,7 +54,7 @@
     id: turnOnLightWhenStop
     trigger:
       - platform: state
-        entity_id: media_player.mediacenter_cinema
+        entity_id: media_player.cinema
         from: "playing"
         #to: "idle"
     condition: "{{ is_state('light.l_cinema_lampe', 'off') }}"
@@ -69,7 +69,7 @@
     id: turnOffLightWhenPlay
     trigger:
       - platform: state
-        entity_id: media_player.mediacenter_cinema
+        entity_id: media_player.cinema
         #from: "idle"
         to: "playing"
     condition: "{{ is_state('light.l_cinema_lampe', 'on') }}"

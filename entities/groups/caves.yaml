@@ -11,4 +11,5 @@ caves:
             - light.l_kicker
             - light.l_urinoir
             - light.wled_2
+            - light.wled_3
             - light.l_billard_spots

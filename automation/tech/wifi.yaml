@@ -4,6 +4,16 @@
         platform: time
         at: '00:00:00'
     action:
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage0a/watchdog'
+            payload: '999999'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage1a/watchdog'
+            payload: '999999'
+            retain: true
       - service: input_text.set_value
         data:
           entity_id: input_text.hyperion_args
@@ -20,12 +30,33 @@
       - service: switch.turn_off
         data:
             entity_id: switch.unifi_rdc
+      - delay: 300
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage0a/watchdog'
+            payload: '70'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage1a/watchdog'
+            payload: '70'
+            retain: true
   - id: wifi_on
     alias: "Turn on wifi"
     trigger:
         platform: time
         at: '07:10:00'
     action:
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage0a/watchdog'
+            payload: '999999'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage1a/watchdog'
+            payload: '999999'
+            retain: true
       - service: switch.turn_on
         data:
             entity_id: switch.unifi_rdc
@@ -34,3 +65,13 @@
       - service: automation.turn_on
         data:
           entity_id: automation.dim_led_cuisine_sun_elevation
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage0a/watchdog'
+            payload: '70'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: 'cmd/esp_watchdog_etage1a/watchdog'
+            payload: '70'
+            retain: true

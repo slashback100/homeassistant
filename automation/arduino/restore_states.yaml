@@ -20,7 +20,7 @@
     id: restoreStateHAStartup
     trigger:
         platform: event
-        event_type: homeassistant_start
+        event_type: homeassistant_started
     action:
       - service: python_script.restore
   - alias: restoreStateHAStartup2
