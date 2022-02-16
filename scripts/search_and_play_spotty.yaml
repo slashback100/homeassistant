@@ -1,0 +1,16 @@
+search_and_play_spotty_salon:
+    sequence:
+      - service: squeezebox.call_method
+        data:
+          entity_id: media_player.max2play_2
+          command: spotty
+          parameters:
+            - playlist
+            - play
+            - "menu:spotty"
+            - "search:{{ to_search }}"
+            - "cachesearch:1"
+            - "_index:0"
+            - "item_id:1.0"
+            - "_quantity:25000"
+
