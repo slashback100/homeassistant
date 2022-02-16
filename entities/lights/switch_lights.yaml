@@ -1,0 +1,3 @@
+  - platform: switch
+    name: Meuble de la salle à manger 
+    entity_id: switch.led_meuble_sam
