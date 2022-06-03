@@ -1,3 +1,5 @@
+eval `ssh-agent -s`
+
 #!/bin/bash
 commit -am "$1"
 git push -u origin master

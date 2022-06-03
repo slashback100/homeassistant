@@ -9,7 +9,7 @@
               - service: notify.mobile_app_iphone
                 data:
                     message: "Quelqu'un sonne à la porte d'en bas"
-              - service: notify.mobile_app_iphone_de_melanie
+              - service: notify.mobile_app_sm_a525f
                 data:
                     message: "Quelqu'un sonne à la porte d'en bas"
               - delay:
@@ -31,7 +31,7 @@
                                 name: "Ringtone_2_Haptic-sashimi.caf"
                                 critical: 1
                                 volume: 0.5
-              - service: notify.mobile_app_iphone_de_melanie
+              - service: notify.mobile_app_sm_a525f
                 data:
                     message: "Quelqu'un sonne à la porte d'en bas"
               - delay:

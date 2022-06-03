@@ -32,6 +32,9 @@
                 {{ states('sensor.time')~':00'  >= states('input_datetime.thermostat_start') and states('sensor.time')~':00' < states('input_datetime.thermostat_end') }} 
               {% endif %}
             sequence: 
+              - service: notify.mobile_app_iphone
+                data:
+                    message: "Activation du chauffage dans la cave. Portes fermées ?"
               - service: climate.set_hvac_mode
                 data:
                   entity_id: "{{ entity }}"
@@ -41,4 +44,10 @@
             data:
               entity_id: "{{ entity }}"
               hvac_mode: "off"
+          - choose:
+              - conditions: "{{ trigger.platform == 'time' and trigger.entity_id == 'input_datetime.thermostat_end'}}"
+                sequence: 
+                  - service: input_boolean.turn_off
+                    data:
+                        entity_id: input_boolean.thermostat_activated
 

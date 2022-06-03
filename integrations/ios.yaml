@@ -1,45 +1,45 @@
 ios:
-    push:
-        categories:
-          - name: "Ouvrir garage"
-            identifier: 'ouvrirgarage'
-            actions:
-              - identifier: 'OPENGARAGECHRIS'
-                title: 'Ouvrir Garage de Chris'
-                activationMode: 'background'
-                authenticationRequired: yes
-                destructive: no
-                behavior: 'default'
-              - identifier: 'OPENGARAGEMEL'
-                title: 'Ouvrir Garage de Mel'
-                activationMode: 'background'
-                authenticationRequired: yes
-                destructive: no
-                behavior: 'default'
-          - name: "Fermer le garage de Mel"
-            identifier: 'fermergaragemel'
-            actions:
-              - identifier: 'FERMERGARAGEMEL'
-                title: 'Fermer'
-                activationMode: 'background'
-                authenticationRequired: yes
-                destructive: yes
-                behavior: 'default'
-          - name: "Fermer le garage de Chris"
-            identifier: 'fermergaragechris'
-            actions:
-              - identifier: 'FERMERGARAGECHRIS'
-                title: 'Fermer'
-                activationMode: 'background'
-                authenticationRequired: yes
-                destructive: yes
-                behavior: 'default'
-          - name: "Eteindre tout"
-            identifier: 'eteindretout'
-            actions:
-              - identifier: 'OFF'
-                title: 'Tout éteindre'
-                activationMode: 'background'
-                authenticationRequired: yes
-                destructive: yes
-                behavior: 'default'
+#    push:
+#        categories:
+#          - name: "Ouvrir garage"
+#            identifier: 'ouvrirgarage'
+#            actions:
+#              - identifier: 'OPENGARAGECHRIS'
+#                title: 'Ouvrir Garage de Chris'
+#                activationMode: 'background'
+#                authenticationRequired: yes
+#                destructive: no
+#                behavior: 'default'
+#              - identifier: 'OPENGARAGEMEL'
+#                title: 'Ouvrir Garage de Mel'
+#                activationMode: 'background'
+#                authenticationRequired: yes
+#                destructive: no
+#                behavior: 'default'
+#          - name: "Fermer le garage de Mel"
+#            identifier: 'fermergaragemel'
+#            actions:
+#              - identifier: 'FERMERGARAGEMEL'
+#                title: 'Fermer'
+#                activationMode: 'background'
+#                authenticationRequired: yes
+#                destructive: yes
+#                behavior: 'default'
+#          - name: "Fermer le garage de Chris"
+#            identifier: 'fermergaragechris'
+#            actions:
+#              - identifier: 'FERMERGARAGECHRIS'
+#                title: 'Fermer'
+#                activationMode: 'background'
+#                authenticationRequired: yes
+#                destructive: yes
+#                behavior: 'default'
+#          - name: "Eteindre tout"
+ #           identifier: 'eteindretout'
+  #          actions:
+   #           - identifier: 'OFF'
+    #            title: 'Tout éteindre'
+     #           activationMode: 'background'
+      #          authenticationRequired: yes
+       #         destructive: yes
+        #        behavior: 'default'

@@ -5,8 +5,9 @@ then
 	exit 1
 fi
 
-find .|grep 'yaml$' |while read i; do sed -Ei 's/'"$1"'/'"$2"'/g' $i;done
-pwd="$PWD"
-cd /mnt/extHdd/.storage
-find -name lovelace |while read i; do sed -Ei 's/'"$1"'/'"$2"'/g' $i;done
-cd "$pwd"
+find . -type f -not -wholename './.homeassistant/*' -not -wholename './.git/*' -not -wholename './.cache/*' -not -wholename './certbot/*' -not -wholename './.local/*' -not -wholename './backup/*' -name '*.yaml' |while read i; do if grep "$1" "$i" > /dev/null; then sed -Ei 's/'"$1"'/'"$2"'/g' "$i";echo "Replaced in $i" ;fi;done
+if grep "$1" .storage/lovelace
+then
+	sed -Ei 's/'"$1"'/'"$2"'/g' .storage/lovelace
+	echo "Replaced in .storage/lovelace"
+fi

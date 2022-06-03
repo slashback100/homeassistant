@@ -55,7 +55,7 @@
       - service: notify.mobile_app_iphone
         data:
             message: "Quelqu'un sonne à la porte"
-      - service: notify.mobile_app_iphone_de_melanie
+      - service: notify.mobile_app_sm_a525f
         data:
             message: "Quelqu'un sonne à la porte"
       - delay:
@@ -78,7 +78,7 @@
                         name: "Ringtone_2_Haptic-sashimi.caf"
                         critical: 1
                         volume: 0.5
-      - service: notify.mobile_app_iphone_de_melanie
+      - service: notify.mobile_app_sm_a525f
         data:
             message: "Quelqu'un sonne à la porte"
       - delay:
@@ -191,7 +191,7 @@
         payload: 'ON'
     condition:
       - condition: state
-        entity_id: media_player.terrassehaut
+        entity_id: media_player.terrassehaut_2
         state: playing 
     action:
       - service: shell_command.ringexthaut

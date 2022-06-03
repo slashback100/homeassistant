@@ -1,7 +1,7 @@
 launch_youtube:
     sequence:
       - choose:
-          - conditions: "{{ is_state('switch.prog_kodi', 'off') }}"
+          - conditions: "{{ is_state('input_select.kodi_ip', 'Salon') and is_state('switch.prog_kodi', 'off') }}"
             sequence:
               - service: switch.turn_on
                 entity_id: switch.prog_kodi

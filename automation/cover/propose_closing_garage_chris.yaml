@@ -18,7 +18,7 @@
                             category: 'fermergaragechris'
           - conditions: "{{ states('person.melanie') and now().timestamp() - states.person.melanie.last_changed.timestamp()  < 60 }}"          
             sequence:
-              - service: notify.mobile_app_iphone_de_melanie
+              - service: notify.mobile_app_sm_a525f
                 data:
                     message: "Fermer le garage de Christophe ?"
                     data:
@@ -44,7 +44,7 @@
                             category: 'fermergaragemel'
           - conditions: "{{ states('person.melanie') and now().timestamp() - states.person.melanie.last_changed.timestamp()  < 60 }}"          
             sequence:
-              - service: notify.mobile_app_iphone_de_melanie
+              - service: notify.mobile_app_sm_a525f
                 data:
                     message: "Fermer le garage de Mel ?"
                     data:

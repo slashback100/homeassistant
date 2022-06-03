@@ -1,6 +1,5 @@
   - alias: FiltreDoubleFlux
     id: FiltreDoubleFlux
-    initial_state: 'on'
     trigger:
       - platform: time
         at: '00:00:00'
@@ -11,4 +10,17 @@
       - service: persistent_notification.create
         data:
             message: "Aspirer les filtres de la ventillation double flux"
+            title: "Entretien"
+  - alias: AchatFiltreDoubleFlux
+    id: AchatFiltreDoubleFlux
+    trigger:
+      - platform: time
+        at: '00:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().day == 1 and now().month == 1 and now().year % 2 == 0 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Remplacer les filtres de la VMC"
             title: "Entretien"

@@ -33,7 +33,7 @@ squeeze_unsync_salon:
               - 
                 - sync
                 - "-"
-squeeze_sync_salon_terrassehaut:
+squeeze_sync_salon_terrassehaut_2_2:
     sequence:
       - service: shell_command.curl
         data:
@@ -46,7 +46,7 @@ squeeze_sync_salon_terrassehaut:
               - 
                 - sync
                 - b8:27:eb:42:2d:c6
-squeeze_unsync_terrassehaut:
+squeeze_unsync_terrassehaut_2_2:
     sequence:
       - service: shell_command.curl
         data:
@@ -59,7 +59,7 @@ squeeze_unsync_terrassehaut:
               - 
                 - sync
                 - "-"
-squeeze_sync_terrassehaut_terrassebas:
+squeeze_sync_terrassehaut_2_2_terrassebas:
     sequence:
       - service: shell_command.curl
         data:

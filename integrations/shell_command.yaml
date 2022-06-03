@@ -39,3 +39,9 @@ shell_command:
       ssh pi@192.168.0.205 'sudo service hyperion stop'
   hyperion_start: >-
       ssh pi@192.168.0.205 'sudo service hyperion start'
+
+
+  radio_of_title_add_salon: >-
+      curl -H 'Content-Type: text/html; charset=utf-8' -X GET 'http://192.168.0.175:9000/songinfo.html?action=addall&index=5&player=b8%3A27%3Aeb%3Afa%3Af6%3Ab5&sess='$(curl -r -H "Content-Type: application/json"  -X POST -d '{"id":1,"method":"slim.request","params":["b8:27:eb:fa:f6:b5",["status","-",1]]}' "http://192.168.0.175:9000/jsonrpc.js" 2> /dev/null| jq -r ".result.playlist_loop[0].id")'&start='
+  radio_of_title_play_salon: >-
+      curl -H 'Content-Type: text/html; charset=utf-8' -X GET 'http://192.168.0.175:9000/songinfo.html?action=playall&index=5&player=b8%3A27%3Aeb%3Afa%3Af6%3Ab5&sess='$(curl -r -H "Content-Type: application/json"  -X POST -d '{"id":1,"method":"slim.request","params":["b8:27:eb:fa:f6:b5",["status","-",1]]}' "http://192.168.0.175:9000/jsonrpc.js" 2> /dev/null| jq -r ".result.playlist_loop[0].id")'&start='

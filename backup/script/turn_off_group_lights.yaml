@@ -25,6 +25,6 @@ switch_off_all_no_blue:
       - service: media_player.media_pause
         entity_id: media_player.terrassebas_2
       - service: media_player.media_pause
-        entity_id: media_player.terrassehaut
+        entity_id: media_player.terrassehaut_2_2
       - service: media_player.media_pause
         entity_id: media_player.salle_de_bain_2

@@ -1,9 +1,12 @@
   - id: presence_simulation_someoneAtHome
     alias: "Someone is coming home: stopping presence simulation"
     trigger:
-        platform: state
+      - platform: state
         entity_id: group.quiestla
         to: 'home'
+      - platform: state
+        entity_id: calendar.aide_menagere
+        to: 'on'
     action:
       - service: presence_simulation.stop
   - id: presence_simulation_nobodyAtHome
@@ -17,7 +20,11 @@
         entity_id: person.christophe
         from: 'home'
         to: 'not_home'
-    condition: '{{ states("person.christophe") != "home" and states("person.melanie") != "home" }}'
+      - platform: state
+        entity_id: calendar.aide_menagere
+        to: 'off'
+        for: '00:10:00'
+    condition: '{{ states("person.christophe") != "home" and states("person.melanie") != "home" and states("calendar.aide_menagere") == "off" }}'
     action:
       - service: presence_simulation.start
         data:
