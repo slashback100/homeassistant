@@ -1,5 +1,0 @@
-    name: "eteindre_haut"
-    platform: mqtt
-    state_topic: cmd/etage1a/in/23
-    payload_off: "OFF"
-    payload_on: "ON"

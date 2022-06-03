@@ -1,0 +1,6 @@
+
+   platform: ping
+   count: 1
+   host: slashback-dady.ddns.net
+   name: Internet papa
+   scan_interval: 60

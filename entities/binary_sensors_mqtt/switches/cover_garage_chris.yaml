@@ -1,0 +1,4 @@
+    name: "cover_garage_chris"
+    state_topic: cmd/etage1a/in/38
+    payload_off: "OFF"
+    payload_on: "ON"

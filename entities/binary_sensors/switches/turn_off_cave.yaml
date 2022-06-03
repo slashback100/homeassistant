@@ -1,5 +1,0 @@
-    name: "turn_off_cave"
-    platform: mqtt
-    state_topic: cmd/etage0a/in/40
-    payload_off: "OFF"
-    payload_on: "ON"

@@ -1,0 +1,4 @@
+    name: "cinema"
+    state_topic: cmd/etage0a/in/33
+    payload_off: "OFF"
+    payload_on: "ON"

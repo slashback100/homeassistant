@@ -1,5 +1,0 @@
-    name: "billard"
-    platform: mqtt
-    state_topic: cmd/etage0a/in/42
-    payload_off: "OFF"
-    payload_on: "ON"

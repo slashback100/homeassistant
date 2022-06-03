@@ -1,0 +1,15 @@
+  blackout_dady:
+      name: "Coupure de courant chez papa"
+      message: "Coupure de courant chez papa depuis {{ relative_time (states.binary_sensor.internet_papa.last_changed) }} (alert blackout)"
+      done_message: "Le courant chez papa est revenu"
+      entity_id: binary_sensor.internet_papa
+      skip_first: true
+      repeat:
+        - 10
+        - 10
+        - 30
+        - 60
+        - 120
+      state: 'off'
+      notifiers:
+        - mobile_app_iphone

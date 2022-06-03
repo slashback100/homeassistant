@@ -1,5 +1,0 @@
-    name: "elise_left"
-    platform: mqtt
-    state_topic: cmd/etage2a/in/32
-    payload_off: "OFF"
-    payload_on: "ON"

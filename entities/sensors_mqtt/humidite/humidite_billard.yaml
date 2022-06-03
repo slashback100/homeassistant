@@ -1,0 +1,3 @@
+    name: "Humidité dans le Billard"
+    state_topic: "cmd/esp_billard/hygro"
+    unit_of_measurement: '%'

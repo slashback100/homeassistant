@@ -1,5 +1,10 @@
 mqtt:
   light: !include_dir_merge_list ../entities/lights_mqtt
+  switch: !include_dir_merge_list ../entities/switches_mqtt
+  binary_sensor: !include_dir_list ../entities/binary_sensors_mqtt
+  sensor: !include_dir_list ../entities/sensors_mqtt
+  climate: !include_dir_list ../entities/climates_mqtt
+  cover: !include_dir_list ../entities/covers_mqtt
 #    broker: 192.168.0.186
 #    port: 1883
 #    username: !secret mqtt_user

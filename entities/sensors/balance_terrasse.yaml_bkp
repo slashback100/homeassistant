@@ -1,0 +1,6 @@
+    platform: statistics
+    name: "Statistique sur la disponibilité du courant à Beaufays"
+    entity_id: binary_sensor.internet_papa
+    state_characteristic: count
+    max_age: 
+      hours: 240

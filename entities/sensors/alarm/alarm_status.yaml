@@ -1,3 +1,0 @@
-    name: "Statut de l'alarme"
-    platform: mqtt
-    state_topic: cmd/alarme/status

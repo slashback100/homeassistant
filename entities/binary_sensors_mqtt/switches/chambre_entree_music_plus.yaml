@@ -1,0 +1,4 @@
+    name: "chambre_entree_music_plus"
+    state_topic: cmd/etage2b/in/38
+    payload_off: "OFF"
+    payload_on: "ON"

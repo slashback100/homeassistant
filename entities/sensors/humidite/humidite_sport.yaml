@@ -1,4 +1,0 @@
-    platform: mqtt
-    name: "Humidité dans la salle de sport"
-    state_topic: "cmd/esp_sport/hygro"
-    unit_of_measurement: '%'

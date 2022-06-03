@@ -1,0 +1,4 @@
+    name: "extHaut_music_plus"
+    state_topic: cmd/etage1a/in/54
+    payload_off: "OFF"
+    payload_on: "ON"

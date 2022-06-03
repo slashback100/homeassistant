@@ -1,5 +1,0 @@
-    platform: mqtt
-    name: "distance voiture garage christ"
-    state_topic: cmd/esp_garage_christ_dist/distance
-    icon: 'mdi:diameter-outline'
-    unit_of_measurement: cm

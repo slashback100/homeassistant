@@ -1,0 +1,4 @@
+    name: "hall_all"
+    state_topic: cmd/etage1a/in/43
+    payload_off: "OFF"
+    payload_on: "ON"

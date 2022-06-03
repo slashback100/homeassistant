@@ -1,5 +1,0 @@
-    name: "hall_all"
-    platform: mqtt
-    state_topic: cmd/etage1a/in/43
-    payload_off: "OFF"
-    payload_on: "ON"

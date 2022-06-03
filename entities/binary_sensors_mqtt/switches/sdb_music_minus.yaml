@@ -1,0 +1,4 @@
+    name: "sdb_music_minus"
+    state_topic: cmd/etage2b/in/19
+    payload_off: "OFF"
+    payload_on: "ON"

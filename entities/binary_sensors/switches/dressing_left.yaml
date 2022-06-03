@@ -1,5 +1,0 @@
-    name: "dressing_left"
-    platform: mqtt
-    state_topic: cmd/etage2b/in/26
-    payload_off: "OFF"
-    payload_on: "ON"

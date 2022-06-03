@@ -1,0 +1,4 @@
+    name: "cave_tech"
+    state_topic: cmd/etage0a/in/36
+    payload_off: "OFF"
+    payload_on: "ON"

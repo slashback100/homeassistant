@@ -1,4 +1,0 @@
-    platform: mqtt
-    name: "Température dans la salle de sport"
-    state_topic: "cmd/esp_sport/temp"
-    unit_of_measurement: '°C'

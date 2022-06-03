@@ -1,0 +1,4 @@
+    name: "sonette_bas"
+    state_topic: cmd/etage0a/in/32
+    payload_off: "OFF"
+    payload_on: "ON"

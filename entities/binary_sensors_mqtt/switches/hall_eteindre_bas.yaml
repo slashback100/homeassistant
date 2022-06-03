@@ -1,0 +1,4 @@
+    name: "hall_eteindre_bas"
+    state_topic: cmd/etage2a/in/14
+    payload_off: "OFF"
+    payload_on: "ON"

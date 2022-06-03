@@ -1,5 +1,0 @@
-    name: "cuisine_sync"
-    platform: mqtt
-    state_topic: cmd/rpi_cuisine/in/29
-    payload_off: "1"
-    payload_on: "0"

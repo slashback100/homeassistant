@@ -1,0 +1,4 @@
+    name: "salon_right"
+    state_topic: cmd/etage1a/in/59
+    payload_off: "OFF"
+    payload_on: "ON"

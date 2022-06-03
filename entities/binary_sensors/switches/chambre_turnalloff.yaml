@@ -1,5 +1,0 @@
-    name: "chambre"
-    platform: mqtt
-    state_topic: cmd/etage2b/in/30
-    payload_off: "OFF"
-    payload_on: "ON"

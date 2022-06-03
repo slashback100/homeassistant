@@ -1,0 +1,136 @@
+########### Music
+
+  - name: "s_salon_music_minus"
+    command_topic: cmd/etage1a/in/24
+    state_topic: cmd/etage1a/in/24
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_salon_music_plus"
+    command_topic: cmd/etage1a/in/25
+    state_topic: cmd/etage1a/in/25
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_extHaut_music_minus"
+    command_topic: cmd/etage1a/in/55
+    state_topic: cmd/etage1a/in/55
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_extHaut_music_plus"
+    command_topic: cmd/etage1a/in/54
+    state_topic: cmd/etage1a/in/54
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_extBas_music_minus"
+    command_topic: cmd/etage1a/in/56
+    state_topic: cmd/etage1a/in/56
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_extBas_music_plus"
+    command_topic: cmd/etage1a/in/57
+    state_topic: cmd/etage1a/in/57
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_chambre_music_minus"
+    command_topic: cmd/etage2b/in/14
+    state_topic: cmd/etage2b/in/14
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_chambre_music_plus"
+    command_topic: cmd/etage2b/in/15
+    state_topic: cmd/etage2b/in/15
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_chambre_entree_music_minus"
+    command_topic: cmd/etage2b/in/36
+    state_topic: cmd/etage2b/in/36
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_chambre_entree_music_plus"
+    command_topic: cmd/etage2b/in/38
+    state_topic: cmd/etage2b/in/38
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_sdb_music_minus"
+    command_topic: cmd/etage2b/in/18
+    state_topic: cmd/etage2b/in/18
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_sdb_music_plus"
+    command_topic: cmd/etage2b/in/19
+    state_topic: cmd/etage2b/in/19
+    payload_off: "OFF"
+    payload_on: "ON"
+
+########### Garages
+  - name: "s_cover_garage_mel"
+    command_topic: cmd/etage1a/in/39
+    state_topic: cmd/etage1a/in/39
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_cover_garage_chris"
+    command_topic: cmd/etage1a/in/38
+    state_topic: cmd/etage1a/in/38
+    payload_off: "OFF"
+    payload_on: "ON"
+
+########### Lights
+  - name: "s_cinema"
+    command_topic: cmd/etage0a/in/33
+    state_topic: cmd/etage0a/in/33
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_cave_porte_ext"
+    command_topic: cmd/etage0a/in/37
+    state_topic: cmd/etage0a/in/37
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_turn_off_cave"
+    command_topic: cmd/etage0a/in/40
+    state_topic: cmd/etage0a/in/40
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_hall_all"
+    command_topic: cmd/etage1a/in/43
+    state_topic: cmd/etage1a/in/43
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_eteindre_haut"
+    command_topic: cmd/etage1a/in/23
+    state_topic: cmd/etage1a/in/23
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_eteindre_bas"
+    command_topic: cmd/etage1a/in/22
+    state_topic: cmd/etage1a/in/22
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_hall_eteindre_bas"
+    command_topic: cmd/etage2a/in/14
+    state_topic: cmd/etage2a/in/14
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_garage_mel"
+    command_topic: cmd/etage1a/in/41
+    state_topic: cmd/etage1a/in/41
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_chambre"
+    command_topic: cmd/etage2b/in/30
+    state_topic: cmd/etage2b/in/30
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_cave_tech"
+    command_topic: cmd/etage0a/in/36
+    state_topic: cmd/etage0a/in/36
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_cave_escalier"
+    command_topic: cmd/etage1a/in/42
+    state_topic: cmd/etage1a/in/42
+    payload_off: "OFF"
+    payload_on: "ON"
+  - name: "s_bureau"
+    command_topic: cmd/etage2a/in/23
+    state_topic: cmd/etage2a/in/23
+    payload_off: "OFF"
+    payload_on: "ON"

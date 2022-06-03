@@ -1,0 +1,4 @@
+    name: "noemie_right"
+    state_topic: cmd/etage2a/in/33
+    payload_off: "OFF"
+    payload_on: "ON"

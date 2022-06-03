@@ -1,6 +1,0 @@
-  - name: "Activation détecteur de distance garage mel"
-    platform: mqtt
-    command_topic: "cmd/esp_garage_mel_dist/activate"
-    retain: true
-    payload_on: '1'
-    payload_off: '0'

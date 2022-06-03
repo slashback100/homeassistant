@@ -1,0 +1,5 @@
+  - name: "Activation détecteur de distance garage chris"
+    command_topic: "cmd/esp_garage_christ_dist/activate"
+    retain: true
+    payload_on: '1'
+    payload_off: '0'

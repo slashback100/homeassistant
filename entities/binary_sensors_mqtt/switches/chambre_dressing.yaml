@@ -1,0 +1,4 @@
+    name: "chambre_lit_dressing"
+    state_topic: cmd/etage2b/in/16
+    payload_off: "OFF"
+    payload_on: "ON"
