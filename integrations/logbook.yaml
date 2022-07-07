@@ -4,3 +4,9 @@ logbook:
          - automation.reset_arduino_watchdog
          - automation.getproduction
          - automation.refreshcam
+         - sensor.date_time_iso
+         - sensor.date_time_utc
+         - sensor.date_time
+         - sensor.time_utc
+         - sensor.time
+         - sensor.time_date

@@ -5,7 +5,6 @@
       entity_id: binary_sensor.garage_de_mel
       state: 'on'
       repeat:
-        - 1
         - 2
         - 5
         - 30
@@ -13,5 +12,8 @@
       skip_first: true
       notifiers:
         - mobile_app_iphone
-          #- pushbullet_mel
         - mobile_app_sm_a520f
+      data:
+         actions: 
+           - action: "ACK_MEL"
+             title: "C'est normal"

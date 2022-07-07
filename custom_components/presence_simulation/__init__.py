@@ -12,7 +12,10 @@ from homeassistant.components.recorder.history import get_significant_states
 from homeassistant.components.recorder import get_instance
 import homeassistant.util.dt as dt_util
 from homeassistant.const import EVENT_HOMEASSISTANT_START
-from homeassistant.components.recorder.models import States, StateAttributes
+try:
+    from homeassistant.components.recorder.db_schema import States, StateAttributes
+except ImportError:
+    from homeassistant.components.recorder.models import States, StateAttributes
 from homeassistant.components.recorder.const import DATA_INSTANCE
 from .const import (
         DOMAIN,
@@ -42,7 +45,10 @@ async def async_setup_entry(hass, entry):
         random = entry.data['random']
     else:
         random = 0
-    return await async_mysetup(hass, [entry.data["entities"]], entry.data["delta"], interval, restore, random)
+    elms = []
+    for elm in entry.data["entities"].split(","):
+        elms += [elm.strip()]
+    return await async_mysetup(hass, elms, entry.data["delta"], interval, restore, random)
 
 async def async_setup(hass, config):
     """Set up this component using YAML."""
@@ -111,8 +117,7 @@ async def async_mysetup(hass, entities, deltaStr, refreshInterval, restoreParam,
             #to make it asyncable, not sure it is needed
             await asyncio.sleep(0)
             if hass.states.get(entity) is None:
-                _LOGGER.error("Error when trying to identify entity %s, it seems it doesn't exist", entity)
-                raise Exception("Entity is not known by HA, see log for more details")
+                _LOGGER.error("Error when trying to identify entity %s, it seems it doesn't exist. Continuing without this entity", entity)
             else:
                 if 'entity_id' in  hass.states.get(entity).attributes:
                     #get the list of the associated entities
@@ -175,6 +180,12 @@ async def async_mysetup(hass, entities, deltaStr, refreshInterval, restoreParam,
             expanded_entities = await async_expand_entities(overridden_entities)
         except Exception as e:
             _LOGGER.error("Error during identifing entities: "+overridden_entities)
+            running = False
+            entity.internal_turn_off()
+            return
+
+        if len(expanded_entities) == 0:
+            _LOGGER.error("Error during identifing entities, no valid entities has been found")
             running = False
             entity.internal_turn_off()
             return
@@ -379,7 +390,7 @@ async def async_mysetup(hass, entities, deltaStr, refreshInterval, restoreParam,
         _LOGGER.debug("In restore State Sync")
 
         session = hass.data[DATA_INSTANCE].get_session()
-        result = session.query(States.state, StateAttributes.shared_attrs).filter(States.attributes_id == StateAttributes.attributes_id).filter(States.entity_id == SWITCH_PLATFORM+"."+SWITCH).order_by(States.last_changed.desc()).limit(1)
+        result = session.query(States.state, StateAttributes.shared_attrs).filter(States.attributes_id == StateAttributes.attributes_id).filter(States.entity_id == SWITCH_PLATFORM+"."+SWITCH).order_by(States.last_updated.desc()).limit(1)
         if result.count() > 0 and result[0][0] == "on":
           previous_attribute["was_running"] = True
           _LOGGER.debug("Simulation was on before last shutdown, restarting it.")
@@ -411,4 +422,7 @@ async def update_listener(hass, entry):
     if len(entry.options) > 0:
         entry.data = entry.options
         entry.options = {}
-        await async_mysetup(hass, [entry.data["entities"]], entry.data["delta"], entry.data["interval"], entry.data["restore"], entry.data["random"])
+        elms = []
+        for elm in entry.data["entities"].split(","):
+            elms += [elm.strip()]
+        await async_mysetup(hass, elms, entry.data["delta"], entry.data["interval"], entry.data["restore"], entry.data["random"])

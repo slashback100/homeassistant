@@ -5,14 +5,15 @@
       entity_id: binary_sensor.garage_de_chris
       state: 'on'
       repeat:
-        - 1
         - 2
         - 5
         - 30
         - 60
       skip_first: true
       notifiers:
-#        - ios_chris
         - mobile_app_iphone
-#        - mail
+      data:
+         actions: 
+           - action: "ACK_CHRIS"
+             title: "C'est normal"
 

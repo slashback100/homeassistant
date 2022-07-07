@@ -2,6 +2,7 @@
     name: "Statistique sur la disponibilité du courant à Beaufays"
     entity_id: binary_sensor.internet_papa
     state_characteristic: mean
+    #state_characteristic: average_step #could be good to
     max_age: 
-      hours: 240
+      hours: 24
     sampling_size: 1440 #one day

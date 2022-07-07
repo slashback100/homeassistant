@@ -25,21 +25,37 @@
         from: 'home'
         to: 'not_home'
     condition:
-        condition: and
-        conditions:
+        - and:
           - condition: template
             value_template: '{{ states("person.christophe") != "home" }}'
           - condition: template
             value_template: '{{ states("person.melanie") != "home" }}'
-          - condition: state
-            entity_id: group.light_to_check
-            state: 'on'
+          - or:
+              - condition: state
+                entity_id: group.light_to_check
+                state: 'on'
+              - condition: template
+                value_template: '{{ expand(state_attr("group.music_players", "entity_id")) | selectattr("state", "eq", "playing") | list  | count > 0 }}'
     action:
       - service: notify.mobile_app_iphone
         data_template:
             message: >
-              {{ "Lumière allumée: " }}
-              {{ states['light'] | selectattr('state','eq', 'on') | map(attribute='attributes.friendly_name') | list | join(', ') }}
+              
+              {% set l = states['light'] | selectattr('state','eq', 'on') | map(attribute='attributes.friendly_name') | list %}
+              {% if l | count > 0 %}
+              {{ "Lumière(s) allumée(s): " }}
+              {{ l | join (", ") }}
+              {% endif %}
+              {% set m = expand(state_attr("group.music_players", "entity_id")) | selectattr("state", "eq", "playing") | map(attribute='attributes.friendly_name') | list %}
+              {% if l | count > 0 and m | count > 0 %}
+              {{"
+              "}}
+              {% endif %}
+              {% if m | count > 0 %}
+              {{ "Musique allumée: " }}
+              {{ m | join (", ") }}
+              {% endif %}
+              
             data:
                 actions:
                   - action: 'OFF'
