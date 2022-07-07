@@ -1,0 +1,16 @@
+  - alias: 'Remove login attempt failed notif'
+    id: 'remove_login_attempt_failed_notif'
+    trigger:
+        platform: event
+        event_type: call_service
+        event_data:
+            domain: persistent_notification
+            service: create
+    action: 
+      - choose:
+          - conditions: "{{ trigger.event.data.service_data.title == 'Login attempt failed' }}"
+            sequence: 
+                service: persistent_notification.dismiss
+                data:
+                    notification_id: "http_login"
+        

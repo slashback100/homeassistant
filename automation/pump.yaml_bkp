@@ -1,0 +1,12 @@
+  - alias: Pump
+    id: Pump
+    trigger:
+      - platform: time_pattern
+        minutes: 0
+        seconds: 0
+    action:
+      - service: switch.turn_on
+        entity_id: switch.billard_chauffage_entree
+      - delay: 300
+      - service: switch.turn_off
+        entity_id: switch.billard_chauffage_entree

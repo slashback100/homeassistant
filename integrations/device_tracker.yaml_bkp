@@ -1,0 +1,22 @@
+device_tracker:
+  - platform: mqtt_json
+    devices:
+       mercedes: cmd/mercedes/tracker
+  - platform: nmap_tracker
+    hosts: 192.168.0.1-255
+    exclude:
+      - 192.168.0.186
+      - 192.168.0.176
+      - 192.168.0.1
+      - 192.168.0.200
+      - 192.168.0.201
+      - 192.168.0.202
+      - 192.168.0.203
+      - 192.168.0.100
+    interval_seconds: 60
+        #  - platform: bbox
+        #    host: 192.168.0.1
+        #  - platform: owntracks
+        #    waypoints: True
+        #    region_mapping:
+        #        Abbaye: Home

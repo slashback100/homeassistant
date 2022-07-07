@@ -1,0 +1,20 @@
+  - id: ack_chris
+    trigger:
+        platform: event
+        event_type: mobile_app_notification_action
+        event_data:
+          action: "ACK_CHRIS"
+    action:
+      - service: alert.turn_off
+        data:
+            entity_id: alert.chris_garage_open
+  - id: ack_mel
+    trigger:
+        platform: event
+        event_type: mobile_app_notification_action
+        event_data:
+          action: "ACK_CHRIS"
+    action:
+      - service: alert.turn_off
+        data:
+            entity_id: alert.mel_garage_open

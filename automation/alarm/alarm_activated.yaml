@@ -1,0 +1,17 @@
+  - id: alarm_ring
+    alias: "L'alarme sonne !" 
+    trigger:
+      - platform: state
+        entity_id: sensor.statut_de_l_alarme
+        to: 'alarme'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "L'alarme sonne !"
+            data:
+                push:
+                    sound:
+                        name: "Update.caf"
+                        critical: 1
+                        volume: 1
+ 

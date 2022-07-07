@@ -1,0 +1,10 @@
+    platform: sql
+    db_url: !secret db_url
+    queries:
+      - name: "Size of HA DB"
+        query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant_2" GROUP BY table_schema;'
+        column: 'value'
+        unit_of_measurement: kB
+#      - name: "Test addtime"
+#        query: 'select state from states where entity_id = "sensor.date_time" and last_changed < addtime(current_timestamp(), "-24:00:00") order by last_changed desc limit 1'
+#        column: 'state'
