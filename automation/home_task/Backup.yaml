@@ -1,0 +1,13 @@
+  - alias: BackupHdd
+    id: BackupHdd
+    trigger:
+      - platform: time
+        at: '20:00:00'
+    condition:
+      - condition: template
+        value_template: "{{ now().weekday() == 6 }}"
+    action:
+      - service: persistent_notification.create
+        data:
+            message: "Faire un Backup du HDD"
+            title: "Backup"

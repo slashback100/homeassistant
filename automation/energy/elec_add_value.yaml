@@ -1,0 +1,11 @@
+  - id: new_value_elec
+    alias: "New value for elec consumption"
+    trigger:
+        platform: state
+        entity_id: input_number.electricite
+    action:
+      - service: mqtt.publish
+        data:
+            topic: 'consommation/electricite'
+            payload: "{{ states('input_number.electricite') }}"
+            retain: true

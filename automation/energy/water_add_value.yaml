@@ -1,0 +1,11 @@
+  - id: new_value_water
+    alias: "New value for water consumption"
+    trigger:
+        platform: state
+        entity_id: input_number.compteur_eau
+    action:
+      - service: mqtt.publish
+        data:
+            topic: 'consommation/eau'
+            payload: "{{ states('input_number.compteur_eau') }}"
+            retain: true

@@ -67,7 +67,7 @@
             data:
               entity_id: input_select.tv_led_effect
               value: "No effect"
-        level_template: "{{ (states('intput_number.tv_led_brightness') | default(100) | int * 255 / 100) | int}}"
+        level_template: "{{ (states('input_number.tv_led_brightness') | default(100) | int * 255 / 100) | int}}"
         set_level:
           - service: input_number.set_value
             data:

@@ -8,9 +8,24 @@
         input:
             switch_id: binary_sensor.extHaut_music_minus
             long_click_action:
-              - choose:
-                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
-                    sequence:
+              - if: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                then:
+                  - choose:
+                        #si il y a de la music dans le salon et pas dehors -> lier exterieur et salon
+                      - conditions: "{{ is_state('media_player.max2play_2', 'playing') and not is_state('media_player.terrassehaut', 'playing')}}"
+                        sequence:
+                          - service: squeezebox.sync
+                            data:
+                                entity_id: media_player.max2play_2
+                                other_player: media_player.terrassehaut
+                        #si on veut couper la musique dehors et qu'elle est liée avec le salon -> délier
+                      - conditions: "{{ is_state('media_player.terrassehaut', 'playing') and 'media_player.terrassehaut' in state_attr('media_player.max2play_2', 'group_members') }}"
+                        sequence:
+                          - service: squeezebox.unsync
+                            data:
+                                entity_id: media_player.terrassehaut
+                    # sinon, simple switch
+                    default:
                       - service: media_player.media_play_pause
                         entity_id: media_player.terrassehaut
             short_click_action:

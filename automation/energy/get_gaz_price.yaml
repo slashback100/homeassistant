@@ -1,0 +1,10 @@
+
+  - id: get_price_gas
+    alias: "Retrieve value for gas price"
+    trigger:
+        platform: time_pattern
+        minutes: 0
+        hours: '*'
+    action:
+      - service: shell_command.get_prix_gaz
+          

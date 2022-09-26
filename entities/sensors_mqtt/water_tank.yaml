@@ -1,0 +1,2 @@
+    name: "Senseur pression reservoir d'eau"
+    state_topic: cmd/esp_water_tank/value

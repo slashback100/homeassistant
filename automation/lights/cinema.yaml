@@ -47,8 +47,22 @@
                             data:
                               entity_id: light.l_cinema_lampe
             double_click_action:
-              - service: light.toggle
-                entity_id: light.l_billard
+              - if: "{{ is_state('light.l_billard_spots', 'off')}}"
+                then:
+                  - service: light.turn_on
+                    entity_id: 
+                      - light.l_bar
+                      - light.wled_2
+                      - light.wled_3
+                      - light.l_billard_spots
+                else:
+                  - service: light.turn_off
+                    entity_id: 
+                      - light.l_billard
+                      - light.l_bar
+                      - light.wled_2
+                      - light.wled_3
+                      - light.l_billard_spots
 
   - alias: turnOnLightWhenStop
     id: turnOnLightWhenStop

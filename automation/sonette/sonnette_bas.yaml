@@ -5,6 +5,7 @@
         path: clicks.yaml
         input:
             switch_id: binary_sensor.sonette_bas
+            delay: 2
             short_click_action:
               - service: notify.mobile_app_iphone
                 data:
@@ -21,6 +22,7 @@
         path: clicks.yaml
         input:
             switch_id: binary_sensor.sonette_bas
+            delay: 2
             short_click_action:
               - service: notify.mobile_app_iphone
                 data:
@@ -43,6 +45,7 @@
         path: clicks.yaml
         input:
             switch_id: binary_sensor.sonette_bas
+            delay: 2
             short_click_action:
               - service: light.toggle
                 entity_id: light.l_sam_plafond
@@ -67,6 +70,7 @@
         path: clicks.yaml
         input:
             switch_id: binary_sensor.sonette_bas
+            delay: 2
             short_click_action:
               - service: light.toggle
                 entity_id: light.l_billard
@@ -91,6 +95,7 @@
         path: clicks.yaml
         input:
             switch_id: binary_sensor.sonette_bas
+            delay: 2
             short_click_action:
               - service: shell_command.ringextbas
               - delay:
@@ -102,6 +107,7 @@
         path: clicks.yaml
         input:
             switch_id: binary_sensor.sonette_bas
+            delay: 2
             short_click_action:
               - choose:
                   - conditions:
@@ -119,6 +125,7 @@
         path: clicks.yaml
         input:
             switch_id: binary_sensor.sonette_bas
+            delay: 2
             short_click_action:
               - choose:
                   - conditions:
@@ -141,6 +148,7 @@
         path: clicks.yaml
         input:
             switch_id: binary_sensor.sonette_bas
+            delay: 2
             long_click_action:
               - service: light.toggle
                 entity_id: light.l_cave_jardin

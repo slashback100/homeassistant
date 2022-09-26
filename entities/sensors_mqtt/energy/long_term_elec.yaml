@@ -1,0 +1,6 @@
+    name: "Consommation d'électricité"
+    state_topic: "consommation/electricite"
+    qos: 1
+    unit_of_measurement: "kWh"
+    device_class: "energy"
+    state_class: "total"

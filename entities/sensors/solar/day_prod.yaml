@@ -1,6 +1,0 @@
-    platform: rest
-    resource: http://192.168.0.110/solar_api/v1/GetPowerFlowRealtimeData.fcgi
-    name: Production du jour
-    value_template: '{{ (value_json.Body.Data.Site.E_Day / 1000 | int ) | round(2) }}'
-    unit_of_measurement: "kWh"
-    scan_interval: 315360000

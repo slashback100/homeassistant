@@ -1,0 +1,4 @@
+    name: "Prix du Gaz"
+    state_topic: "consommation/gaz_prix"
+    qos: 1
+    unit_of_measurement: "€/m³"

@@ -1,6 +1,5 @@
   - id: comingHome
-    alias: "Chris Comming Home: open garage?"
-    initial_state: true
+    alias: "Chris Coming Home: open garage?"
     trigger:
         platform: state
         entity_id: person.christophe
@@ -25,7 +24,7 @@
                     behavior: 'default'
  
   - id: melComingHome
-    alias: "Mel Comming Home: open garage?"
+    alias: "Mel Coming Home: open garage?"
     initial_state: true
     trigger:
         platform: state
@@ -51,7 +50,7 @@
                     behavior: 'default'
  
   - id: comingHomeAtNight
-    alias: "Comming Home At Night: turning on light"
+    alias: "Coming Home At Night: turning on light"
     trigger:
         platform: state
         entity_id: person.christophe

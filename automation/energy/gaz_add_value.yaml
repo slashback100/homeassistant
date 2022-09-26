@@ -1,0 +1,11 @@
+  - id: new_value_gas
+    alias: "New value for gas consumption"
+    trigger:
+        platform: state
+        entity_id: input_number.compteur_gaz
+    action:
+      - service: mqtt.publish
+        data:
+            topic: 'consommation/gaz'
+            payload: "{{ states('input_number.compteur_gaz') }}"
+            retain: true

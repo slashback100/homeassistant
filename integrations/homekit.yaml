@@ -1,9 +1,9 @@
-homekit:
+#homekit:
 #    safe_mode: true
-    filter:
-        include_domains:
-              - light
-              - cover
-                #- climate
-              - media_player
-                #- camera
+#    filter:
+#        include_domains:
+#              - light
+#              - cover
+#                #- climate
+#              - media_player
+#                #- camera

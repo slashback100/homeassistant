@@ -3,7 +3,7 @@
     trigger:
       - platform: numeric_state
         entity_id: sensor.distance_voiture_garage_mel
-        below: 16 # 16 cm
+        below: 50 # 16 cm
     action:
       - service: light.turn_on
         entity_id: light.l_garage_mel

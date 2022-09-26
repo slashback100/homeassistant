@@ -14,14 +14,14 @@
         entity_id: binary_sensor.alarme_activee
         state: 'on'
     action:
-      - service: notify.mobile_app_sm_a525f
-        data:
-            message: "Alarme branchée et garage ouvert !"
-      - service: notify.mobile_app_iphone
-        data:
-            message: "Alarme branchée et garage ouvert !"
+      #- service: notify.mobile_app_sm_a525f
+      #  data:
+      #      message: "Alarme branchée et garage ouvert !"
+      #- service: notify.mobile_app_iphone
+      #  data:
+      #      message: "Alarme branchée et garage ouvert !"
       - repeat:
-          count: 4
+          count: "{{ iif(trigger.entity_id == 'cover.garage_de_chris', 8, 4) }}"
           sequence:
             - service: light.toggle
               data:
