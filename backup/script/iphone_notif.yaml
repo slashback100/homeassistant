@@ -1,6 +1,0 @@
-send_iphone_notif:
-    sequence:
-      - service: notify.mail
-        data_template: 
-            title: "#test"
-            message: "{{ body }}"
