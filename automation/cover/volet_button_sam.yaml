@@ -1,0 +1,23 @@
+  - alias: SwitchSamVolet
+    id: SwitchSamVolet
+    use_blueprint:
+      path: simple_double_click.yaml
+      input:
+        switch_id: binary_sensor.sam_volet
+        long_click_action:
+          - if: "{{ is_state('cover.volet_sam_1', 'open') }}"
+            then:
+              - service: mqtt.publish
+                data: 
+                  topic: cmd/blinds_etage1a/48
+                  payload: 'u'
+            else:
+              - service: mqtt.publish
+                data: 
+                  topic: cmd/blinds_etage1a/48
+                  payload: 'd'
+        short_click_action:
+          - service: mqtt.publish
+            data: 
+              topic: cmd/blinds_etage1a/48
+              payload: 's'

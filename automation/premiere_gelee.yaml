@@ -2,7 +2,7 @@
     alias: "Première gelée prévue demain ou après-demain"
     trigger:
         platform: template
-        value_template: "{% if states.weather.dark_sky.attributes.forecast[0].templow < 3 or states.weather.dark_sky.attributes.forecast[1].templow < 3 %}true{% endif  %}"
+        value_template: "{% if states.weather.maison.attributes.forecast[0].templow < 3 or states.weather.maison.attributes.forecast[1].templow < 3 %}true{% endif  %}"
     action:
       - service: input_boolean.turn_on
         data:

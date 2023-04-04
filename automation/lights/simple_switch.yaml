@@ -3,7 +3,7 @@
     id: SwichBuanderie1
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/35
+        topic: cmd/etage1a/in/7
         payload: 'ON'
     action:
       - service: light.toggle
@@ -12,7 +12,7 @@
     id: SwichBuanderie2
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/36
+        topic: cmd/etage1a/in/6
         payload: 'ON'
     action:
       - service: light.toggle
@@ -21,7 +21,7 @@
     id: SwichBuanderie3
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/34
+        topic: cmd/etage1a/in/4
         payload: 'ON'
     action:
       - service: light.toggle
@@ -30,7 +30,7 @@
     id: SwichBuanderie4
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/37
+        topic: cmd/etage1a/in/5
         payload: 'ON'
     action:
       - service: light.toggle
@@ -39,7 +39,7 @@
     id: SwichCuisine1 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/14
+        topic: cmd/etage1a/in/33
         payload: 'ON'
     action:
       - service: light.toggle
@@ -57,7 +57,7 @@
     id: SwichCuisine4
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/17
+        topic: cmd/etage1a/in/30
         payload: 'ON'
     action:
       - service: light.toggle
@@ -66,7 +66,7 @@
     id: SwichCuisine5 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/18
+        topic: cmd/etage1a/in/29
         payload: 'ON'
     action:
       - service: light.toggle
@@ -75,7 +75,7 @@
     id: SwichCuisine6 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/19
+        topic: cmd/etage1a/in/28
         payload: 'ON'
     action:
       - service: light.toggle
@@ -84,7 +84,7 @@
     id: SwitchGarageChris3
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/40
+        topic: cmd/etage1a/in/1
         payload: 'ON'
     action:
       - service: light.toggle
@@ -93,7 +93,7 @@
     id: SwichHall1
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/28
+        topic: cmd/etage1a/in/43
         payload: 'ON'
     action:
       - service: light.toggle
@@ -102,7 +102,7 @@
     id: SwichHall2
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/29
+        topic: cmd/etage1a/in/42
         payload: 'ON'
     action:
       - service: light.toggle
@@ -112,11 +112,11 @@
     id: Switchportearriere1
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/26
+        topic: cmd/etage1a/in/19
         payload: 'ON'
     action:
       - choose:
-          - conditions: "{{ is_state('calendar.aide_menagere', 'off') }}"
+          - conditions: "{{ is_state('binary_sensor.femme_menage_presente', 'off') }}"
             sequence:
               - service: light.toggle
                 entity_id: light.l_terrasse_bas
@@ -124,11 +124,11 @@
     id: Switchportearriere2
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/27
+        topic: cmd/etage1a/in/18
         payload: 'ON'
     action:
       - choose:
-          - conditions: "{{ is_state('calendar.aide_menagere', 'off') }}"
+          - conditions: "{{ is_state('binary_sensor.femme_menage_presente', 'off') }}"
             sequence:
               - service: light.toggle
                 entity_id: light.l_terrasse_haut
@@ -145,7 +145,7 @@
     id: SwitchSAM6
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/32
+        topic: cmd/etage1a/in/38
         payload: 'ON'
     action:
       - service: light.toggle
@@ -154,7 +154,7 @@
     id: SwichToilette
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/30
+        topic: cmd/etage1a/in/40
         payload: 'ON'
     action:
       - service: light.toggle

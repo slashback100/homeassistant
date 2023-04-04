@@ -7,7 +7,7 @@
       - platform: numeric_state
         entity_id:  climate.chauffage_du_cinema
         value_template: "{{state.attributes.current_temperature - state.attributes.temperature }}"
-        above: -1
+        above: -0.01
     condition:
       - condition: state
         entity_id:  climate.chauffage_du_cinema
@@ -29,6 +29,10 @@
       - condition: state
         entity_id:  climate.chauffage_du_cinema
         state: 'auto'
+      - condition: numeric_state
+        entity_id:  climate.chauffage_du_cinema
+        value_template: "{{state.attributes.current_temperature - state.attributes.temperature }}"
+        below: 0 
     action:
       - service: switch.turn_on
         entity_id: switch.cinema_chauffage

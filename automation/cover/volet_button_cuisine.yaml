@@ -1,0 +1,23 @@
+  - alias: Volet Toggle
+    description: Volet_toggle
+    use_blueprint:
+      path: simple_double_click.yaml
+      input:
+        switch_id: binary_sensor.salon_volet
+        long_click_action:
+          - if: "{{ is_state('cover.volet_cuisine_1', 'open') }}"
+            then:
+              - service: mqtt.publish
+                data: 
+                  topic: cmd/blinds_etage1a/15
+                  payload: 'u'
+            else:
+              - service: mqtt.publish
+                data: 
+                  topic: cmd/blinds_etage1a/15
+                  payload: 'd'
+        short_click_action:
+          - service: mqtt.publish
+            data: 
+              topic: cmd/blinds_etage1a/15
+              payload: 's'

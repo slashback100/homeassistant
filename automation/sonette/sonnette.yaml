@@ -3,7 +3,7 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
     condition: 
       - condition: numeric_state
@@ -27,19 +27,24 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
-    condition: '{{ ( now() - timedelta(seconds = 5)) > state_attr("automation.watchdog_triggered_the_reset_of_etage1a", "last_triggered") }}'
+    condition: 
+      - condition: template
+        value_template: '{{ ( now() - timedelta(seconds = 5)) > state_attr("automation.watchdog_triggered_the_reset_of_etage1a", "last_triggered") }}'
+      - condition: numeric_state
+        entity_id: zone.home
+        above: 0
     action:
       - service: mqtt.publish
         data:
-            topic: cmd/etage1a/out/1
+            topic: cmd/etage1a/out/61
             payload: 'ON'
       - delay:
             milliseconds: 100
       - service: mqtt.publish
         data:
-            topic: cmd/etage1a/out/1
+            topic: cmd/etage1a/out/61
             payload: 'OFF'
       - delay:
             milliseconds: 5000
@@ -48,7 +53,7 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
     condition: '{{ ( now() - timedelta(seconds = 5)) > state_attr("automation.watchdog_triggered_the_reset_of_etage1a", "last_triggered") }}'
     action:
@@ -65,7 +70,7 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
     condition: '{{ ( now() - timedelta(seconds = 5)) > state_attr("automation.watchdog_triggered_the_reset_of_etage1a", "last_triggered") }}'
     action:
@@ -88,7 +93,7 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
     action:
       - service: light.toggle
@@ -112,7 +117,7 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
     action:
       - service: light.toggle
@@ -136,7 +141,7 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
     condition:
         condition: and
@@ -165,7 +170,7 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
     action:
       - service: shell_command.ringexthaut
@@ -176,7 +181,7 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
     action:
       - service: shell_command.ringextbas
@@ -187,7 +192,7 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
     condition:
       - condition: state
@@ -202,11 +207,11 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
     condition:
       - condition: state
-        entity_id: media_player.terrassebas_2
+        entity_id: media_player.terrassebas_3
         state: playing 
     action:
       - service: shell_command.ringextbas
@@ -217,7 +222,7 @@
     mode: single 
     trigger:
       - platform: mqtt
-        topic: cmd/etage1a/in/47
+        topic: cmd/etage1a/in/46
         payload: 'ON'
     condition:
       - condition: state

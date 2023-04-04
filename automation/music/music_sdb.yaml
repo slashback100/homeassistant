@@ -6,21 +6,21 @@
             switch_id: binary_sensor.sdb_music_plus
             long_click_action:
               - choose:
-                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                  - conditions: "{{ states('binary_sensor.femme_menage_presente') in ['off', 'unknown'] }}"
                     sequence:
                       - service: media_player.media_play_pause
-                        entity_id: media_player.salle_de_bain_2
+                        entity_id: media_player.salle_de_bain
             short_click_action:
               - choose:
-                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                  - conditions: "{{ states('binary_sensor.femme_menage_presente') in ['off', 'unknown'] }}"
                     sequence:
                       - choose:
-                          - conditions: "{{ states('media_player.salle_de_bain_2') in ['paused', 'idle'] }}"
+                          - conditions: "{{ states('media_player.salle_de_bain') in ['paused', 'idle'] }}"
                             sequence:
                               - service: shell_command.tts_meteo_sdb
                         default:
                           - service: media_player.volume_down
-                            entity_id: media_player.salle_de_bain_2
+                            entity_id: media_player.salle_de_bain
   - alias: SwitchMusicSdbPlus
     id: SwitchMusicSdbPlus
     use_blueprint:
@@ -29,13 +29,13 @@
             switch_id: binary_sensor.sdb_music_minus
             short_click_action:
               - choose:
-                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                  - conditions: "{{ states('binary_sensor.femme_menage_presente') in ['off', 'unknown'] }}"
                     sequence:
                       - service: media_player.volume_up
-                        entity_id: media_player.salle_de_bain_2
+                        entity_id: media_player.salle_de_bain
             long_click_action:
               - choose:
-                  - conditions: "{{ states('calendar.aide_menagere') in ['off', 'unknown'] }}"
+                  - conditions: "{{ states('binary_sensor.femme_menage_presente') in ['off', 'unknown'] }}"
                     sequence:
                       - service: media_player.media_next_track
-                        entity_id: media_player.salle_de_bain_2
+                        entity_id: media_player.salle_de_bain

@@ -5,7 +5,7 @@
         entity_id: group.quiestla
         to: 'home'
       - platform: state
-        entity_id: calendar.aide_menagere
+        entity_id: binary_sensor.femme_menage_presente
         to: 'on'
     action:
       - service: presence_simulation.stop
@@ -21,10 +21,10 @@
         from: 'home'
         to: 'not_home'
       - platform: state
-        entity_id: calendar.aide_menagere
+        entity_id: binary_sensor.femme_menage_presente
         to: 'off'
         for: '00:10:00'
-    condition: '{{ states("person.christophe") != "home" and states("person.melanie") != "home" and states("calendar.aide_menagere") == "off" }}'
+    condition: '{{ states("person.christophe") != "home" and states("person.melanie") != "home" and states("binary_sensor.femme_menage_presente") == "off" }}'
     action:
       - service: presence_simulation.start
         data:

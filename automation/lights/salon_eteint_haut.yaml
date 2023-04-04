@@ -1,9 +1,41 @@
   - alias: SwichCuisine10OFF # turn off rdc
     id: SwichCuisine10OFF # turn off rdc
-    initial_state: 'on'
-    use_blueprint:
-        path: clicks.yaml
-        input:
-            switch_id: binary_sensor.eteindre_haut
-            long_click_action:
-              - service: script.switch_off_haut
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: 'binary_sensor.eteindre_haut'
+        to: 'on'
+    action:
+      - wait_template: "{{ is_state('binary_sensor.eteindre_haut', 'off') }}"
+        timeout: 0.3
+        continue_on_timeout: true
+      - if: "{{ not wait.completed }}" # long click
+        then:
+          - service: scene.create
+            data:
+              scene_id: store_before_long_press
+              snapshot_entities: 
+                - light.l_bureau
+                - light.l_chambre_parents
+                - light.l_dressing
+                - light.l_elise
+                - light.l_hall_ambiance
+                - light.l_hall_nuit
+                - light.l_noemie
+                - light.l_salle_jeu
+                - light.l_sdb
+                - light.l_sdb_eviers
+                - light.l_grenier
+                - media_player.chambre
+                - media_player.salle_de_bain
+          - service: script.switch_off_haut
+          - wait_template: "{{ is_state('binary_sensor.eteindre_haut', 'off') }}"
+            continue_on_timeout: true
+          - wait_template: "{{ is_state('binary_sensor.eteindre_haut', 'on') }}"
+            timeout: 10
+            continue_on_timeout: true
+          - if: "{{ wait.completed }}"
+            then:
+              - service: scene.turn_on
+                target:
+                  entity_id: scene.store_before_long_press

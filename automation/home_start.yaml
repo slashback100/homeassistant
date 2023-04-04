@@ -22,7 +22,7 @@
             payload: 'ON'
       - service: mqtt.publish
         data:
-            topic: cmd/etage1a/in/46
+            topic: cmd/etage1a/in/44
             payload: 'ON'
       - service: logger.set_default_level
         data:

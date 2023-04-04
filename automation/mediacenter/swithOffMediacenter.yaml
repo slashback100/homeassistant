@@ -9,3 +9,7 @@
     action:
       - service: switch.turn_off
         entity_id: switch.prog_kodi
+      - service: media_player.volume_set
+        data: 
+          volume_level: 0.2
+          entity_id: media_player.salon

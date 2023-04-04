@@ -5,6 +5,6 @@
     use_blueprint:
       path: mute_artist.yaml
       input:
-        music_player: media_player.max2play_2
+        music_player: media_player.salon
         blacklist: input_text.artist_blacklist
         person: person.christophe

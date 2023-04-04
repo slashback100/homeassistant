@@ -9,10 +9,10 @@
         to: 'on'
     action:
       - choose:
-          - conditions: "{{ is_state('media_player.salon', 'playing') }}"
+          - conditions: "{{ is_state('media_player.max2play_2', 'playing') }}"
             sequence:
               - service: media_player.media_pause
-                entity_id: media_player.salon
+                entity_id: media_player.max2play_2
       - service: input_text.set_value
         data:
             entity_id: input_text.hyperion_args
@@ -21,4 +21,4 @@
       - service: media_player.volume_set
         data: 
           volume_level: 0.3
-          entity_id: media_player.salon
+          entity_id: media_player.max2play_2

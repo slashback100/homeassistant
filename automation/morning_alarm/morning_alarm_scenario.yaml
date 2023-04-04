@@ -21,17 +21,21 @@
         data:
             entity_id: light.l_dressing
             brightness_pct: 5 
-      - service: light.turn_on
-        data:
-            entity_id: light.l_escalier
-      - service: media_player.media_play
-        data:
-            entity_id: media_player.salle_de_bain_2
+      #- service: light.turn_on
+      #  data:
+      #      entity_id: light.l_escalier
+      #- service: media_player.media_play
+      #  data:
+      #      entity_id: media_player.salle_de_bain
       - delay: '00:01:00'
       - service: light.turn_on
         data:
             entity_id: light.l_dressing
             brightness_pct: 10
+      - service: mqtt.publish
+        data: 
+          topic: cmd/blinds_etage1a/63
+          payload: 'u'
      # - service: light.turn_on
      #   data:
      #       entity_id: light.l_noemie

@@ -1,0 +1,24 @@
+  - id: volet_cuisine_3_position_close
+    alias: 'Set position to volet cuisine 3 (close)'
+    use_blueprint:
+      path: volet_down.yaml
+      input:
+        cover_id: cover.volet_cuisine_3
+        id: 4
+        time_all_way: 23
+  - id: volet_cuisine_3_position_open
+    alias: 'Set position to volet cuisine 3 (open)'
+    use_blueprint:
+      path: volet_up.yaml
+      input:
+        cover_id: cover.volet_cuisine_3
+        id: 4
+        time_all_way: 23
+  - id: volet_cuisine_3_set_position
+    alias: 'Change position to volet cuisine 3'
+    use_blueprint:
+      path: volet_change_pos.yaml
+      input:
+        cover_id: cover.volet_cuisine_3
+        id: 4
+        time_all_way: 23

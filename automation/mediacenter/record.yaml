@@ -1,0 +1,7 @@
+  - id: record_show
+    alias: 'Enregistrement tv'
+    trigger:
+      - platform: time_pattern
+        minutes: "*"
+    action:
+      - service: shell_command.record

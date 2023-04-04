@@ -25,15 +25,19 @@
       - platform: numeric_state
         entity_id:  climate.chauffage_du_billard
         value_template: "{{state.attributes.current_temperature - state.attributes.temperature }}"
-        above: -1
+        above: -0.01
     condition:
       - condition: state
         entity_id:  climate.chauffage_du_billard
         state: 'auto'
+      - condition: numeric_state
+        entity_id:  climate.chauffage_du_billard
+        value_template: "{{state.attributes.current_temperature - state.attributes.temperature }}"
+        above: -0.01
     action:
       - service: switch.turn_off
         entity_id: 
-          - switch.billard_chauffage_entree
+          #- switch.billard_chauffage_entree #sera activé par SyncChauffageBillardOFF
           - switch.billard_chauffage_fond
   - alias: ClimateBillard_autoMode_on
     id: ClimateBillard_autoMode_on
@@ -49,8 +53,12 @@
       - condition: state
         entity_id:  climate.chauffage_du_billard
         state: 'auto'
+      - condition: numeric_state
+        entity_id:  climate.chauffage_du_billard
+        value_template: "{{state.attributes.current_temperature - state.attributes.temperature }}"
+        below: 0 
     action:
       - service: switch.turn_on
         entity_id: 
-          - switch.billard_chauffage_entree
+          #- switch.billard_chauffage_entree #sera activé par SyncChauffageBillardON
           - switch.billard_chauffage_fond

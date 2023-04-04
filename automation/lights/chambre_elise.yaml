@@ -9,7 +9,7 @@
                 data:
                     entity_id: light.l_elise
               - choose:
-                  - conditions: "{{ is_state('calendar.aide_menagere', 'on') and is_state('light.l_elise', 'on') }}"
+                  - conditions: "{{ is_state('binary_sensor.femme_menage_presente', 'on') and is_state('light.l_elise', 'on') }}"
                     sequence:
                       - service: light.turn_on
                         data:
@@ -52,7 +52,7 @@
                 data:
                     entity_id: light.l_elise
               - choose:
-                  - conditions: "{{ is_state('calendar.aide_menagere', 'on') and is_state('light.l_elise', 'on') }}"
+                  - conditions: "{{ is_state('binary_sensor.femme_menage_presente', 'on') and is_state('light.l_elise', 'on') }}"
                     sequence:
                       - service: light.turn_on
                         data:

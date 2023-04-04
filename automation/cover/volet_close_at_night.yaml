@@ -1,0 +1,13 @@
+  - alias: "Descendre les volet la nuit"
+    id: "descendre_volets_nuit"
+    trigger:
+      - platform: numeric_state
+        entity_id: sun.sun
+        value_template: "{{ state.attributes.elevation }}"
+        below: -4
+    action:
+      - service: mqtt.publish
+        data: 
+          topic: cmd/blinds_etage1a/63
+          payload: 'd'
+    mode: single

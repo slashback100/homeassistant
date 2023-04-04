@@ -16,3 +16,5 @@
                   entity_id: 
                     - light.l_chambre_parents
                     - light.l_dressing
+              - service: media_player.media_pause
+                entity_id: media_player.chambre

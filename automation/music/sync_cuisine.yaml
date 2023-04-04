@@ -14,7 +14,7 @@
                 default:
                   - service: squeezebox.sync
                     data:
-                        entity_id: media_player.max2play_2
+                        entity_id: media_player.salon
                         other_player: media_player.cuisine
             long_click_action:
               - service: squeezebox.unsync
@@ -22,7 +22,7 @@
                     entity_id: media_player.cuisine
               - service: media_player.media_pause
                 data:
-                    entity_id: media_player.max2play_2
+                    entity_id: media_player.salon
               - service: media_player.media_play
                 data:
                     entity_id: media_player.cuisine

@@ -1,0 +1,24 @@
+  - id: volet_sam_1_position_close
+    alias: 'Set position to volet sam 1 (close)'
+    use_blueprint:
+      path: volet_down.yaml
+      input:
+        cover_id: cover.volet_sam_1
+        id: 16
+        time_all_way: 33
+  - id: volet_sam_1_position_open
+    alias: 'Set position to volet sam 1 (open)'
+    use_blueprint:
+      path: volet_up.yaml
+      input:
+        cover_id: cover.volet_sam_1
+        id: 16
+        time_all_way: 33
+  - id: volet_sam_1_set_position
+    alias: 'Change position to volet sam 1'
+    use_blueprint:
+      path: volet_change_pos.yaml
+      input:
+        cover_id: cover.volet_sam_1
+        id: 16
+        time_all_way: 33

@@ -8,11 +8,11 @@
     action:
       - service: mqtt.publish
         data:
-            topic: cmd/etage1a/in/46 #cover chris
+            topic: cmd/etage1a/in/45 #cover chris
             payload: "ON"
       - service: mqtt.publish
         data:
-            topic: cmd/etage1a/in/45 #cover mel
+            topic: cmd/etage1a/in/44 #cover mel
             payload: "ON"
       - service: scene.create # activating the distance_garage_mel may trigger the light. Store and restore its state after
         data:
