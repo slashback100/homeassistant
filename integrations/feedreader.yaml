@@ -1,0 +1,6 @@
+feedreader:
+  urls:
+    - https://rpilocator.com/feed/
+  scan_interval:
+    minutes: 15
+  max_entries: 5

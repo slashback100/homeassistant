@@ -1,0 +1,6 @@
+    name: "Consommation de Gaz"
+    state_topic: "consommation/gaz"
+    qos: 1
+    unit_of_measurement: "m2"
+    device_class: "energy"
+    state_class: "total_increasing"

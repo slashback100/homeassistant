@@ -1,0 +1,19 @@
+    name: Chauffage du salon
+    payload_on: "ON"
+    payload_off: "OFF"
+    #power_command_topic: log/info/set_temp_chauf_salon
+    mode_command_topic: log/info/set_temp_chauf_salon
+    current_temperature_topic: cmd/esp_salon_temp/temp
+    #    action_topic: cmd/etage0a/out/12
+    current_temperature_template: "{{ iif(value|int>1000,states(entity_id), (value | float | round(1)) - 1 ) }}"
+    temperature_command_topic: log/info/set_temp_chauf_cinema
+    retain: true
+    max_temp: 25
+    min_temp: 15
+    temp_step: 0.1
+    precision: 0.1
+    modes:
+      - "auto"
+      - "off"
+      - "heat"
+    initial: 20

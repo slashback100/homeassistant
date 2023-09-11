@@ -1,0 +1,10 @@
+    platform: mqtt
+    name: garage_test
+    device_class: garage
+    state_topic: cmd/etage3a/in/45
+    state_open: "OFF"
+    state_closed: "ON"
+    command_topic: cmd/etage3a/out/68
+    payload_close: 'ON'
+    payload_open: 'ON'
+    retain: true

@@ -1,0 +1,34 @@
+  - id: MailHelloFresh
+    alias: MailHelloFresh 
+    description: MailHelloFresh 
+    trigger: 
+      - platform: event 
+        event_type: imap_content 
+        event_data: 
+            sender: no-reply@mail.hellofresh.be
+            subject: Livraison de votre box HelloFresh
+      - platform: event 
+        event_type: imap_content 
+        event_data: 
+            sender: no-reply@mail.hellofresh.com 
+            subject: Livraison de votre box HelloFresh
+      - platform: event 
+        event_type: imap_content 
+        event_data: 
+            sender: christophe.desirant@gmail.com 
+            subject: Livraison de votre box HelloFresh 
+    action:
+      - service: google.create_event 
+        target: 
+            #entity_id: calendar.famille_desirant 
+            entity_id: calendar.calendier_famille
+        data: 
+            description: HelloFresh 
+            summary: HelloFresh 
+            start_date_time: >- 
+                {% set dt = (trigger.event.data["text"] | regex_findall_index("Heure de livraison[^:]*: ([0-9]+:[0-9]+)")) %} 
+                {{((strptime(states("sensor.date")~" "~ dt, "%Y-%m-%d %H:%M") + timedelta(days = 1) - timedelta(minutes = 30))|string)[:-3]}}
+            end_date_time: >- 
+                {% set dt = (trigger.event.data["text"] | regex_findall_index("Heure de livraison[^:]*: ([0-9]+:[0-9]+)")) %}
+                {{((strptime(states("sensor.date")~" "~ dt, "%Y-%m-%d %H:%M") + timedelta(days = 1) + timedelta(minutes = 30))|string)[:-3]}}
+    mode: single

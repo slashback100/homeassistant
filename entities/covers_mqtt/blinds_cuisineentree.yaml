@@ -1,0 +1,12 @@
+    name: Volet Cuisine Entree
+    object_id: volet_cuisine_entree
+    device_class: blind
+    command_topic: cmd/blinds_etage1a/08
+    payload_close: 'd'
+    payload_open: 'u'
+    payload_stop: 's'
+    position_topic: cmd/blinds_etage1a_position/08
+    position_open: 100
+    position_closed: 0
+    set_position_topic: cmd/blinds_etage1a_set_position/08
+    optimistic: false

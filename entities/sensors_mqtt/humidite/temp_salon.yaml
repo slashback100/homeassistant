@@ -1,0 +1,4 @@
+    name: "Température dans le salon"
+    state_topic: "cmd/esp_salon_temp/temp"
+    unit_of_measurement: '°C'
+    value_template: "{{ iif(value|int>1000,states(entity_id), (value | float | round(1)) - 2 ) }}"

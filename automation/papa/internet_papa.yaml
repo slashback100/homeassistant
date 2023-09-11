@@ -1,0 +1,12 @@
+  - id: internet_papa
+    alias: "Plus d'internet chez papa"
+    trigger:
+        platform: state
+        entity_id: binary_sensor.internet_papa
+        to: 'off'
+        for: '00:10:00'
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "Plus d'internet chez papa"
+            title: "Papa"

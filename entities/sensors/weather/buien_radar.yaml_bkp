@@ -1,0 +1,7 @@
+    platform: command_line
+    command: "wget -q -O- 'https://gpsgadget.buienradar.nl/data/raintext?lat=50.01&lon=2.31&c='$RANDOM \| sed -E 's/[^0-9:\|]//g' \| { echo -n '{"'"'"data"'"'": "'"'"' ; while read i; do echo -n \"\$i \" ; done } ;  echo -n '\" }'"
+    name: Neerslag_Buienradar_Regen_Data
+    json_attributes:
+      - data
+    value_template: 'last_changed: {{states.sensor.neerslag_buienradar_regen_data.last_changed | default(now())}}'
+    scan_interval: 240    

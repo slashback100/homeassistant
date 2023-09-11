@@ -1,0 +1,7 @@
+    platform: statistics
+    name: "Min du niveau de la citerne d'eau de pluie"
+    entity_id: sensor.niveau_citerne_eau_pluie
+    state_characteristic: value_min
+    max_age: 
+      minutes: 30
+    sampling_size: 20

@@ -1,0 +1,30 @@
+  - alias: peephole
+    id: peephole
+    mode: single 
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+      - platform: state
+        entity_id: binary_sensor.sonnette_person
+    action:
+     - choose:
+        - conditions: "{{ is_state('binary_sensor.sonnette_visitor', 'off') and is_state('binary_sensor.sonnette_person', 'off') }}" 
+          sequence: 
+             - service: switch.turn_off
+               data:
+                   entity_id: switch.chris_galaxy_tab_screen
+       default:
+         - service: switch.turn_on
+           data:
+               entity_id: switch.chris_galaxy_tab_screen
+  - alias: poophole_battery
+    id: poophole_battery
+    mode: single
+    trigger:
+      - platform: numeric_state
+        entity_id: sensor.chris_galaxy_tab_batterie
+        below: 10
+    action:
+      - service: notify.mobile_app_iphone
+        data:
+            message: "La galaxy tab a moins de 10% de batterie"

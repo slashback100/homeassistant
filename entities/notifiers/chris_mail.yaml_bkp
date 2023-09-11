@@ -1,0 +1,8 @@
+    name: mail
+    platform: smtp
+    sender: christophe.desirant@gmail.com
+    recipient: christophe.desirant@gmail.com
+    server: smtp.gmail.com
+    port: 587
+    username: christophe.desirant@gmail.com 
+    password: !secret gmail_pass 

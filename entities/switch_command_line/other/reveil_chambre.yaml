@@ -1,0 +1,8 @@
+ - switch:
+     name: reveil_chambre
+     command_on: >-
+             /usr/bin/curl -s -X "POST" -H "Constent-Type: application/json" -d '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["playerpref","alarmsEnabled",1]]}' "http://192.168.0.175:9000/jsonrpc.js"
+     command_off: >-
+             /usr/bin/curl -s -X "POST" -H "Constent-Type: application/json" -d '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["playerpref","alarmsEnabled",0]]}' "http://192.168.0.175:9000/jsonrpc.js"
+     command_state: >-
+             /usr/bin/curl -s -X "POST" -H "Constent-Type: application/json" -d '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["playerpref","alarmsEnabled","?"]]}' "http://192.168.0.175:9000/jsonrpc.js" | grep '"_p2":"1"' > /dev/null

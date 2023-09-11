@@ -1,0 +1,12 @@
+  - alias: "Ouvrir les volets le matin"
+    id: "ouvrir_volets_matin"
+    mode: single
+    trigger: 
+      - platform: time 
+        at: "08:06:12" 
+    action: 
+      - service: mqtt.publish
+        data: 
+            topic: cmd/blinds_etage1a/15 
+            payload: u
+

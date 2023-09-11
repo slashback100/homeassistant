@@ -1,0 +1,161 @@
+  - alias: activate_hellofresh
+    id: activate_hellofresh
+    mode: single 
+    trigger:
+      - platform: calendar
+        event: start
+        #entity_id: calendar.famille_desirant
+        entity_id: calendar.calendier_famille
+    condition:
+      - condition: template
+        value_template: "{{ 'HelloFresh' in trigger.calendar_event.summary }}"
+    action:
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.hello_fresh
+  - alias: deactivate_hellofresh
+    id: deactivate_hellofresh
+    mode: single 
+    trigger:
+      - platform: calendar
+        event: end
+        #entity_id: calendar.famille_desirant
+        entity_id: calendar.calendier_famille
+    condition:
+      - condition: template
+        value_template: "{{ 'HelloFresh' in trigger.calendar_event.summary }}"
+    action:
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.hello_fresh
+
+  - alias: activate_auto_reply_hellofresh
+    id: activate_auto_reply_hellofresh
+    mode: single 
+    trigger:
+      - platform: state
+        entity_id: input_boolean.hello_fresh
+        to: "on"
+      - platform: state
+        entity_id: zone.home
+        to: "0"
+    condition:
+      - condition: state
+        entity_id: input_boolean.hello_fresh
+        state: "on"
+      - condition: state
+        entity_id: zone.home
+        state: "0"
+    action:
+      - service: select.select_option
+        data:
+          entity_id: select.sonnette_auto_quick_reply_message
+          option: "HelloFresh"
+  - alias: deactivate_auto_reply_hellofresh
+    id: deactivate_auto_reply_hellofresh
+    mode: single 
+    trigger:
+      - platform: state
+        entity_id: input_boolean.hello_fresh
+        to: "off"
+      - platform: state
+        entity_id: zone.home
+        from: "0"
+    condition:
+      - condition: template
+        value_template: "{{not is_state('select.sonnette_auto_quick_reply_message', 'off')}}"
+    action:
+      - service: select.select_option
+        data:
+          entity_id: select.sonnette_auto_quick_reply_message
+          option: "off"
+  - alias: sonette_notif_critical_hellofresh
+    id: sonette_notif_critical_hellofresh
+    mode: single 
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.hello_fresh
+        state: "on"
+    action:
+      - service: notify.mobile_app_sm_a525f
+        data:
+            message: "HelloFresh sonne à la porte"
+            data:
+                image: "https://slashbackdomo.ddns.net:4294/{{state_attr('camera.sonnette_snapshots_main','entity_picture')}}"
+      - variables:
+            action_open_garage: "{{ 'OPEN_GARAGE_' ~ context_id }}"
+            action_close_garage: "{{ 'CLOSE_GARAGE_' ~ context_id }}"
+      - choose:
+          - conditions: "{{ is_state('binary_sensor.alarme_activee', 'off') }}" 
+            sequence: 
+              - service: notify.mobile_app_iphone
+                data:
+                    message: "HelloFresh sonne à la porte"
+                    data:
+                        entity_id: camera.sonnette_main
+                        push:
+                            sound:
+                                name: "Ringtone_2_Haptic-sashimi.caf"
+                                critical: 1
+                                volume: 0.5
+                        actions: 
+                          - action: "{{ action_open_garage }}"
+                            title: "Ouvrir le garage"
+              - wait_for_trigger:
+                  - platform: event
+                    event_type: mobile_app_notification_action
+                    event_data:
+                        action: "{{ action_open_garage }}"
+                timeout: 
+                    minutes: 2
+                continue_on_timeout: false
+              - choose: 
+                  - conditions: "{{ wait.trigger.event.data.action == action_open_garage }}"
+                    sequence: 
+                      - service: cover.open_cover
+                        target: 
+                            entity_id: cover.garage_de_chris
+                      - service: notify.mobile_app_iphone
+                        data:
+                            message: "Caméra du garage"
+                            data:
+                                entity_id: camera.mycam
+                                actions: 
+                                  - action: "{{ action_close_garage }}"
+                                    title: "Fermer le garage"
+                      - wait_for_trigger:
+                          - platform: event
+                            event_type: mobile_app_notification_action
+                            event_data:
+                                action: "{{ action_close_garage }}"
+                        timeout: 
+                            minutes: 2
+                        continue_on_timeout: false
+                      - choose: 
+                          - conditions: "{{ wait.trigger.event.data.action == action_close_garage }}"
+                            sequence: 
+                              - service: cover.close_cover
+                                target: 
+                                    entity_id: cover.garage_de_chris
+                              - service: notify.mobile_app_iphone
+                                data:
+                                    message: "Caméra du garage"
+                                    data:
+                                        entity_id: camera.mycam
+        default:
+          - service: notify.mobile_app_iphone
+            data:
+                message: "HelloFresh sonne à la porte (! alarme allumée)"
+                data:
+                    entity_id: camera.sonnette_main
+                    push:
+                        sound:
+                            name: "Ringtone_2_Haptic-sashimi.caf"
+                            critical: 1
+                            volume: 0.5
+      - delay:
+            milliseconds: 5000

@@ -1,0 +1,6 @@
+ - switch:   
+     name: read_only_system
+     command_on: "sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot"
+     command_off: "sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot"
+     command_state: >-
+           mount | sed -n -e 's/^\/dev\/.* on \/ .*(\(r[w|o]\).*/\1/p' | grep ro > /dev/null

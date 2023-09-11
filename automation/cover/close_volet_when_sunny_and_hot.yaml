@@ -1,0 +1,36 @@
+  - alias: "Fermer les volets à l'arrière si soleil et chaud"
+    id: "descendre_volets_arriere_soleil_chaud"
+    mode: single
+    trigger: 
+      - platform: state 
+        entity_id: 
+         - weather.maison 
+        to: sunny 
+      - platform: time 
+        at: "14:30:00" 
+    condition:
+      - condition: state 
+        entity_id: weather.maison 
+        state: sunny 
+      - condition: time 
+        after: "14:30:00" 
+        before: sensor.sun_next_setting
+      - condition: numeric_state 
+        entity_id: sensor.temperature_dans_le_salon 
+        above: 21 
+    action: 
+      - service: mqtt.publish
+        data: 
+            topic: cmd/blinds_etage1a/15 
+            payload: d
+      - service: mqtt.publish
+        data: 
+            topic: cmd/blinds_etage1a/48
+            payload: u
+      - delay: 
+          seconds: 18
+      - service: mqtt.publish
+        data: 
+            topic: cmd/blinds_etage1a/15 
+            payload: s
+
