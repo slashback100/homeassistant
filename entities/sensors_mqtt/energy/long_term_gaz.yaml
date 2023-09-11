@@ -1,5 +1,5 @@
     name: "Consommation de Gaz"
-    state_topic: "consommation/gaz"
+    state_topic: "consommation/gaz/main/value"
     qos: 1
     unit_of_measurement: "m³"
     device_class: "gas"

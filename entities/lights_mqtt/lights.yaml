@@ -1,12 +1,12 @@
   - payload_off: 'OFF'
     payload_on: 'ON'
     name: "l_cuisineentree"
-    command_topic: "cmd/etage1a/out/2"
+    command_topic: "cmd/etage1a/out/68"
     retain: true
   - payload_off: 'OFF'
     payload_on: 'ON'
     name: "l_cuisine_plafond"
-    command_topic: "cmd/etage1a/out/3"
+    command_topic: "cmd/etage1a/out/69"
     retain: true
   - payload_off: 'VOF' #VOF pour Variateur OFF
     payload_on: 'VON' #VON pour Variateur ON
@@ -29,37 +29,37 @@
   - payload_off: 'OFF'
     payload_on: 'ON'
     name: "l_escalier_ambiance"
-    command_topic: "cmd/etage1a/out/6"
+    command_topic: "cmd/etage1a/out/56"
     retain: true
   - payload_off: 'OFF'
     payload_on: 'ON'
     name: "l_hall_plafond"
-    command_topic: "cmd/etage1a/out/7"
+    command_topic: "cmd/etage1a/out/55"
     retain: true
   - payload_off: 'OFF'
     payload_on: 'ON'
     name: "l_toilette"
-    command_topic: "cmd/etage1a/out/8"
+    command_topic: "cmd/etage1a/out/54"
     retain: true
   - payload_off: 'OFF'
     payload_on: 'ON'
     name: "l_salon_plafond"
-    command_topic: "cmd/etage1a/out/5"
+    command_topic: "cmd/etage1a/out/57"
     retain: true
   - payload_off: 'ON'
     payload_on: 'OFF'
     name: "l_garage_chris"
-    command_topic: "cmd/etage1a/out/48"
+    command_topic: "cmd/etage1a/out/11"
     retain: true
   - payload_off: 'ON'
     payload_on: 'OFF'
     name: "l_garage_mel"
-    command_topic: "cmd/etage1a/out/4"
+    command_topic: "cmd/etage1a/out/12"
     retain: true
   - payload_off: 'OFF'
     payload_on: 'ON'
     name: "l_facade_avant"
-    command_topic: "cmd/etage1a/out/12"
+    command_topic: "cmd/etage1a/out/59"
     retain: true
   - payload_off: 'OFF'
     payload_on: 'ON'

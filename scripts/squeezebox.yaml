@@ -7,7 +7,7 @@ squeeze_defaults:
           method: "post"
           headers:    
             content-type: "application/json"
-squeeze_sync_salon_terrassebas:
+squeeze_sync_salon_terrassebas_3:
     sequence:
       - service: shell_command.curl
         data:
@@ -59,7 +59,7 @@ squeeze_unsync_terrassehaut_2:
               - 
                 - sync
                 - "-"
-squeeze_sync_terrassehaut_2_terrassebas:
+squeeze_sync_terrassehaut_2_terrassebas_3:
     sequence:
       - service: shell_command.curl
         data:

@@ -36,6 +36,7 @@ blueprint:
                     min: 0.0
                     max: 10.0
                     unit_of_measurement: seconds
+mode: single
 trigger:
   - platform: state
     entity_id: !input switch_id

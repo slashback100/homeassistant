@@ -1,4 +1,5 @@
   - id: ack_internet_papa
+    alias: "Couper les alertes de coupure de courant à Beaufays par action sur notif"
     trigger:
         platform: event
         event_type: mobile_app_notification_action

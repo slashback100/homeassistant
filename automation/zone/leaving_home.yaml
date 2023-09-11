@@ -12,6 +12,12 @@
       - service: notify.mobile_app_iphone
         data:
             message: "Garage Ouvert !!"
+            data:
+                push:
+                    sound:
+                        name: "Bloom.caf"
+                        critical: 1
+                        volume: 0.8
  
   - id: leavingHome_CheckLight_2
     alias: "Leaving Home Check Light"

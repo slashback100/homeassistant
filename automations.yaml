@@ -1,1 +1,314 @@
-[]
+- id: '1669364600520'
+  alias: Detection_Bouchon_Retour_Travail
+  description: Détection d'un temps de retour trop important
+  trigger:
+  - platform: time
+    at: '15:00:00'
+  - platform: numeric_state
+    entity_id: sensor.chris_vers_maison
+    above: 50
+  condition:
+  - condition: time
+    after: '15:00:00'
+    before: '18:00:00'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: numeric_state
+    entity_id: sensor.chris_vers_maison
+    above: 50
+  - condition: or
+    conditions:
+    - condition: zone
+      entity_id: person.christophe
+      zone: zone.isppc
+    - condition: zone
+      entity_id: person.christophe
+      zone: zone.medsoc
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      message: Plus de 50 minutes pour rentrer à la maison ({{states("sensor.chris_vers_maison")
+        ~ " minutes"}})
+      title: Waze
+  mode: single
+- id: '1670426921747'
+  alias: Domo Memory Warning
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.memory_use_percent
+    above: 90
+  condition: []
+  action:
+  - service: notify.persistent_notification
+    data:
+      message: Problème mémoire, redémarrer HA
+      title: HA Memory
+  - service: notify.mobile_app_iphone
+    data:
+      message: Problème mémoire, redémarrer HA
+      title: HA Memory
+  mode: single
+- id: '1671560154988'
+  alias: Alerte chauffage SDB
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.sdb_prise
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  - platform: state
+    entity_id:
+    - switch.sdb_prise
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
+  - platform: state
+    entity_id:
+    - switch.sdb_prise
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+  - platform: state
+    entity_id:
+    - switch.sdb_prise
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 40
+      seconds: 0
+  - platform: state
+    entity_id:
+    - switch.sdb_prise
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 50
+      seconds: 0
+  - platform: state
+    entity_id:
+    - switch.sdb_prise
+    to: 'on'
+    for:
+      hours: 1
+      minutes: 0
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      message: Chauffage allumé dans la salle de hbain
+  mode: single
+- id: '1672153468118'
+  alias: RPI_Locator
+  description: ''
+  use_blueprint:
+    path: giqcass/rpilocator-notification-blueprint.yaml
+    input:
+      zero_2_w: Raspberry Pi Zero 2 W
+      notify_device: 405f95da122ab4df1c26e0c21c0ed8a7
+      pi4: RPi 4
+      cm4_ram: --no--
+      cm4_mmc: MMC
+- id: '1674574194995'
+  alias: CheckAlarmeHelloFresh
+  description: Alerte si alarme jour HelloFresh
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.alarme_activee
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: time
+    after: 07:00:00
+    before: '10:00:00'
+    weekday:
+    - thu
+  action:
+  - if:
+    - condition: state
+      entity_id: person.christophe
+      state: home
+    then:
+    - service: notify.mobile_app_iphone
+      data:
+        title: Alarme
+        message: Attention, alarme mise mais nous sommes jeudi, HelloFresh ne vient
+          pas ?
+  - if:
+    - condition: state
+      entity_id: person.melanie
+      state: home
+    then:
+    - service: notify.mobile_app_sm_a525f
+      data:
+        message: Attention, alarme mise mais nous sommes jeudi, HelloFresh ne vient
+          pas ?
+        title: Alarme
+  mode: single
+- id: '1683204105672'
+  alias: HDD externe plein
+  description: HDD externe plein
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.disk_use_percent_mnt_exthdd
+    above: 99
+  condition: []
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Disque dur externe plein !
+      title: 'Disque dur '
+  mode: single
+- id: '1685630060150'
+  alias: CaveEtagere_ouvrir
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_button.ouvrir_cave
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage0a/out/69
+      payload: 'ON'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage0a/out/69
+      payload: 'OFF'
+  mode: single
+- id: '1685630458525'
+  alias: CaveEtagere_Fermer
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_button.fermer_cave
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage0a/out/1
+      payload: 'ON'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage0a/out/1
+      payload: 'OFF'
+  mode: single
+- id: '1685630585288'
+  alias: CaveEtagere_stop
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_button.stop_cave
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage0a/out/1
+      payload: 'OFF'
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage0a/out/69
+      payload: 'OFF'
+  mode: single
+- id: '1685634322362'
+  alias: Reset arduino cave
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_button.arduino_cave_reset
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage0a/watchdog
+      payload: '1'
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 100
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage0a/watchdog
+      payload: '{{ states(''input_number.arduino_watchdog'')  | int }}'
+      retain: true
+  mode: single
+- id: '1685692576486'
+  alias: cave_etagere_status_update
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/out/69
+  - platform: mqtt
+    topic: cmd/etage0a/out/1
+  condition: []
+  action:
+  - if:
+    - condition: template
+      value_template: '{{ trigger.payload == "ON" and trigger.topic == "cmd/etage0a/out/69"
+        }}'
+    then:
+    - service: input_select.select_option
+      data:
+        option: Ouverture
+      target:
+        entity_id: input_select.cave_etagere_status
+  - if:
+    - condition: template
+      value_template: '{{ trigger.payload == "ON" and trigger.topic == "cmd/etage0a/out/1"
+        }}'
+    then:
+    - service: input_select.select_option
+      data:
+        option: Fermeture
+      target:
+        entity_id: input_select.cave_etagere_status
+  - if:
+    - condition: template
+      value_template: '  {{ trigger.payload == "OFF" and trigger.topic == "cmd/etage0a/out/1"
+        }}'
+    then:
+    - service: input_select.select_option
+      data:
+        option: Fermé
+      target:
+        entity_id: input_select.cave_etagere_status
+  - if:
+    - condition: template
+      value_template: '  {{ trigger.payload == "OFF" and trigger.topic == "cmd/etage0a/out/69"
+        }}'
+    then:
+    - service: input_select.select_option
+      data:
+        option: Ouvert
+      target:
+        entity_id: input_select.cave_etagere_status
+  mode: single

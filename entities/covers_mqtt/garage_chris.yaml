@@ -1,9 +1,9 @@
     name: garage_de_chris
     device_class: garage
-    state_topic: cmd/etage1a/in/46
+    state_topic: cmd/etage1a/in/45
     state_open: "OFF"
     state_closed: "ON"
-    command_topic: cmd/etage1a/out/69
+    command_topic: cmd/etage1a/out/64
     payload_close: 'ON'
     payload_open: 'ON'
     retain: true

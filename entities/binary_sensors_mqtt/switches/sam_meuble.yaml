@@ -1,4 +1,4 @@
     name: "sam_meuble"
-    state_topic: cmd/etage1a/in/31
+    state_topic: cmd/etage1a/in/39
     payload_off: "OFF"
     payload_on: "ON"

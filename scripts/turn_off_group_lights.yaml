@@ -10,7 +10,7 @@ switch_off_haut:
           entity_id: media_player.chambre
       - service: media_player.media_pause
         data: 
-          entity_id: media_player.salle_de_bain_2
+          entity_id: media_player.salle_de_bain
  
 switch_off_rez:
     sequence:
@@ -19,7 +19,7 @@ switch_off_rez:
           entity_id: group.rez_de_chaussee, group.exterieur
       - service: media_player.media_pause
         data:
-          entity_id: media_player.max2play_2
+          entity_id: media_player.salon
 
 switch_off_all_no_blue:
     sequence:
@@ -40,13 +40,13 @@ switch_off_all_no_blue:
             - light.l_sdb_eviers
       - service: media_player.media_pause
         data: 
-          entity_id: media_player.max2play_2
+          entity_id: media_player.salon
       - service: media_player.media_pause
         data:
-          entity_id: media_player.terrassebas_2
+          entity_id: media_player.terrassebas_3
       - service: media_player.media_pause
         data: 
-          entity_id: media_player.terrassehaut
+          entity_id: media_player.terrassehaut_2
       - service: media_player.media_pause
         data:
-          entity_id: media_player.salle_de_bain_2
+          entity_id: media_player.salle_de_bain

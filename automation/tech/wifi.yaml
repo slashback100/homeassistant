@@ -34,12 +34,12 @@
       - service: mqtt.publish
         data:
             topic: 'cmd/esp_watchdog_etage0a/watchdog'
-            payload: '70'
+            payload: '{{states("input_number.arduino_watchdog")|int}}'
             retain: true
       - service: mqtt.publish
         data:
             topic: 'cmd/esp_watchdog_etage1a/watchdog'
-            payload: '70'
+            payload: '{{states("input_number.arduino_watchdog")|int}}'
             retain: true
   - id: wifi_on
     alias: "Turn on wifi"
@@ -68,10 +68,10 @@
       - service: mqtt.publish
         data:
             topic: 'cmd/esp_watchdog_etage0a/watchdog'
-            payload: '70'
+            payload: '{{states("input_number.arduino_watchdog")|int}}'
             retain: true
       - service: mqtt.publish
         data:
             topic: 'cmd/esp_watchdog_etage1a/watchdog'
-            payload: '70'
+            payload: '{{states("input_number.arduino_watchdog")|int}}'
             retain: true

@@ -1,2 +1,8 @@
     name: "Senseur pression reservoir d'eau"
     state_topic: cmd/esp_water_tank/value
+#    value_template: >-
+#      {% set treshold = 0.01 %}
+#      {% set previous = states('sensor.senseur_pression_reservoir_d_eau')|float %}
+#      {% set delta = ((value - previous)/previous) | abs%}
+#      {{ iif(delta < treshold, value, previous) %}
+

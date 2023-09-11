@@ -1,4 +1,5 @@
   - id: ack_chris
+    alias: "Couper l'alerte du garage de chris par action sur notification"
     trigger:
         platform: event
         event_type: mobile_app_notification_action
@@ -9,6 +10,7 @@
         data:
             entity_id: alert.chris_garage_open
   - id: ack_mel
+    alias: "Couper l'alerte du garage de mel par action sur notification"
     trigger:
         platform: event
         event_type: mobile_app_notification_action

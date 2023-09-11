@@ -10,3 +10,7 @@ secrets.yaml
 home-assistant.log
 known_devices.yaml
 custom_components
+backup
+backups
+.cache
+.homeassistant

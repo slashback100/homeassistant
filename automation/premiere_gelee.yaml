@@ -25,7 +25,8 @@
         data:
             message: "Vider les ballasts des parasols"
             title: "Winter is coming"
-  - id:  preiere_gelee_reset # reset boolean to 0 on 1 August
+  - id:  premiere_gelee_reset # reset boolean to 0 on 1 August
+    alias: "Reset du flag Premiere gelée le 1er aout"
     trigger:
       - platform: time
         at: '00:00:00'

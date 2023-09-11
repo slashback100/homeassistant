@@ -1,4 +1,4 @@
     name: "cuisine"
-    state_topic: cmd/etage1a/in/15
+    state_topic: cmd/etage1a/in/32
     payload_off: "OFF"
     payload_on: "ON"

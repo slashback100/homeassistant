@@ -2,7 +2,7 @@ search_and_play_spotty_salon:
     sequence:
       - service: squeezebox.call_method
         data:
-          entity_id: media_player.max2play_2
+          entity_id: media_player.salon
           command: spotty
           parameters:
             - playlist

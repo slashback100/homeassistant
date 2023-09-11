@@ -1,4 +1,4 @@
     name: "salon_music_minus"
-    state_topic: cmd/etage1a/in/24
+    state_topic: cmd/etage1a/in/23
     payload_off: "OFF"
     payload_on: "ON"

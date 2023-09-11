@@ -28,7 +28,7 @@ action:
         init_time: '{{ as_timestamp(now()) }}'
         new_pos: '{{ trigger.payload | int }}'
         cover: !input cover_id
-        position: '{{ state_attr(cover, "current_position") | int}}' #100 is open 0 is closed
+        position: '{{ state_attr(cover, "current_position") | default("50", true) | int}}' #100 is open 0 is closed
         cmd_topic: '{{ "cmd/blinds_etage1a/" ~ ("0" if (id|int < 10)) ~ id }}'
         time_all_way: !input time_all_way
   - if: '{{ new_pos > position }}' #open

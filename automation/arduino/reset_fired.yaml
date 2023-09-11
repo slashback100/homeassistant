@@ -26,3 +26,8 @@
         data:
             message: "Reset de l'arduino du rez-de-chausée"
             title: "Watchdog"
+      - delay:
+            seconds: "10"
+      - service: light.turn_off
+        data:
+            entity_id: light.l_buanderie

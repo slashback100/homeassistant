@@ -5,4 +5,4 @@
             unit_of_measurement: L
             icon_template: "mdi:waves"
             value_template: >-
-                {{ max(states("sensor.senseur_pression_reservoir_d_eau") | int - 2,0)  / states("input_number.valeur_maximal_senseur_pression_citerne_eau_de_plus") | int * 20000}}
+                {{ (max(states("sensor.senseur_pression_reservoir_d_eau") | int - 2,0)  / states("input_number.valeur_maximal_senseur_pression_citerne_eau_de_plus") | int * 20000) | int}}

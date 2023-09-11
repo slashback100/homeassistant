@@ -1,6 +1,6 @@
     platform: voicerss
     api_key: !secret voicerss_api
-    base_url: https://slashbackdomo.ddns.net:4294
+    #base_url: https://slashbackdomo.ddns.net:4294
     language: 'fr-fr'
     codec: mp3
     cache_dir: /tmp/

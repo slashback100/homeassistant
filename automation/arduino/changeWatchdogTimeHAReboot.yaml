@@ -27,10 +27,10 @@
       - service: mqtt.publish
         data:
             topic: 'cmd/esp_watchdog_etage0a/watchdog'
-            payload: '120'
+            payload: "{{ states('input_number.arduino_watchdog') | int }}"
             retain: true
       - service: mqtt.publish
         data:
             topic: 'cmd/esp_watchdog_etage1a/watchdog'
-            payload: '120'
+            payload: "{{ states('input_number.arduino_watchdog') | int }}"
             retain: true

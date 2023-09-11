@@ -10,3 +10,4 @@ logbook:
          - sensor.time_utc
          - sensor.time
          - sensor.time_date
+         - sensor.senseur_pression_reservoir_d_eau

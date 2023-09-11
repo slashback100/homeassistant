@@ -121,7 +121,7 @@ sensor.meteo_wind_speed:
   friendly_name: Vitesse du vent
 light.l_escalier_cave:
   friendly_name: Escalier de la Cave
-media_player.salle_de_bain_2:
+media_player.salle_de_bain:
   friendly_name: Salle de bain
   device_class: speaker
 binary_sensor.garage_de_chris:
@@ -183,13 +183,13 @@ media_player.mediacenter_salon:
   device_class: tv
 media_player.kodi_programmer_local:
   device_class: speaker
-media_player.max2play_2:
+media_player.salon:
   device_class: speaker
 media_player.chambre:
   device_class: speaker
-media_player.terrassebas_2:
+media_player.terrassebas_3:
   device_class: speaker
-media_player.terrassehaut:
+media_player.terrassehaut_2:
   device_class: speaker
 device_tracker.nmap_tracker_4a_80_2e_6c_2d_89:
   friendly_name: Femme de ménage

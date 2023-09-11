@@ -1,4 +1,4 @@
     name: "extBas_music_plus"
-    state_topic: cmd/etage1a/in/57
+    state_topic: cmd/etage1a/in/17
     payload_off: "OFF"
     payload_on: "ON"

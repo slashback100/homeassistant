@@ -1,9 +1,10 @@
     platform: template
     sensors:
        real_consuption:
+            unique_id: real_consuption
             unit_of_measurement: W
             icon_template: "mdi:flash"
             value_template: >-
-                  {{ (states('sensor.power_photovoltaics_fronius_power_flow_0_192_168_0_110') | float(0)) 
-                   - (states('sensor.power_produced') | float * 1000) 
-                   + states('sensor.power_consumed') | float * 1000 }}
+                {{ (states('sensor.power_photovoltaics_fronius_power_flow_0_192_168_0_110') | float(0)) 
+                 - (states('sensor.power_produced') | float * 1000) 
+                 + states('sensor.power_consumed') | float * 1000 }}

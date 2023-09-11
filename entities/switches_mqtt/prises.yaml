@@ -1,6 +1,6 @@
   - name: "prise_ext_terrasse"
-    command_topic: "cmd/etage1a/out/11"
-    state_topic: "cmd/etage1a/out/11"
+    command_topic: "cmd/etage1a/out/63"
+    state_topic: "cmd/etage1a/out/63"
     retain: true
     state_on: 'ON'
     state_off: 'OFF'
@@ -23,8 +23,8 @@
     payload_on: 'ON'
     payload_off: 'OFF'
   - name: "prise_ext_avant"
-    command_topic: "cmd/etage1a/out/49"
-    state_topic: "cmd/etage1a/out/49"
+    command_topic: "cmd/etage1a/out/60"
+    state_topic: "cmd/etage1a/out/60"
     retain: true
     state_on: 'ON'
     state_off: 'OFF'
@@ -68,6 +68,6 @@
     payload_off: 'OFF'
     payload_on: 'ON'
     name: "led_meuble_sam"
-    command_topic: "cmd/etage1a/out/9"
-    state_topic: "cmd/etage1a/out/9"
+    command_topic: "cmd/etage1a/out/58"
+    state_topic: "cmd/etage1a/out/58"
     retain: true

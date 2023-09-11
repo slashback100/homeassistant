@@ -2,9 +2,9 @@
     id: sonette_hall_entree
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
     condition: 
       - condition: numeric_state
         entity_id: sun.sun
@@ -26,12 +26,10 @@
     id: sonette_bing
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
     condition: 
-      - condition: template
-        value_template: '{{ ( now() - timedelta(seconds = 5)) > state_attr("automation.watchdog_triggered_the_reset_of_etage1a", "last_triggered") }}'
       - condition: numeric_state
         entity_id: zone.home
         above: 0
@@ -52,32 +50,39 @@
     id: sonette_notif
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
-    condition: '{{ ( now() - timedelta(seconds = 5)) > state_attr("automation.watchdog_triggered_the_reset_of_etage1a", "last_triggered") }}'
+      - platform: state
+        entity_id: binary_sensor.sonnette_person
+        to: 'on'
     action:
       - service: notify.mobile_app_iphone
         data:
-            message: "Quelqu'un sonne à la porte"
+            message: "Quelqu'un est détecté devant la maison"
+            data:
+                entity_id: camera.sonnette_main
       - service: notify.mobile_app_sm_a525f
         data:
-            message: "Quelqu'un sonne à la porte"
+            message: "Quelqu'un est détecté devant la maison"
+            data:
+                image: "https://slashbackdomo.ddns.net:4294/{{state_attr('camera.sonnette_snapshots_main','entity_picture')}}"
       - delay:
             milliseconds: 5000
   - alias: sonette_notif_critical
     id: sonette_notif_critical
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
-    condition: '{{ ( now() - timedelta(seconds = 5)) > state_attr("automation.watchdog_triggered_the_reset_of_etage1a", "last_triggered") }}'
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
+    condition: # if hello fresh is on, see automation in helloFresh yaml
+      - condition: state
+        entity_id: input_boolean.hello_fresh
+        state: "off" 
     action:
       - service: notify.mobile_app_iphone
         data:
             message: "Quelqu'un sonne à la porte"
             data:
+                entity_id: camera.sonnette_main
                 push:
                     sound:
                         name: "Ringtone_2_Haptic-sashimi.caf"
@@ -86,15 +91,17 @@
       - service: notify.mobile_app_sm_a525f
         data:
             message: "Quelqu'un sonne à la porte"
+            data:
+                image: "https://slashbackdomo.ddns.net:4294/{{state_attr('camera.sonnette_snapshots_main','entity_picture')}}"
       - delay:
             milliseconds: 5000
   - alias: sonette_lampe_sam
     id: sonette_lampe_sam
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
     action:
       - service: light.toggle
         entity_id: light.l_sam_plafond
@@ -116,9 +123,9 @@
     id: sonette_lampe_billard
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
     action:
       - service: light.toggle
         entity_id: light.l_billard
@@ -140,9 +147,9 @@
     id: sonette_lampe ext
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
     condition:
         condition: and
         conditions:
@@ -169,9 +176,9 @@
     id: sonette_ext_haut_force
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
     action:
       - service: shell_command.ringexthaut
       - delay:
@@ -180,9 +187,9 @@
     id: sonette_ext_bas_force
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
     action:
       - service: shell_command.ringextbas
       - delay:
@@ -191,9 +198,9 @@
     id: sonette_ext_haut_ifplaying
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
     condition:
       - condition: state
         entity_id: media_player.terrassehaut_2
@@ -206,9 +213,9 @@
     id: sonette_ext_bas_ifplaying
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
     condition:
       - condition: state
         entity_id: media_player.terrassebas_3
@@ -221,9 +228,9 @@
     id: sonette_lampe_cave_tech
     mode: single 
     trigger:
-      - platform: mqtt
-        topic: cmd/etage1a/in/46
-        payload: 'ON'
+      - platform: state
+        entity_id: binary_sensor.sonnette_visitor
+        to: 'on'
     condition:
       - condition: state
         entity_id: light.l_cave_technique

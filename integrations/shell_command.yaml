@@ -6,9 +6,9 @@ shell_command:
   #  mel_home: /opt/domo/tools/melHomeOrNot home
   #  mel_not_home: /opt/domo/tools/melHomeOrNot not_home
   renew_ssl: ~/certbot/certbot-auto_v2 renew --quiet --no-self-upgrade --standalone --preferred-challenges http-01 --pre-hook "sudo systemctl stop home-assistant.service" --post-hook "sudo systemctl start home-assistant.service"
-  tts_meteo_salon: /opt/domo/modules/tts.sh  "Actuellement, {{ states('sensor.meteo_summary') }}. Aujourd'hui, {{ states('sensor.meteo_summary_0d') }}, la température actuelle est de {{ state_attr('weather.dark_sky', 'temperature') | round(0) }} degré. La température minimale prévue est de {{ state_attr('weather.dark_sky', 'forecast')[1]['templow'] | round }} degrés et la température maximale de {{ state_attr('weather.dark_sky', 'forecast')[0]['temperature'] | round }} degrés. Il faut actuellement {{ states('sensor.home_medsoc') }} minutes pour aller à Wavre. Bonne journée !" salon
-  tts_salon: /opt/domo/modules/tts.sh  "{{ states('input_text.text_for_tts') }}" salon
-  tts_meteo_sdb: /opt/domo/modules/tts.sh  "Actuellement, {{ states('sensor.meteo_summary') }}. Aujourd'hui, {{ states('sensor.meteo_summary_0d') }}, la température actuelle est de {{ state_attr('weather.dark_sky', 'temperature') | round(0) }} degré. La température minimale prévue est de {{ state_attr('weather.dark_sky', 'forecast')[1]['templow'] | round }} degrés et la température maximale de {{ state_attr('weather.dark_sky', 'forecast')[0]['temperature'] | round }} degrés. Bonne journée !" sdb
+  tts_meteo_salon: /opt/domo/modules/tts.sh  "Actuellement, {{ states('sensor.meteo_summary') }}. Aujourd'hui, {{ states('sensor.meteo_summary_0d') }}, la température actuelle est de {{ state_attr('weather.dark_sky', 'temperature') | round(0) }} degré. La température minimale prévue est de {{ state_attr('weather.dark_sky', 'forecast')[1]['templow'] | round }} degrés et la température maximale de {{ state_attr('weather.dark_sky', 'forecast')[0]['temperature'] | round }} degrés. Il faut actuellement {{ states('sensor.home_medsoc') }} minutes pour aller à Wavre. Bonne journée !" "{{states('input_number.volume')}}" salon
+  tts_salon: /opt/domo/modules/tts.sh  "{{ states('input_text.text_for_tts') }}"  "{{states('input_number.volume')}}" salon
+  tts_meteo_sdb: /opt/domo/modules/tts.sh  "Actuellement, {{ states('sensor.meteo_summary') }}. Aujourd'hui, {{ states('sensor.meteo_summary_0d') }}, la température actuelle est de {{ state_attr('weather.dark_sky', 'temperature') | round(0) }} degré. La température minimale prévue est de {{ state_attr('weather.dark_sky', 'forecast')[1]['templow'] | round }} degrés et la température maximale de {{ state_attr('weather.dark_sky', 'forecast')[0]['temperature'] | round }} degrés. Bonne journée !"  "{{states('input_number.volume')}}" sdb
   ringexthaut: /opt/domo/modules/ring.sh extHaut
   ringextbas: /opt/domo/modules/ring.sh extBas
   curl: >-
@@ -45,7 +45,15 @@ shell_command:
       curl -H 'Content-Type: text/html; charset=utf-8' -X GET 'http://192.168.0.175:9000/songinfo.html?action=addall&index=5&player=b8%3A27%3Aeb%3Afa%3Af6%3Ab5&sess='$(curl -r -H "Content-Type: application/json"  -X POST -d '{"id":1,"method":"slim.request","params":["b8:27:eb:fa:f6:b5",["status","-",1]]}' "http://192.168.0.175:9000/jsonrpc.js" 2> /dev/null| jq -r ".result.playlist_loop[0].id")'&start='
   radio_of_title_play_salon: >-
       curl -H 'Content-Type: text/html; charset=utf-8' -X GET 'http://192.168.0.175:9000/songinfo.html?action=playall&index=5&player=b8%3A27%3Aeb%3Afa%3Af6%3Ab5&sess='$(curl -r -H "Content-Type: application/json"  -X POST -d '{"id":1,"method":"slim.request","params":["b8:27:eb:fa:f6:b5",["status","-",1]]}' "http://192.168.0.175:9000/jsonrpc.js" 2> /dev/null| jq -r ".result.playlist_loop[0].id")'&start='
-  get_compteur_gaz: /opt/domo/tools/ocr.sh
+#  get_compteur_gaz: /opt/domo/tools/ocr.sh
   get_prix_gaz: /opt/domo/tools/getGasPrice.sh
   clean_cam_files: >-
     /usr/bin/find /mnt/rpicam/ -mtime +10 -exec rm {} \;
+  record: >-
+    ssh -p 8762 osmc@192.168.0.175 "/home/osmc/bin/record '{{ states('input_text.a_enregistrer') }}'"
+  record_current_salon: >-
+    ssh -p 8762 osmc@192.168.0.175 "/home/osmc/bin/recordCurrent salon"
+  record_current_cinema: >-
+    ssh -p 8762 osmc@192.168.0.175 "/home/osmc/bin/recordCurrent cinema"
+  rpi_locator: >-
+    wget -q -O- https://rpilocator.com/feed/ > /tmp/rpiFeed &&  xmllint --xpath '/rss/channel/item/pubDate[contains(., "'"$(date +'%d %b')"'")]/../title' /tmp/rpiFeed | sed -E -e 's#</title><title>#\n#g' -e 's#</?title>##g'

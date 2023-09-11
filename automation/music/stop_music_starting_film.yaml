@@ -18,7 +18,10 @@
             entity_id: input_text.hyperion_args
             value: "-x"
       - service: shell_command.hyperion_remote
-      - service: media_player.volume_set
-        data: 
-          volume_level: 0.3
-          entity_id: media_player.salon
+      - choose:
+          - conditions: "{{ trigger.from_state in ['stop', 'off']  }}"
+            sequence:
+              - service: media_player.volume_set
+                data: 
+                  volume_level: 0.3
+                  entity_id: media_player.salon

@@ -2,5 +2,5 @@
     state_topic: "consommation/eau/main/value"
     qos: 1
     unit_of_measurement: "m³"
-    device_class: "gas"
+    device_class: "water"
     state_class: "total_increasing"
