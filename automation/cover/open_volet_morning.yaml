@@ -9,4 +9,22 @@
         data: 
             topic: cmd/blinds_etage1a/15 
             payload: u
+  - alias: "Ouvrir les volets avec le soleil"
+    id: "ouvrir_volets_soleil"
+    mode: single
+    trigger: 
+      - platform: time 
+        at: "09:06:12" 
+      - platform: numeric_state
+        entity_id: sun.sun
+        value_template: "{{ state.attributes.elevation }}"
+        above: 0
+    condition: 
+      - condition: time 
+        after: "09:06:11" 
+    action: 
+      - service: mqtt.publish
+        data: 
+            topic: cmd/blinds_etage1a/15 
+            payload: u
 

@@ -12,11 +12,9 @@
     ignore_availability: true
     name: "Aide ménagère"
     search: "Aide Ménagère"
-    track: true
   - device_id: Calendier_Famille
     ignore_availability: true
     name: "Famille D\xE9sirant"
-    track: true
 
 #- cal_id: addressbook#contacts@group.v.calendar.google.com
 #  entities:
@@ -38,25 +36,21 @@
   - device_id: christophe_desirant_gmail_com
     ignore_availability: true
     name: christophe.desirant@gmail.com
-    track: false
 
 - cal_id: addressbook#contacts@group.v.calendar.google.com
   entities:
   - device_id: contacts
     ignore_availability: true
     name: Contacts
-    track: false
 
 - cal_id: fr.be#holiday@group.v.calendar.google.com
   entities:
   - device_id: jours_feries_en_belgique
     ignore_availability: true
     name: "Jours f\xE9ri\xE9s en Belgique"
-    track: false
 
 - cal_id: jshk265qle18ej26ljf7o068lg@group.calendar.google.com
   entities:
   - device_id: loisir_loncin
     ignore_availability: true
     name: Loisir Loncin
-    track: false

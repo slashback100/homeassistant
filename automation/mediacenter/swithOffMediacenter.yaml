@@ -1,6 +1,6 @@
   - alias: SwitchOffMediacenter
     id: SwitchOffMediacenter
-    initial_state: 'on'
+  #  initial_state: 'on'
     trigger:
       - platform: state
         entity_id: media_player.mediacenter_salon

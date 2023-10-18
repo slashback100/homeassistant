@@ -11,11 +11,11 @@
       #- platform: homeassistant
       #  event: start
     action:
-      - choose:
-          - conditions: "{{ is_state('switch.prog_kodi', 'off') }}"
-            sequence:
-              - service: switch.turn_on
-                entity_id: switch.prog_kodi
+#      - choose:
+#          - conditions: "{{ is_state('switch.prog_kodi', 'off') }}"
+#            sequence:
+#              - service: switch.turn_on
+#                entity_id: switch.prog_kodi
       - service: mqtt.publish
         data:
             topic: cmd/etage1a/in/45
@@ -27,5 +27,67 @@
       - service: logger.set_default_level
         data:
             level: error
+      - service: mqtt.publish
+        data:
+            topic: cmd/blinds_etage1a_position/01
+            payload: '50'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: cmd/blinds_etage1a_position/02
+            payload: '50'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: cmd/blinds_etage1a_position/04
+            payload: '50'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: cmd/blinds_etage1a_position/08
+            payload: '50'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: cmd/blinds_etage1a_position/16
+            payload: '50'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: cmd/blinds_etage1a_position/32
+            payload: '50'
+            retain: true
+      #turn off garage (logic is inverted for those 2)
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage1a/out/12
+            payload: 'ON'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage1a/out/11
+            payload: 'ON'
+            retain: true
+      #set max intensity 
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage2a/out/0
+            payload: '100'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage2a/out/1
+            payload: '100'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage2b/out/0
+            payload: '20'
+            retain: true
+      - service: mqtt.publish
+        data:
+            topic: cmd/etage1a/out/0
+            payload: '100'
+            retain: true
       - service: automation.turn_off
         entity_id: automation.startof_ha
