@@ -2,6 +2,7 @@
     lights:
       tv_led:
         friendly_name: "Tv Led"
+        unique_id: "Tv Led"
         effect_list_template: >-
             {{ ["Cinema brighten lights"
             ,"Cinema dim lights"
@@ -46,7 +47,7 @@
                 {% set r = (states('input_number.tv_led_r')|int * brightness) | int %}
                 {% set g = (states('input_number.tv_led_g')|int * brightness) | int %}
                 {% set b = (states('input_number.tv_led_b')|int * brightness) | int %}
-                -c {{'0' * (2-(('%0x' | format(r)) | length)) ~ ('%0x' | format(r))}}{{'0' * (2-(('%0x' | format(g)) | length)) ~ ('%0x' | format(g))}}{{'0' * (2-(('%0x' | format(b)) | length)) ~ ('%0x' | format(b))}}
+                -c {{'0' * (2-(('%0x' | format(r)) | length)) ~ ('%0x' | format(r) | upper)}}{{'0' * (2-(('%0x' | format(g)) | length)) ~ ('%0x' | format(g) | upper)}}{{'0' * (2-(('%0x' | format(b)) | length)) ~ ('%0x' | format(b) | upper)}}
           - service: shell_command.hyperion_remote
           - service: input_text.set_value
             data:
@@ -61,7 +62,8 @@
           - service: input_text.set_value
             data:
               entity_id: input_text.hyperion_args
-              value: "-x -p 100"
+              value: "-x"
+                #value: "-x -p 100"
           - service: shell_command.hyperion_remote
           - service: input_text.set_value
             data:
@@ -81,7 +83,7 @@
                 {% set r = (states('input_number.tv_led_r')|int * brightness) | int %}
                 {% set g = (states('input_number.tv_led_g')|int * brightness) | int %}
                 {% set b = (states('input_number.tv_led_b')|int * brightness) | int %}
-                -c {{'0' * (2-(('%0x' | format(r)) | length)) ~ ('%0x' | format(r))}}{{'0' * (2-(('%0x' | format(g)) | length)) ~ ('%0x' | format(g))}}{{'0' * (2-(('%0x' | format(b)) | length)) ~ ('%0x' | format(b))}}
+                -c {{'0' * (2-(('%0x' | format(r)) | length)) ~ ('%0x' | format(r) | upper)}}{{'0' * (2-(('%0x' | format(g)) | length)) ~ ('%0x' | format(g) | upper)}}{{'0' * (2-(('%0x' | format(b)) | length)) ~ ('%0x' | format(b) | upper)}}
           - service: shell_command.hyperion_remote
           - service: input_text.set_value
             data:
@@ -135,7 +137,7 @@
                 {% set r = (states('input_number.tv_led_r')|int * brightness) | int %}
                 {% set g = (states('input_number.tv_led_g')|int * brightness) | int %}
                 {% set b = (states('input_number.tv_led_b')|int * brightness) | int %}
-                -c {{'0' * (2-(('%0x' | format(r)) | length)) ~ ('%0x' | format(r))}}{{'0' * (2-(('%0x' | format(g)) | length)) ~ ('%0x' | format(g))}}{{'0' * (2-(('%0x' | format(b)) | length)) ~ ('%0x' | format(b))}}
+                -c {{'0' * (2-(('%0x' | format(r)) | length)) ~ ('%0x' | format(r) | upper)}}{{'0' * (2-(('%0x' | format(g)) | length)) ~ ('%0x' | format(g) | upper)}}{{'0' * (2-(('%0x' | format(b)) | length)) ~ ('%0x' | format(b) | upper)}}
           - service: shell_command.hyperion_remote
           - service: input_text.set_value
             data:

@@ -7,24 +7,60 @@
     action: 
       - service: mqtt.publish
         data: 
-            topic: cmd/blinds_etage1a/15 
+            topic: cmd/blinds_etage1a/63 
             payload: u
-  - alias: "Ouvrir les volets avec le soleil"
-    id: "ouvrir_volets_soleil"
+  - alias: "ouvrir les volets avec le soleil_sem"
+    id: "ouvrir_volets_soleil_sem"
     mode: single
     trigger: 
       - platform: time 
-        at: "09:06:12" 
+        at: "08:00:01" 
       - platform: numeric_state
         entity_id: sun.sun
         value_template: "{{ state.attributes.elevation }}"
-        above: 0
+        above: -1.5
     condition: 
       - condition: time 
-        after: "09:06:11" 
+        after: "08:00:00" 
+      - condition: numeric_state 
+        entity_id: sun.sun
+        value_template: "{{ state.attributes.elevation }}"
+        above: -1.5
+      - condition: time
+        weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
     action: 
       - service: mqtt.publish
         data: 
-            topic: cmd/blinds_etage1a/15 
+            topic: cmd/blinds_etage1a/63
             payload: u
-
+  - alias: "ouvrir les volets avec le soleil we"
+    id: "ouvrir_volets_soleil_we"
+    mode: single
+    trigger: 
+      - platform: time 
+        at: "09:00:01" 
+      - platform: numeric_state
+        entity_id: sun.sun
+        value_template: "{{ state.attributes.elevation }}"
+        above: -1.5
+    condition: 
+      - condition: time 
+        after: "09:00:00" 
+      - condition: numeric_state 
+        entity_id: sun.sun
+        value_template: "{{ state.attributes.elevation }}"
+        above: -1.5
+      - condition: time
+        weekday:
+          - sat
+          - sun
+    action: 
+      - service: mqtt.publish
+        data: 
+            topic: cmd/blinds_etage1a/63
+            payload: u

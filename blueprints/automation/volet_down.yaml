@@ -23,7 +23,7 @@ trigger:
         cmd: d
 variables:
     id: !input id
-condition: '{{ ((trigger.event.data.blind_id | int / id) | int) % 2 == 1 }}'
+condition: '{{ ((trigger.event.data.blind_id | int / id|int) | int) % 2 == 1 }}'
 action:
   - variables: 
         init_time: '{{ as_timestamp(now()) }}'

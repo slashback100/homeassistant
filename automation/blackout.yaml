@@ -7,7 +7,7 @@
         #from: 'idle'
         to: 'off'
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Coupure de courant à la maison"
   - id: blackout2
@@ -18,7 +18,7 @@
         from: 'on'
         to: 'off'
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Coupure de courant à la maison"
  

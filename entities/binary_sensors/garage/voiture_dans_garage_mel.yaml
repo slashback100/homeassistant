@@ -2,4 +2,5 @@
   sensors: 
     voiture_presente_garage_mel:
       friendly_name: "Voiture preésente dans le garage de Mel"
+      unique_id: "Voiture preésente dans le garage de Mel"
       value_template: "{{ states('sensor.distance_voiture_garage_mel') | int(60) < 60}}"

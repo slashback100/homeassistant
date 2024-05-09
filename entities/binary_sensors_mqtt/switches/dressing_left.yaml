@@ -1,4 +1,5 @@
     name: "dressing_left"
+    unique_id: "dressing_left"
     state_topic: cmd/etage2b/in/26
     payload_off: "OFF"
     payload_on: "ON"

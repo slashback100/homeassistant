@@ -92,7 +92,7 @@
       - choose:
           - conditions: "{{ is_state('binary_sensor.alarme_activee', 'off') }}" 
             sequence: 
-              - service: notify.mobile_app_iphone
+              - service: notify.mobile_app_chriss_iphone
                 data:
                     message: "HelloFresh sonne à la porte"
                     data:
@@ -119,7 +119,7 @@
                       - service: cover.open_cover
                         target: 
                             entity_id: cover.garage_de_chris
-                      - service: notify.mobile_app_iphone
+                      - service: notify.mobile_app_chriss_iphone
                         data:
                             message: "Caméra du garage"
                             data:
@@ -141,13 +141,13 @@
                               - service: cover.close_cover
                                 target: 
                                     entity_id: cover.garage_de_chris
-                              - service: notify.mobile_app_iphone
+                              - service: notify.mobile_app_chriss_iphone
                                 data:
                                     message: "Caméra du garage"
                                     data:
                                         entity_id: camera.mycam
         default:
-          - service: notify.mobile_app_iphone
+          - service: notify.mobile_app_chriss_iphone
             data:
                 message: "HelloFresh sonne à la porte (! alarme allumée)"
                 data:

@@ -12,3 +12,7 @@
         data:
             message: "Nettoyer four (pyrolyse)"
             title: "Entretien"
+      - service: todo.add_item
+        data:
+            entity_id: todo.taches_maison
+            item: "Nettoyer four (pyrolyse)"

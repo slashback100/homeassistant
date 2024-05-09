@@ -1,4 +1,3 @@
-
   - id: get_price_gas
     alias: "Retrieve value for gas price"
     trigger:

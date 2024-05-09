@@ -1,4 +1,5 @@
     name: "cave_porte_ext"
+    unique_id: "cave_porte_ext"
     state_topic: cmd/etage0a/in/37
     payload_off: "OFF"
     payload_on: "ON"

@@ -1,4 +1,5 @@
     name: "elise_left"
+    unique_id: "elise_left"
     state_topic: cmd/etage2a/in/32
     payload_off: "OFF"
     payload_on: "ON"

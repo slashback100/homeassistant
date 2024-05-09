@@ -8,10 +8,10 @@
       - service: counter.increment
         data:
             entity_id: counter.reset_of_basement_domo
-      - service: persistent_notification.create
-        data:
-            message: "Reset de l'arduino de la cave"
-            title: "Watchdog"
+              #- service: persistent_notification.create
+              #  data:
+              #    message: "Reset de l'arduino de la cave"
+              #    title: "Watchdog"
   - id: watchdog_fired_reset_etage1a
     alias: "Watchdog triggered the reset of etage1a"
     trigger:
@@ -22,10 +22,10 @@
       - service: counter.increment
         data:
             entity_id: counter.reset_of_rdc_domo
-      - service: persistent_notification.create
-        data:
-            message: "Reset de l'arduino du rez-de-chausée"
-            title: "Watchdog"
+              #- service: persistent_notification.create
+              #  data:
+              #      message: "Reset de l'arduino du rez-de-chausée"
+              #      title: "Watchdog"
       - delay:
             seconds: "10"
       - service: light.turn_off

@@ -17,7 +17,7 @@
       #- service: notify.mobile_app_sm_a525f
       #  data:
       #      message: "Alarme branchée et garage ouvert !"
-      #- service: notify.mobile_app_iphone
+      #- service: notify.mobile_app_chriss_iphone
       #  data:
       #      message: "Alarme branchée et garage ouvert !"
       - repeat:

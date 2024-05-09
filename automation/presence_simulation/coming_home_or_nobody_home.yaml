@@ -9,6 +9,9 @@
         to: 'on'
     action:
       - service: presence_simulation.stop
+        data:
+          switch_id: switch.presence_simulation
+
   - id: presence_simulation_nobodyAtHome
     alias: "Nobody's home: starting presence simulation"
     trigger:
@@ -28,4 +31,5 @@
     action:
       - service: presence_simulation.start
         data:
+          switch_id: switch.presence_simulation
           restore_states: true

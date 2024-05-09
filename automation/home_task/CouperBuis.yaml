@@ -12,3 +12,7 @@
         data:
             message: "Tailler les buis"
             title: "Entretien"
+      - service: todo.add_item
+        data:
+            entity_id: todo.taches_maison
+            item: "Tailler les buis"

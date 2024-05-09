@@ -1,4 +1,5 @@
     name: "Senseur pression reservoir d'eau"
+    unique_id: "Senseur pression reservoir d'eau"
     state_topic: cmd/esp_water_tank/value
 #    value_template: >-
 #      {% set treshold = 0.01 %}

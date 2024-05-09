@@ -36,3 +36,12 @@
     action:
       - service: switch.turn_on
         entity_id: switch.cinema_chauffage
+  - alias: ClimateCinema_off
+    id: ClimateCinema_off
+    trigger:
+      - platform: state
+        entity_id:  climate.chauffage_du_cinema
+        to: 'off'
+    action:
+      - service: switch.turn_off
+        entity_id: switch.cinema_chauffage

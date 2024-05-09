@@ -1,4 +1,5 @@
   - name: "prise_ext_terrasse"
+    unique_id: "prise_ext_terrasse"
     command_topic: "cmd/etage1a/out/63"
     state_topic: "cmd/etage1a/out/63"
     retain: true
@@ -7,6 +8,7 @@
     payload_on: 'ON'
     payload_off: 'OFF'
   - name: "sdb_prise"
+    unique_id: "sdb_prise"
     command_topic: "cmd/etage2b/out/7"
     state_topic: "cmd/etage2b/out/7"
     retain: true
@@ -15,6 +17,7 @@
     payload_on: 'ON'
     payload_off: 'OFF'
   - name: "prise_ext_partere"
+    unique_id: "prise_ext_partere"
     command_topic: "cmd/etage0a/out/6"
     state_topic: "cmd/etage0a/out/6"
     retain: true
@@ -23,6 +26,7 @@
     payload_on: 'ON'
     payload_off: 'OFF'
   - name: "prise_ext_avant"
+    unique_id: "prise_ext_avant"
     command_topic: "cmd/etage1a/out/60"
     state_topic: "cmd/etage1a/out/60"
     retain: true
@@ -36,6 +40,7 @@
     payload_off: 'OFF'
     payload_on: 'ON'
     name: "billard_chauffage_fond"
+    unique_id: "billard_chauffage_fond"
     command_topic: "cmd/etage0a/out/12"
     state_topic: "cmd/etage0a/out/12"
     retain: true
@@ -44,6 +49,7 @@
     payload_off: 'OFF'
     payload_on: 'ON'
     name: "billard_chauffage_entree"
+    unique_id: "billard_chauffage_entree"
     command_topic: "cmd/etage0a/out/11"
     state_topic: "cmd/etage0a/out/11"
     retain: true
@@ -52,6 +58,7 @@
     payload_off: 'OFF'
     payload_on: 'ON'
     name: "atelier_mel_chauffage"
+    unique_id: "atelier_mel_chauffage"
     command_topic: "cmd/etage0a/out/13"
     state_topic: "cmd/etage0a/out/13"
     retain: true
@@ -60,6 +67,7 @@
     payload_off: 'OFF'
     payload_on: 'ON'
     name: "cinema_chauffage"
+    unique_id: "cinema_chauffage"
     command_topic: "cmd/etage0a/out/48"
     state_topic: "cmd/etage0a/out/48"
     retain: true
@@ -68,6 +76,7 @@
     payload_off: 'OFF'
     payload_on: 'ON'
     name: "led_meuble_sam"
+    unique_id: "led_meuble_sam"
     command_topic: "cmd/etage1a/out/58"
     state_topic: "cmd/etage1a/out/58"
     retain: true

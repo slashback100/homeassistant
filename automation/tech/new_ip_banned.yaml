@@ -4,6 +4,6 @@
         platform: state
         entity_id: sensor.ip_bans_file
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Une ip a été bannie ({{trigger.to_state.state}})"

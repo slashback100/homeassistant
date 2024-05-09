@@ -9,7 +9,7 @@
       - platform: time 
         at: "14:30:00" 
       - platform: numeric_state
-        entity_id: sensor.temperature_dans_le_salon 
+        entity_id: input_number.homepod_temp
         above: 21 
     condition:
       - condition: state 
@@ -19,7 +19,7 @@
         after: "14:30:00" 
         before: sensor.sun_next_setting
       - condition: numeric_state 
-        entity_id: sensor.temperature_dans_le_salon 
+        entity_id: input_number.homepod_temp
         above: 21 
       - condition: numeric_state
         entity_id: cover.volet_cuisine_1

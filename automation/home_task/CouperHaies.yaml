@@ -10,5 +10,9 @@
     action:
       - service: persistent_notification.create
         data:
-            message: "Tailler les buis"
+            message: "Tailler les haies"
             title: "Entretien"
+      - service: todo.add_item
+        data:
+            entity_id: todo.taches_maison
+            item: "Tailler les haies"

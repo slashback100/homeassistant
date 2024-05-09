@@ -7,7 +7,7 @@
             switch_id: binary_sensor.sonette_bas
             delay: 2
             short_click_action:
-              - service: notify.mobile_app_iphone
+              - service: notify.mobile_app_chriss_iphone
                 data:
                     message: "Quelqu'un sonne à la porte d'en bas"
               - service: notify.mobile_app_sm_a525f
@@ -24,7 +24,7 @@
             switch_id: binary_sensor.sonette_bas
             delay: 2
             short_click_action:
-              - service: notify.mobile_app_iphone
+              - service: notify.mobile_app_chriss_iphone
                 data:
                     message: "Quelqu'un sonne à la porte d'en bas"
                     data:
@@ -112,7 +112,7 @@
               - choose:
                   - conditions:
                       - condition: state
-                        entity_id: media_player.terrassebas_3
+                        entity_id: media_player.terrassebas
                         state: playing 
                     sequence:
                       - service: shell_command.ringextbas

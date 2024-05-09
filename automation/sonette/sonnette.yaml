@@ -54,7 +54,7 @@
         entity_id: binary_sensor.sonnette_person
         to: 'on'
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Quelqu'un est détecté devant la maison"
             data:
@@ -78,7 +78,7 @@
         entity_id: input_boolean.hello_fresh
         state: "off" 
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Quelqu'un sonne à la porte"
             data:
@@ -203,7 +203,7 @@
         to: 'on'
     condition:
       - condition: state
-        entity_id: media_player.terrassehaut_2
+        entity_id: media_player.terrassehaut
         state: playing 
     action:
       - service: shell_command.ringexthaut
@@ -218,7 +218,7 @@
         to: 'on'
     condition:
       - condition: state
-        entity_id: media_player.terrassebas_3
+        entity_id: media_player.terrassebas
         state: playing 
     action:
       - service: shell_command.ringextbas

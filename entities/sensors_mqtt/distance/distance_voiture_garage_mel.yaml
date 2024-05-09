@@ -1,4 +1,5 @@
     name: "distance voiture garage mel"
+    unique_id: "distance voiture garage mel"
     state_topic: cmd/esp_garage_mel_dist/distance
     icon: 'mdi:diameter-outline'
     unit_of_measurement: cm

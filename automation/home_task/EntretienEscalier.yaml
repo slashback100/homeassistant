@@ -12,3 +12,7 @@
         data:
             message: "Huiler l'escalier"
             title: "Entretien"
+      - service: todo.add_item
+        data:
+            entity_id: todo.taches_maison
+            item: "Huiler l'escalier"

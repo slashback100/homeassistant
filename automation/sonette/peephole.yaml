@@ -17,6 +17,11 @@
          - service: switch.turn_on
            data:
                entity_id: switch.chris_galaxy_tab_screen
+         - service: fully_kiosk.load_url
+           data:
+               url: https://slashbackdomo.ddns.net:4294/lovelace/peephole
+           target:
+               device_id: 479efd4d9e1f4570884d84fc0f4261eb
   - alias: poophole_battery
     id: poophole_battery
     mode: single
@@ -25,6 +30,6 @@
         entity_id: sensor.chris_galaxy_tab_batterie
         below: 10
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "La galaxy tab a moins de 10% de batterie"

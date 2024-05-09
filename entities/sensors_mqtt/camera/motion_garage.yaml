@@ -1,4 +1,5 @@
     name: "Motion detected Garage Chris"
+    unique_id: "Motion detected Garage Chris"
     state_topic: "garage_chris/motion"
     #    qos: 0
     #    expire_after: 60

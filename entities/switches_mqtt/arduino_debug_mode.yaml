@@ -1,4 +1,5 @@
   - name: "Arduino etage0a Debug mode"
+    unique_id: "Arduino etage0a Debug mode"
     command_topic: "cmd/etage0a/debug"
     state_topic: "cmd/etage0a/debug"
     retain: true
@@ -7,6 +8,7 @@
     payload_on: 'true'
     payload_off: 'false'
   - name: "Arduino etage1a Debug mode"
+    unique_id: "Arduino etage1a Debug mode"
     command_topic: "cmd/etage1a/debug"
     state_topic: "cmd/etage1a/debug"
     retain: true
@@ -15,6 +17,7 @@
     payload_on: 'true'
     payload_off: 'false'
   - name: "Arduino etage2a Debug mode"
+    unique_id: "Arduino etage2a Debug mode"
     command_topic: "cmd/etage2a/debug"
     state_topic: "cmd/etage2a/debug"
     retain: true
@@ -23,6 +26,7 @@
     payload_on: 'true'
     payload_off: 'false'
   - name: "Arduino etage2b Debug mode"
+    unique_id: "Arduino etage2b Debug mode"
     command_topic: "cmd/etage2b/debug"
     state_topic: "cmd/etage2b/debug"
     retain: true

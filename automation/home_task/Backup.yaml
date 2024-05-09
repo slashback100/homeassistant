@@ -11,3 +11,7 @@
         data:
             message: "Faire un Backup du HDD"
             title: "Backup"
+      - service: todo.add_item
+        data:
+            entity_id: todo.taches_maison
+            item: "Faire un Backup du HDD"

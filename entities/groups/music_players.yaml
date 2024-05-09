@@ -1,8 +1,8 @@
 music_players:
     name: Les player musicaux
     entities: 
-      - media_player.terrassehaut_2
-      - media_player.terrassebas_3
+      - media_player.terrassehaut
+      - media_player.terrassebas
       - media_player.salle_de_bain
       - media_player.chambre
       - media_player.cuisine

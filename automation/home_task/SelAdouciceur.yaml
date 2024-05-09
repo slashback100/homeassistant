@@ -12,3 +12,7 @@
         data:
             message: "Vérifier le sel dans l'adoucisseur"
             title: "Entretien"
+      - service: todo.add_item
+        data:
+            entity_id: todo.taches_maison
+            item: "Vérifier le sel dans l'adoucisseur"

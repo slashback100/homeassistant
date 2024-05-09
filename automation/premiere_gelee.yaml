@@ -14,7 +14,7 @@
         entity_id: input_boolean.premiere_gelee
         to: 'on'
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Première gelée prévue aujourd'hui ou demain"
       - service: persistent_notification.create

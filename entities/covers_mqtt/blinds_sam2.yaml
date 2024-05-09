@@ -1,4 +1,5 @@
     name: Volet Salle à manger 2
+    unique_id: Volet Salle à manger 2
     object_id: volet_sam_2
     device_class: blind
     command_topic: cmd/blinds_etage1a/32

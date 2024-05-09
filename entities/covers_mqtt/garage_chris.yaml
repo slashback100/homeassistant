@@ -1,4 +1,5 @@
     name: garage_de_chris
+    unique_id: garage_de_chris
     device_class: garage
     state_topic: cmd/etage1a/in/45
     state_open: "OFF"

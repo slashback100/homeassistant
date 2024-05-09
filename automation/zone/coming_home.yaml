@@ -5,7 +5,7 @@
         entity_id: person.christophe
         to: 'home'
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Ouvir le garage ?"
             data:

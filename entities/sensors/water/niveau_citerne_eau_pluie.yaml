@@ -2,6 +2,7 @@
     sensors:
         niveau_citerne_eau_pluie:
             friendly_name: "Niveau de la citerne d'eau de pluie"
+            unique_id: "Niveau de la citerne d'eau de pluie"
             unit_of_measurement: L
             icon_template: "mdi:waves"
             value_template: >-

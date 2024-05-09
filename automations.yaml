@@ -29,7 +29,7 @@
       entity_id: person.christophe
       zone: zone.medsoc
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_chriss_iphone
     data:
       message: Plus de 50 minutes pour rentrer à la maison ({{states("sensor.chris_vers_maison")
         ~ " minutes"}})
@@ -48,7 +48,7 @@
     data:
       message: Problème mémoire, redémarrer HA
       title: HA Memory
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_chriss_iphone
     data:
       message: Problème mémoire, redémarrer HA
       title: HA Memory
@@ -107,7 +107,7 @@
       seconds: 0
   condition: []
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_chriss_iphone
     data:
       message: Chauffage allumé dans la salle de hbain
   mode: single
@@ -143,7 +143,7 @@
       entity_id: person.christophe
       state: home
     then:
-    - service: notify.mobile_app_iphone
+    - service: notify.mobile_app_chriss_iphone
       data:
         title: Alarme
         message: Attention, alarme mise mais nous sommes jeudi, HelloFresh ne vient
@@ -311,4 +311,4741 @@
         option: Ouvert
       target:
         entity_id: input_select.cave_etagere_status
+  mode: single
+- id: '1707320668533'
+  alias: ActionIOS_OuvrirGarageMel
+  description: ''
+  trigger:
+  - platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: OuvrirGarageMel
+    context:
+      user_id:
+      - 1621472dc48440c58e70f7c9995cfc72
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.chris_distance_to_home
+    below: 1000
+  action:
+  - service: cover.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.garage_de_mel
+  mode: single
+- id: '1707321981295'
+  alias: ActionIOS_OuvirGarageChris
+  description: ''
+  trigger:
+  - platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: OuvrirGarageChris
+    context:
+      user_id:
+      - 1621472dc48440c58e70f7c9995cfc72
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.chris_distance_to_home
+    below: 1000
+  action:
+  - service: cover.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - cover.garage_de_chris
+  mode: single
+- id: '1712066769909'
+  alias: Homekit_update_sensor
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /2
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.homekit_sensors_update
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.homekit_sensors_update
+    data: {}
+  mode: single
+- id: afterReload
+  alias: Restore Garage state after reload
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  - platform: event
+    event_type: event_mqtt_reloaded
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/in/45
+      payload: 'ON'
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/in/44
+      payload: 'ON'
+  - service: scene.create
+    data:
+      scene_id: garage_mel
+      snapshot_entities:
+      - light.l_garage_mel
+  - service: switch.turn_on
+    data:
+      entity_id:
+      - switch.activation_detecteur_de_distance_garage_mel
+      - switch.activation_detecteur_de_distance_garage_chris
+  - delay: 00:00:01
+  - service: scene.turn_on
+    data:
+      entity_id: scene.garage_mel
+  - delay: 00:00:02
+  - service: switch.turn_off
+    data:
+      entity_id:
+      - switch.activation_detecteur_de_distance_garage_mel
+      - switch.activation_detecteur_de_distance_garage_chris
+- id: blackout
+  alias: Blackout at home
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.cinema
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Coupure de courant à la maison
+- id: blackout2
+  alias: Blackout at home 2
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.kodi_rpi
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Coupure de courant à la maison
+- id: MailHelloFresh
+  alias: MailHelloFresh
+  description: MailHelloFresh
+  trigger:
+  - platform: event
+    event_type: imap_content
+    event_data:
+      sender: no-reply@mail.hellofresh.be
+      subject: Livraison de votre box HelloFresh
+  - platform: event
+    event_type: imap_content
+    event_data:
+      sender: no-reply@mail.hellofresh.com
+      subject: Livraison de votre box HelloFresh
+  - platform: event
+    event_type: imap_content
+    event_data:
+      sender: christophe.desirant@gmail.com
+      subject: Livraison de votre box HelloFresh
+  action:
+  - service: google.create_event
+    target:
+      entity_id: calendar.calendier_famille
+    data:
+      description: HelloFresh
+      summary: HelloFresh
+      start_date_time: '{% set dt = (trigger.event.data["text"] | regex_findall_index("Heure
+        de livraison[^:]*: ([0-9]+:[0-9]+)")) %}  {{((strptime(states("sensor.date")~"
+        "~ dt, "%Y-%m-%d %H:%M") + timedelta(days = 1) - timedelta(minutes = 30))|string)[:-3]}}'
+      end_date_time: '{% set dt = (trigger.event.data["text"] | regex_findall_index("Heure
+        de livraison[^:]*: ([0-9]+:[0-9]+)")) %} {{((strptime(states("sensor.date")~"
+        "~ dt, "%Y-%m-%d %H:%M") + timedelta(days = 1) + timedelta(minutes = 30))|string)[:-3]}}'
+  mode: single
+- id: startofha
+  alias: StartOf HA
+  initial_state: 'on'
+  trigger:
+  - platform: time_pattern
+    seconds: /15
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/in/45
+      payload: 'ON'
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/in/44
+      payload: 'ON'
+  - service: logger.set_default_level
+    data:
+      level: error
+  - service: logger.set_level
+    data:
+      custom_components.presence_simulation: debug
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a_position/01
+      payload: '50'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a_position/02
+      payload: '50'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a_position/04
+      payload: '50'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a_position/08
+      payload: '50'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a_position/16
+      payload: '50'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a_position/32
+      payload: '50'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/out/12
+      payload: 'ON'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/out/11
+      payload: 'ON'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage2a/out/0
+      payload: '100'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage2a/out/1
+      payload: '100'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage2b/out/0
+      payload: '20'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/out/0
+      payload: '100'
+      retain: true
+  - service: automation.turn_off
+    entity_id: automation.startof_ha
+- alias: Tout éteindre
+  id: Touteteindre
+  trigger:
+    platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: 'OFF'
+  action:
+  - choose:
+    - conditions: '{{ is_state(''switch.presence_simulation'', ''on'') }}'
+      sequence:
+      - service: switch.turn_off
+        entity_id: switch.presence_simulation
+      - delay: 5
+      - service: light.turn_off
+        entity_id: all
+      - service: media_player.media_pause
+        data:
+          entity_id: all
+      - service: switch.turn_on
+        entity_id: switch.presence_simulation
+    default:
+    - service: light.turn_off
+      entity_id: all
+    - service: media_player.media_pause
+      data:
+        entity_id: all
+- alias: OuvrirGarageMelEntreeZoneMaison
+  id: OuvrirGarageMelEntreeZoneMaison
+  trigger:
+    platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: OPENGARAGEMEL
+  action:
+  - service: cover.open_cover
+    entity_id: cover.garage_de_mel
+- alias: OuvrirGarageChrisEntreeZoneMaison
+  id: OuvrirGarageChrisEntreeZoneMaison
+  trigger:
+    platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: OPENGARAGECHRIS
+  action:
+  - service: cover.open_cover
+    entity_id: cover.garage_de_chris
+- alias: ProposerFermetureGarageMel
+  id: ProposerFermetureGarageMel
+  trigger:
+    platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: FERMERGARAGEMEL
+  action:
+  - service: cover.close_cover
+    entity_id: cover.garage_de_mel
+- alias: ProposerFermetureGarageChris
+  id: ProposerFermetureGarageChris
+  trigger:
+    platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: FERMERGARAGECHRIS
+  action:
+  - service: cover.close_cover
+    entity_id: cover.garage_de_chris
+- id: new_version
+  alias: A new version is available
+  trigger:
+    platform: state
+    entity_id: binary_sensor.updater
+  action:
+  - service: persistent_notification.create
+    data_template:
+      message: Une nouvelle version de HomeAssistant est disponible (version {{ states.binary_sensor.updater.attributes.newest_version
+        }})
+      title: Version
+- id: premiere_gelee
+  alias: Première gelée prévue demain ou après-demain
+  trigger:
+    platform: template
+    value_template: '{% if states.weather.maison.attributes.forecast[0].templow <
+      3 or states.weather.maison.attributes.forecast[1].templow < 3 %}true{% endif  %}'
+  action:
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.premiere_gelee
+- id: premiere_gelee_notif
+  alias: Notifcation de première gelée
+  trigger:
+    platform: state
+    entity_id: input_boolean.premiere_gelee
+    to: 'on'
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Première gelée prévue aujourd'hui ou demain
+  - service: persistent_notification.create
+    data:
+      message: Rentrer le tuyau d'arrosage
+      title: Winter is coming
+  - service: persistent_notification.create
+    data:
+      message: Vider les ballasts des parasols
+      title: Winter is coming
+- id: premiere_gelee_reset
+  alias: Reset du flag Premiere gelée le 1er aout
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().day == 1 and now().month == 8 }}'
+  action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.premiere_gelee
+- alias: Pump
+  id: Pump
+  trigger:
+  - platform: time_pattern
+    minutes: 0
+    seconds: 0
+  action:
+  - service: switch.turn_on
+    entity_id: switch.billard_chauffage_entree
+  - delay: 300
+  - service: switch.turn_off
+    entity_id: switch.billard_chauffage_entree
+- id: setTheme
+  alias: Set theme at startup
+  initial_state: 'on'
+  trigger:
+  - platform: homeassistant
+    event: start
+  action:
+    service: frontend.set_theme
+    data:
+      name: material_dark_green
+- id: alarm_ring
+  alias: L'alarme sonne !
+  trigger:
+  - platform: state
+    entity_id: sensor.statut_de_l_alarme
+    to: alarme
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: L'alarme sonne !
+      data:
+        push:
+          sound:
+            name: Update.caf
+            critical: 1
+            volume: 1
+- id: alarm_on_cover_open
+  alias: Alarme activée et garage ouvert !
+  trigger:
+  - platform: state
+    entity_id: cover.garage_de_chris
+    to: open
+    for: 00:00:01
+  - platform: state
+    entity_id: cover.garage_de_mel
+    to: open
+    for: 00:00:01
+  condition:
+  - condition: state
+    entity_id: binary_sensor.alarme_activee
+    state: 'on'
+  action:
+  - repeat:
+      count: '{{ iif(trigger.entity_id == ''cover.garage_de_chris'', 8, 4) }}'
+      sequence:
+      - service: light.toggle
+        data:
+          entity_id: "{% if (trigger.entity_id == \"cover.garage_de_chris\") %}\n
+            \   light.l_garage_chris\n{% else %}\n    light.l_garage_mel\n{% endif
+            %}"
+      - delay:
+          seconds: 3
+- id: changeWatchdogTimeoutShutingDown
+  alias: Set high watchdog before shutting down
+  trigger:
+    platform: homeassistant
+    event: shutdown
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage0a/watchdog
+      payload: '999999'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage1a/watchdog
+      payload: '999999'
+      retain: true
+- id: changeWatchdogTimeoutStartup
+  alias: Set normal watchdog  shutting down
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage0a/watchdog
+      payload: '{{ states(''input_number.arduino_watchdog'') | int }}'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage1a/watchdog
+      payload: '{{ states(''input_number.arduino_watchdog'') | int }}'
+      retain: true
+- id: changeWatchdogTimeoutInput
+  alias: Set watchdog time according to input text arduino watchdog
+  trigger:
+    platform: state
+    entity_id: input_number.arduino_watchdog
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage0a/watchdog
+      payload: '{{ states(''input_number.arduino_watchdog'') | int }}'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage1a/watchdog
+      payload: '{{ states(''input_number.arduino_watchdog'')  | int }}'
+      retain: true
+- id: resetArduinoWatchdog
+  alias: Reset Arduino Watchdog
+  trigger:
+    platform: time_pattern
+    minutes: /1
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage0a/resetWatchdog
+      payload: 'ON'
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/resetWatchdog
+      payload: 'ON'
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage2a/watchdog
+      payload: 'ON'
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage2b/watchdog
+      payload: 'ON'
+- id: watchdog_fired_reset_etage0a
+  alias: Watchdog triggered the reset of etage0a
+  trigger:
+    platform: mqtt
+    topic: log/error/esp_watchdog_etage0a
+    payload: Reset of the arduino mega triggered
+  action:
+  - service: counter.increment
+    data:
+      entity_id: counter.reset_of_basement_domo
+- id: watchdog_fired_reset_etage1a
+  alias: Watchdog triggered the reset of etage1a
+  trigger:
+    platform: mqtt
+    topic: log/error/esp_watchdog_etage1a
+    payload: Reset of the arduino mega triggered
+  action:
+  - service: counter.increment
+    data:
+      entity_id: counter.reset_of_rdc_domo
+  - delay:
+      seconds: '10'
+  - service: light.turn_off
+    data:
+      entity_id: light.l_buanderie
+- id: restoreStateArduinoReboot
+  alias: restoreStateArduinoReboot_launchRestorePythonScript
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: init/etage0a/ready
+    payload: ready
+  - platform: mqtt
+    topic: init/etage1a/ready
+    payload: ready
+  - platform: mqtt
+    topic: init/etage2a/ready
+    payload: ready
+  - platform: mqtt
+    topic: init/etage2b/ready
+    payload: ready
+  action:
+  - service: python_script.restore
+    data: {}
+- id: restoreStateHAStartup
+  alias: restoreStateHAStartup_launchRestorePythonScript
+  description: ''
+  trigger:
+  - platform: event
+    event_type: homeassistant_started
+  action:
+  - service: python_script.restore
+    data: {}
+- alias: restoreStateHAStartup2
+  id: restoreStateHAStartup2
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+  - service: python_script.restore
+- id: bmw_refresh_after_service_call
+  alias: Refresh state after a service call
+  trigger:
+  - platform: event
+    event_type: call_service
+    event_data:
+      domain: lock
+  condition:
+  - condition: template
+    value_template: '{{ "lock.420i_lock" in trigger.event.data.service_data.entity_id
+      }}'
+  action:
+  - service: system_log.write
+    data:
+      message: entering in action
+  - repeat:
+      while: <- {%- if (trigger.event.data.service == 'lock') -%} {{- is_state('binary_sensor.420i_door_lock_state',
+        'on') -}} {%- else -%} {{- is_state('binary_sensor.420i_door_lock_state',
+        'off') -}} {%- endif -%}
+      sequence:
+      - delay: 00:00:05
+      - service: bmw_connected_drive.update_state
+      - service: system_log.write
+        data:
+          message: '{{ "service called: " ~ trigger.event.data.service }}'
+          level: debug
+      - service: system_log.write
+        data:
+          message: '{{ "state: " ~ states(''binary_sensor.420i_door_lock_state'')}}'
+          level: debug
+      - service: system_log.write
+        data:
+          message: "{{- \"until test result: \" -}} {%- if (trigger.event.data.service
+            == 'lock') -%}\n  {{- is_state('binary_sensor.420i_door_lock_state', 'off')
+            -}}\n{%- else -%}\n  {{- is_state('binary_sensor.420i_door_lock_state',
+            'on') -}}\n{%- endif -%}"
+          level: debug
+- alias: cleanCamFiles
+  id: cleanCamFiles
+  trigger:
+    platform: time_pattern
+    hours: '20'
+    minutes: '0'
+    seconds: '0'
+  action:
+  - service: shell_command.clean_cam_files
+- alias: getLastImgAvi
+  id: getLastImgAvi
+  trigger:
+    platform: time_pattern
+    hours: '*'
+    minutes: '*'
+    seconds: '0'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.camera_rpi
+    state: 'on'
+  - condition: state
+    entity_id: switch.camera_rpi
+    state: 'on'
+  action:
+  - service: homeassistant.update_entity
+    data:
+      entity_id:
+      - sensor.last_cam_file
+      - sensor.last_cam_img
+- id: ack_chris
+  alias: Couper l'alerte du garage de chris par action sur notification
+  trigger:
+    platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: ACK_CHRIS
+  action:
+  - service: alert.turn_off
+    data:
+      entity_id: alert.chris_garage_open
+- id: ack_mel
+  alias: Couper l'alerte du garage de mel par action sur notification
+  trigger:
+    platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: ACK_CHRIS
+  action:
+  - service: alert.turn_off
+    data:
+      entity_id: alert.mel_garage_open
+- alias: activate_distance_cover_chris_off
+  id: activate_distance_cover_chris_off
+  trigger:
+  - platform: state
+    entity_id: cover.garage_de_chris
+    to: closed
+  action:
+  - service: switch.turn_off
+    entity_id: switch.activation_detecteur_de_distance_garage_chris
+- alias: activate_distance_cover_chris_on
+  id: activate_distance_cover_chris_on
+  trigger:
+  - platform: state
+    entity_id: cover.garage_de_chris
+    to: open
+  action:
+  - service: switch.turn_on
+    entity_id: switch.activation_detecteur_de_distance_garage_chris
+- alias: Fermer les volets à l'arrière si soleil et chaud
+  id: descendre_volets_arriere_soleil_chaud
+  mode: single
+  trigger:
+  - platform: state
+    entity_id:
+    - weather.maison
+    to: sunny
+  - platform: time
+    at: '14:30:00'
+  - platform: numeric_state
+    entity_id: input_number.homepod_temp
+    above: 21
+  condition:
+  - condition: state
+    entity_id: weather.maison
+    state: sunny
+  - condition: time
+    after: '14:30:00'
+    before: sensor.sun_next_setting
+  - condition: numeric_state
+    entity_id: input_number.homepod_temp
+    above: 21
+  - condition: numeric_state
+    entity_id: cover.volet_cuisine_1
+    attribute: current_position
+    below: 20
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a/15
+      payload: d
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a/48
+      payload: u
+  - delay:
+      seconds: 18
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a/7
+      payload: s
+  - delay:
+      seconds: 5
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a/8
+      payload: s
+- id: stopIRRemoteChris
+  alias: Stop pushing IR remote
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/out/62
+    payload: 'ON'
+  action:
+  - delay:
+      seconds: 1
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/out/62
+      payload: 'OFF'
+      retain: true
+- id: stopIRRemoteMel
+  alias: Stop pushing IR remote
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/out/64
+    payload: 'ON'
+  action:
+  - delay:
+      seconds: 1
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/out/64
+      payload: 'OFF'
+      retain: true
+- alias: SwitchGarageChris1
+  id: SwitchGarageChris1
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.cover_garage_chris
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_garage_chris
+      long_click_action:
+      - service: cover.toggle
+        data:
+          entity_id: cover.garage_de_chris
+- alias: SwitchGarageChris2
+  id: SwitchGarageChris2
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.cover_garage_mel
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_garage_mel
+      long_click_action:
+      - service: cover.toggle
+        data:
+          entity_id: cover.garage_de_mel
+- alias: Turn on Light if less x cm
+  id: turn_on_Light_if_less_x_cm
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.distance_voiture_garage_mel
+    below: 50
+  action:
+  - service: light.turn_on
+    entity_id: light.l_garage_mel
+  - delay:
+      seconds: 60
+  - service: light.turn_off
+    entity_id: light.l_garage_mel
+- alias: activate_distance_cover_off
+  id: activate_distance_cover_off
+  trigger:
+  - platform: state
+    entity_id: cover.garage_de_mel
+    to: closed
+  action:
+  - service: switch.turn_off
+    entity_id: switch.activation_detecteur_de_distance_garage_mel
+- alias: activate_distance_cover_on
+  id: activate_distance_cover_on
+  trigger:
+  - platform: state
+    entity_id: cover.garage_de_mel
+    to: open
+  action:
+  - service: switch.turn_on
+    entity_id: switch.activation_detecteur_de_distance_garage_mel
+- alias: blinds_mqtt_to_event
+  id: blinds_mqtt_to_event
+  description: Create events when receiving a blind command
+  mode: parallel
+  trigger:
+  - platform: mqtt
+    topic: cmd/blinds_etage1a/+
+  action:
+  - event: mqtt_cover_cmd
+    event_data:
+      blind_id: '{{ trigger.topic[19:] | int }}'
+      cmd: '{{ trigger.payload }}'
+- alias: Ouvrir les volets le matin
+  id: ouvrir_volets_matin
+  mode: single
+  trigger:
+  - platform: time
+    at: 08:06:12
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a/63
+      payload: u
+- alias: ouvrir les volets avec le soleil_sem
+  id: ouvrir_volets_soleil_sem
+  mode: single
+  trigger:
+  - platform: time
+    at: 08:00:01
+  - platform: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    above: -1.5
+  condition:
+  - condition: time
+    after: 08:00:00
+  - condition: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    above: -1.5
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a/63
+      payload: u
+- alias: ouvrir les volets avec le soleil we
+  id: ouvrir_volets_soleil_we
+  mode: single
+  trigger:
+  - platform: time
+    at: 09:00:01
+  - platform: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    above: -1.5
+  condition:
+  - condition: time
+    after: 09:00:00
+  - condition: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    above: -1.5
+  - condition: time
+    weekday:
+    - sat
+    - sun
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a/63
+      payload: u
+- id: proposeClosingCoverChris
+  alias: Proposer fermeture garage chris quand arrive garage
+  trigger:
+    platform: state
+    entity_id: binary_sensor.voiture_presente_garage_chris
+    to: 'on'
+    for: 00:00:01
+  action:
+  - choose:
+    - conditions: '{{ states(''person.christophe'') and now().timestamp() - states.person.christophe.last_changed.timestamp()  <
+        60 }}'
+      sequence:
+      - service: notify.mobile_app_chriss_iphone
+        data:
+          message: Fermer le garage de Christophe ?
+          data:
+            push:
+              category: fermergaragechris
+    - conditions: '{{ states(''person.melanie'') and now().timestamp() - states.person.melanie.last_changed.timestamp()  <
+        60 }}'
+      sequence:
+      - service: notify.mobile_app_sm_a525f
+        data:
+          message: Fermer le garage de Christophe ?
+          data:
+            push:
+              category: fermergaragechris
+- id: proposeClosingCoverMel
+  alias: Proposer fermeture garage mel quand arrive garage
+  trigger:
+    platform: state
+    entity_id: binary_sensor.voiture_presente_garage_mel
+    to: 'on'
+    for: 00:00:01
+  action:
+  - choose:
+    - conditions: '{{ states(''person.christophe'') and now().timestamp() - states.person.christophe.last_changed.timestamp()  <
+        60 }}'
+      sequence:
+      - service: notify.mobile_app_chriss_iphone
+        data:
+          message: Fermer le garage de Mel ?
+          data:
+            push:
+              category: fermergaragemel
+    - conditions: '{{ states(''person.melanie'') and now().timestamp() - states.person.melanie.last_changed.timestamp()  <
+        60 }}'
+      sequence:
+      - service: notify.mobile_app_sm_a525f
+        data:
+          message: Fermer le garage de Mel ?
+          data:
+            push:
+              category: fermergaragemel
+- alias: Volet Toggle
+  id: volet_toggle
+  description: Volet_toggle
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.salon_volet
+      long_click_action:
+      - if: '{{ is_state(''cover.volet_cuisine_1'', ''open'') }}'
+        then:
+        - service: mqtt.publish
+          data:
+            topic: cmd/blinds_etage1a/15
+            payload: d
+        else:
+        - service: mqtt.publish
+          data:
+            topic: cmd/blinds_etage1a/15
+            payload: u
+      short_click_action:
+      - service: mqtt.publish
+        data:
+          topic: cmd/blinds_etage1a/15
+          payload: s
+      double_click_action:
+      - service: mqtt.publish
+        data:
+          topic: cmd/blinds_etage1a/15
+          payload: u
+- alias: SwitchSamVolet
+  id: SwitchSamVolet
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sam_volet
+      long_click_action:
+      - if: '{{ is_state(''cover.volet_sam_1'', ''open'') }}'
+        then:
+        - service: mqtt.publish
+          data:
+            topic: cmd/blinds_etage1a/48
+            payload: d
+        else:
+        - service: mqtt.publish
+          data:
+            topic: cmd/blinds_etage1a/48
+            payload: u
+      short_click_action:
+      - service: mqtt.publish
+        data:
+          topic: cmd/blinds_etage1a/48
+          payload: s
+      double_click_action:
+      - service: mqtt.publish
+        data:
+          topic: cmd/blinds_etage1a/48
+          payload: u
+- alias: Descendre les volet la nuit
+  id: descendre_volets_nuit
+  trigger:
+  - platform: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    below: -4
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a/63
+      payload: d
+  mode: single
+- id: volet_cuisine_1_position_close
+  alias: Set position to volet cuisine 1 (close)
+  use_blueprint:
+    path: volet_down.yaml
+    input:
+      cover_id: cover.volet_cuisine_1
+      id: 1
+      time_all_way: 23
+- id: volet_cuisine_1_position_open
+  alias: Set position to volet cuisine 1 (open)
+  use_blueprint:
+    path: volet_up.yaml
+    input:
+      cover_id: cover.volet_cuisine_1
+      id: 1
+      time_all_way: 23
+- id: volet_cuisine_1_set_position
+  alias: Change position to volet cuisine 1
+  use_blueprint:
+    path: volet_change_pos.yaml
+    input:
+      cover_id: cover.volet_cuisine_1
+      id: 1
+      time_all_way: 23
+- id: volet_cuisine_2_position_close
+  alias: Set position to volet cuisine 2 (close)
+  use_blueprint:
+    path: volet_down.yaml
+    input:
+      cover_id: cover.volet_cuisine_2
+      id: 2
+      time_all_way: 23
+- id: volet_cuisine_2_position_open
+  alias: Set position to volet cuisine 2 (open)
+  use_blueprint:
+    path: volet_up.yaml
+    input:
+      cover_id: cover.volet_cuisine_2
+      id: 2
+      time_all_way: 23
+- id: volet_cuisine_2_set_position
+  alias: Change position to volet cuisine 2
+  use_blueprint:
+    path: volet_change_pos.yaml
+    input:
+      cover_id: cover.volet_cuisine_2
+      id: 2
+      time_all_way: 23
+- id: volet_cuisine_3_position_close
+  alias: Set position to volet cuisine 3 (close)
+  use_blueprint:
+    path: volet_down.yaml
+    input:
+      cover_id: cover.volet_cuisine_3
+      id: 4
+      time_all_way: 23
+- id: volet_cuisine_3_position_open
+  alias: Set position to volet cuisine 3 (open)
+  use_blueprint:
+    path: volet_up.yaml
+    input:
+      cover_id: cover.volet_cuisine_3
+      id: 4
+      time_all_way: 23
+- id: volet_cuisine_3_set_position
+  alias: Change position to volet cuisine 3
+  use_blueprint:
+    path: volet_change_pos.yaml
+    input:
+      cover_id: cover.volet_cuisine_3
+      id: 4
+      time_all_way: 23
+- id: volet_cuisine_entree_position_close
+  alias: Set position to volet cuisine entree (close)
+  use_blueprint:
+    path: volet_down.yaml
+    input:
+      cover_id: cover.volet_cuisine_entree
+      id: 8
+      time_all_way: 38
+- id: volet_cuisine_entree_position_open
+  alias: Set position to volet cuisine entree (open)
+  use_blueprint:
+    path: volet_up.yaml
+    input:
+      cover_id: cover.volet_cuisine_entree
+      id: 8
+      time_all_way: 38
+- id: volet_cuisine_entree_set_position
+  alias: Change position to volet cuisine entree
+  use_blueprint:
+    path: volet_change_pos.yaml
+    input:
+      cover_id: cover.volet_cuisine_entree
+      id: 8
+      time_all_way: 38
+- id: volet_sam_1_position_close
+  alias: Set position to volet sam 1 (close)
+  use_blueprint:
+    path: volet_down.yaml
+    input:
+      cover_id: cover.volet_sam_1
+      id: 16
+      time_all_way: 33
+- id: volet_sam_1_position_open
+  alias: Set position to volet sam 1 (open)
+  use_blueprint:
+    path: volet_up.yaml
+    input:
+      cover_id: cover.volet_sam_1
+      id: 16
+      time_all_way: 33
+- id: volet_sam_1_set_position
+  alias: Change position to volet sam 1
+  use_blueprint:
+    path: volet_change_pos.yaml
+    input:
+      cover_id: cover.volet_sam_1
+      id: 16
+      time_all_way: 33
+- id: volet_sam_2_position_close
+  alias: Set position to volet sam 2 (close)
+  use_blueprint:
+    path: volet_down.yaml
+    input:
+      cover_id: cover.volet_sam_2
+      id: 32
+      time_all_way: 33
+- id: volet_sam_2_position_open
+  alias: Set position to volet sam 2 (open)
+  use_blueprint:
+    path: volet_up.yaml
+    input:
+      cover_id: cover.volet_sam_2
+      id: 32
+      time_all_way: 33
+- id: volet_sam_2_set_position
+  alias: Change position to volet sam 2
+  use_blueprint:
+    path: volet_change_pos.yaml
+    input:
+      cover_id: cover.volet_sam_2
+      id: 32
+      time_all_way: 33
+- id: new_value_elec
+  alias: New value for elec consumption
+  trigger:
+    platform: state
+    entity_id: input_number.electricite
+  action:
+  - service: mqtt.publish
+    data:
+      topic: consommation/electricite
+      payload: '{{ states(''input_number.electricite'') }}'
+      retain: true
+- id: new_value_gas
+  alias: New value for gas consumption
+  trigger:
+    platform: state
+    entity_id: input_number.compteur_gaz
+  action:
+  - service: mqtt.publish
+    data:
+      topic: consommation/gaz
+      payload: '{{ states(''input_number.compteur_gaz'') }}'
+      retain: true
+- id: get_price_gas
+  alias: Retrieve value for gas price
+  trigger:
+    platform: time_pattern
+    minutes: 0
+    hours: '*'
+  action:
+  - service: shell_command.get_prix_gaz
+- id: new_value_water
+  alias: New value for water consumption
+  trigger:
+    platform: state
+    entity_id: input_number.compteur_eau
+  action:
+  - service: mqtt.publish
+    data:
+      topic: consommation/eau
+      payload: '{{ states(''input_number.compteur_eau'') }}'
+      retain: true
+- id: Umicore Seuil
+  alias: Seuil atteind pour Umicore
+  trigger:
+    platform: numeric_state
+    entity_id: yahoofinance.umi_br
+    above: 59.9
+    below: 1000
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Umicore est à {{states('yahoofinance.umi_br')}} €
+- alias: SyncChauffageBillardON
+  id: SyncChauffageBillardON
+  trigger:
+  - platform: state
+    entity_id: switch.billard_chauffage_fond
+    to: 'on'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.billard_chauffage_entree
+- alias: SyncChauffageBillardOFF
+  id: SyncChauffageBillardOFF
+  trigger:
+  - platform: state
+    entity_id: switch.billard_chauffage_fond
+    to: 'off'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.billard_chauffage_entree
+- alias: ClimateBillard_autoMode_off
+  id: ClimateBillard_autoMode_off
+  trigger:
+  - platform: state
+    entity_id: climate.chauffage_du_billard
+    to: auto
+  - platform: numeric_state
+    entity_id: climate.chauffage_du_billard
+    value_template: '{{state.attributes.current_temperature - state.attributes.temperature
+      }}'
+    above: -0.01
+  condition:
+  - condition: state
+    entity_id: climate.chauffage_du_billard
+    state: auto
+  - condition: numeric_state
+    entity_id: climate.chauffage_du_billard
+    value_template: '{{state.attributes.current_temperature - state.attributes.temperature
+      }}'
+    above: -0.01
+  action:
+  - service: switch.turn_off
+    entity_id:
+    - switch.billard_chauffage_fond
+- alias: ClimateBillard_autoMode_on
+  id: ClimateBillard_autoMode_on
+  trigger:
+  - platform: state
+    entity_id: climate.chauffage_du_billard
+    to: auto
+  - platform: numeric_state
+    entity_id: climate.chauffage_du_billard
+    value_template: '{{state.attributes.current_temperature - state.attributes.temperature
+      }}'
+    below: 0
+  condition:
+  - condition: state
+    entity_id: climate.chauffage_du_billard
+    state: auto
+  - condition: numeric_state
+    entity_id: climate.chauffage_du_billard
+    value_template: '{{state.attributes.current_temperature - state.attributes.temperature
+      }}'
+    below: 0
+  action:
+  - service: switch.turn_on
+    entity_id:
+    - switch.billard_chauffage_fond
+- alias: ClimateBillard_off
+  id: ClimateBillard_off
+  trigger:
+  - platform: state
+    entity_id: climate.chauffage_du_billard
+    to: 'off'
+  action:
+  - service: switch.turn_off
+    entity_id:
+    - switch.billard_chauffage_fond
+- alias: ClimateCinema_autoMode_off
+  id: ClimateCinema_autoMode_off
+  trigger:
+  - platform: state
+    entity_id: climate.chauffage_du_cinema
+    to: auto
+  - platform: numeric_state
+    entity_id: climate.chauffage_du_cinema
+    value_template: '{{state.attributes.current_temperature - state.attributes.temperature
+      }}'
+    above: -0.01
+  condition:
+  - condition: state
+    entity_id: climate.chauffage_du_cinema
+    state: auto
+  action:
+  - service: switch.turn_off
+    entity_id: switch.cinema_chauffage
+- alias: ClimateCinema_autoMode_on
+  id: ClimateCinema_autoMode_on
+  trigger:
+  - platform: state
+    entity_id: climate.chauffage_du_cinema
+    to: auto
+  - platform: numeric_state
+    entity_id: climate.chauffage_du_cinema
+    value_template: '{{state.attributes.current_temperature - state.attributes.temperature
+      }}'
+    below: 0
+  condition:
+  - condition: state
+    entity_id: climate.chauffage_du_cinema
+    state: auto
+  - condition: numeric_state
+    entity_id: climate.chauffage_du_cinema
+    value_template: '{{state.attributes.current_temperature - state.attributes.temperature
+      }}'
+    below: 0
+  action:
+  - service: switch.turn_on
+    entity_id: switch.cinema_chauffage
+- alias: ClimateCinema_off
+  id: ClimateCinema_off
+  trigger:
+  - platform: state
+    entity_id: climate.chauffage_du_cinema
+    to: 'off'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.cinema_chauffage
+- alias: ClimateSchedule
+  id: ClimateSchedule
+  trigger:
+  - platform: state
+    entity_id: input_boolean.thermostat_activated
+    to: 'on'
+  - platform: state
+    entity_id: input_datetime.thermostat_start
+  - platform: state
+    entity_id: input_datetime.thermostat_end
+  - platform: time
+    at: input_datetime.thermostat_start
+  - platform: time
+    at: input_datetime.thermostat_end
+  condition:
+  - condition: state
+    entity_id: input_boolean.thermostat_activated
+    state: 'on'
+  action:
+  - variables:
+      entity: "{% if( is_state('input_select.thermostat', 'Cinéma')) %}\n  climate.chauffage_du_cinema\n{%
+        else %}\n  climate.chauffage_du_billard\n{% endif %}"
+  - choose:
+    - conditions: "{% if ( states('input_datetime.thermostat_end') == \"00:00:00\"
+        ) %}\n  {{ states('sensor.time')~':00'  >= states('input_datetime.thermostat_start')
+        }}\n{% else %}\n  {{ states('sensor.time')~':00'  >= states('input_datetime.thermostat_start')
+        and states('sensor.time')~':00' < states('input_datetime.thermostat_end')
+        }} \n{% endif %}"
+      sequence:
+      - service: notify.mobile_app_chriss_iphone
+        data:
+          message: Activation du chauffage dans la cave. Portes fermées ?
+      - service: climate.set_hvac_mode
+        data:
+          entity_id: '{{ entity }}'
+          hvac_mode: auto
+    default:
+    - service: climate.set_hvac_mode
+      data:
+        entity_id: '{{ entity }}'
+        hvac_mode: 'off'
+    - choose:
+      - conditions: '{{ trigger.platform == ''time'' and trigger.entity_id == ''input_datetime.thermostat_end''}}'
+        sequence:
+        - service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.thermostat_activated
+- alias: BackupHdd
+  id: BackupHdd
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  condition:
+  - condition: template
+    value_template: '{{ now().weekday() == 6 }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Faire un Backup du HDD
+      title: Backup
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Faire un Backup du HDD
+- alias: CouperBuis
+  id: CouperBuis
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().day == 1 and (now().month == 6 or now().month == 9)
+      }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Tailler les buis
+      title: Entretien
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Tailler les buis
+- alias: CouperHaies
+  id: CouperHaies
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ (now().day == 5 and now().month == 6) or (now().day == 20
+      and now().month == 9) }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Tailler les haies
+      title: Entretien
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Tailler les haies
+- alias: EntretienEscalier
+  id: EntretienEscalier
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().day == 1 and now().month == 1 }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Huiler l'escalier
+      title: Entretien
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Huiler l'escalier
+- alias: FiltreDoubleFlux
+  id: FiltreDoubleFlux
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().day == 1 and now().month % 3 == 1 }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Aspirer les filtres de la ventillation double flux
+      title: Entretien
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Aspirer les filtres de la ventillation double flux
+- alias: AchatFiltreDoubleFlux
+  id: AchatFiltreDoubleFlux
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().day == 1 and now().month == 1 and now().year % 2 ==
+      0 }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Remplacer les filtres de la VMC
+      title: Entretien
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Remplacer les filtres de la VMC
+- alias: FiltreLaveVaiselle
+  id: FiltreLaveVaiselle
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().day == 1 and now().month % 3 == 2 }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Nettoyer le filtre du lave-vaiselle
+      title: Entretien
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Nettoyer le filtre du lave-vaiselle
+- alias: FiltreMachineALaver
+  id: FiltreMachineALaver
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().day == 1 and now().month % 6 == 5 }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Nettoyer le filtre de la machine à laver
+      title: Entretien
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Nettoyer le filtre de la machine à laver
+- alias: NettoyerFour
+  id: NettoyerFour
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().day == 1 and now().month % 3 == 1 }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Nettoyer four (pyrolyse)
+      title: Entretien
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Nettoyer four (pyrolyse)
+- alias: PressionChaudiere
+  id: PressionChaudiere
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().day == 1 }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Vérifier la pression de la chaudière
+      title: Entretien
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Vérifier la pression de la chaudière
+- alias: SelAdouciceur
+  id: SelAdouciceur
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().day == 1 and now().month %3 == 2 }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Vérifier le sel dans l'adoucisseur
+      title: Entretien
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Vérifier le sel dans l'adoucisseur
+- alias: VannesSanitaireChauffage
+  id: VannesSanitaireChauffage
+  initial_state: 'on'
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition:
+  - condition: template
+    value_template: '{{ now().day == 1 and now().month % 3 == 1 }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      message: Tourner les vannes sanitaire et chauffage
+      title: Entretien
+  - service: todo.add_item
+    data:
+      entity_id: todo.taches_maison
+      item: Tourner les vannes sanitaire et chauffage
+- alias: SwitchBar
+  id: SwitchBar
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.bar
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_bar
+      long_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.wled_bar
+- id: SwitchBillard
+  alias: SwitchBillard
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.billard
+      short_click_action:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ is_state(''light.l_billard'', ''off'') and is_state(''light.l_billard_spots'',
+              ''off'') and states(''light.wled_billard'') in (''off'', ''unavailable'')
+              and is_state(''light.l_bar'', ''off'') }}'
+          sequence:
+          - service: light.turn_on
+            entity_id: light.l_billard_spots,light.wled_billard,light.l_bar,light.wled_bar
+        - conditions:
+          - condition: template
+            value_template: '{{ is_state(''light.l_billard'', ''off'') and is_state(''light.l_billard_spots'',
+              ''on'') and is_state(''light.wled_billard'', ''on'')  }}'
+          sequence:
+          - service: light.turn_on
+            entity_id: light.l_billard
+          - service: light.turn_off
+            entity_id: light.l_billard_spots
+        - conditions:
+          - condition: template
+            value_template: '{{ is_state(''light.l_billard'', ''on'') and is_state(''light.l_billard_spots'',
+              ''off'') and is_state(''light.wled_billard'', ''on'')  }}'
+          sequence:
+          - service: light.turn_off
+            entity_id: light.wled_billard
+        - conditions:
+          - condition: template
+            value_template: '{{ is_state(''light.l_billard'', ''on'') and is_state(''light.l_billard_spots'',
+              ''off'') and is_state(''light.wled_billard'', ''off'')  }}'
+          sequence:
+          - service: light.turn_off
+            entity_id: light.l_billard
+          - service: light.turn_on
+            entity_id: light.l_billard_spots
+        - conditions:
+          - condition: template
+            value_template: '{{ is_state(''light.l_billard'', ''off'') and is_state(''light.l_billard_spots'',
+              ''on'') and is_state(''light.wled_billard'', ''off'')  }}'
+          sequence:
+          - service: light.turn_on
+            entity_id: light.wled_billard
+        default:
+        - service: light.toggle
+          entity_id: light.l_billard
+      long_click_action:
+      - service: light.turn_off
+        entity_id: light.l_billard, light.l_billard_spots, light.l_kicker, light.l_bar,
+          light.wled_billard, light.wled_bar
+- alias: SwitchBureau
+  id: SwitchBureau
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.bureau
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_bureau
+      long_click_action:
+      - service: light.turn_off
+        data:
+          entity_id: light.l_bureau
+      - service: light.turn_on
+        data:
+          entity_id: light.l_salle_jeu
+- alias: SwitchCavePorteExt
+  id: SwitchCavePorteExt
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.cave_porte_ext
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_cave_jardin
+      long_click_action:
+      - service: light.turn_off
+        data:
+          entity_id: group.caves
+- alias: SwichCaveTechnique
+  id: SwichCaveTechnique
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.cave_tech
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_cave_technique
+      long_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_billard
+- alias: SwitchBasEscalierOff
+  id: SwitchBasEscalierOff
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.turn_off_cave
+      long_click_action:
+      - service: light.turn_off
+        data:
+          entity_id: light.l_atelier_mel,light.l_bar,light.l_billard,light.l_cave_jardin,light.l_cave_technique,light.l_cinema_lampe,light.l_kicker,light.l_urinoir,light.l_billard_spots,light.wled_billard
+- alias: SwitchHautEscalierOff
+  id: SwitchHautEscalierOff
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.cave_escalier
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_escalier_cave
+      long_click_action:
+      - service: light.turn_off
+        data:
+          entity_id: group.caves
+- alias: SwitchChambreOff
+  id: SwitchChambreOff
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.chambre
+      long_click_action:
+      - service: script.switch_off_all_no_blue
+- alias: SwitchChamobre_dressing
+  id: SwitchChamobre_dressing
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.chambre_lit_dressing
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_dressing
+      long_click_action:
+      - service: script.dim_light
+        data:
+          light: light.l_dressing
+          button: binary_sensor.chambre_lit_dressing
+- alias: SwitchEliseLeft
+  id: SwitchEliseLeft
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.elise_left
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_elise
+      - choose:
+        - conditions: '{{ is_state(''binary_sensor.femme_menage_presente'', ''on'')
+            and is_state(''light.l_elise'', ''on'') }}'
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_elise
+              brightness: '255'
+        default:
+        - choose:
+          - conditions: '{{ is_state(''light.l_elise'', ''on'') and state_attr(''light.l_elise'',
+              ''brightness'') | float < 5 }}'
+            sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.l_elise
+                brightness: '{{ (0.05 * 255) | int }}'
+      long_click_action:
+      - repeat:
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_elise
+              brightness_step_pct: -5
+          - delay: 0.2
+          until:
+          - condition: template
+            value_template: '{{ is_state(''binary_sensor.elise_left'', ''off'') or
+              state_attr(''light.l_elise'', ''brightness'') == None or state_attr(''light.l_elise'',
+              ''brightness'') | float == 0 }}'
+      - choose:
+        - conditions: '{{ state_attr(''light.l_elise'', ''brightness'') == 0 or state_attr(''light.l_elise'',
+            ''brightness'') == None }}'
+          sequence:
+          - service: light.turn_off
+            data:
+              entity_id: light.l_elise
+- alias: SwitchEliseRight
+  id: SwitchEliseRight
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.elise_right
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_elise
+      - choose:
+        - conditions: '{{ is_state(''binary_sensor.femme_menage_presente'', ''on'')
+            and is_state(''light.l_elise'', ''on'') }}'
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_elise
+              brightness: '255'
+        default:
+        - choose:
+          - conditions: '{{ is_state(''light.l_elise'', ''on'') and state_attr(''light.l_elise'',
+              ''brightness'') | float < 5 }}'
+            sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.l_elise
+                brightness: '{{ (0.05 * 255) | int }}'
+      long_click_action:
+      - repeat:
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_elise
+              brightness_step_pct: 5
+          - delay: 0.2
+          until:
+          - condition: template
+            value_template: '{{ is_state(''binary_sensor.elise_right'', ''off'') or
+              state_attr(''light.l_elise'', ''brightness'') | float == 255 }}'
+- alias: SwitchChambreMain
+  id: SwitchChambreMain
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.chambre_main
+      short_click_action:
+      - service: light.toggle
+        target:
+          entity_id: light.l_chambre_parents
+      long_click_action:
+      - service: light.turn_off
+        target:
+          entity_id:
+          - light.l_chambre_parents
+          - light.l_dressing
+      - service: media_player.media_pause
+        entity_id: media_player.chambre
+- alias: SwitchNoemieLeft
+  id: SwitchNoemieLeft
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.noemie_left
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_noemie
+      - choose:
+        - conditions: '{{ is_state(''binary_sensor.femme_menage_presente'', ''on'')
+            and is_state(''light.l_noemie'', ''on'') }}'
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_noemie
+              brightness: '255'
+        default:
+        - choose:
+          - conditions: '{{ is_state(''light.l_noemie'', ''on'') and state_attr(''light.l_noemie'',
+              ''brightness'') | float < 5 }}'
+            sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.l_noemie
+                brightness: '{{ (0.05 * 255) | int }}'
+      long_click_action:
+      - repeat:
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_noemie
+              brightness_step_pct: -5
+          - delay: 0.2
+          until:
+          - condition: template
+            value_template: '{{ is_state(''binary_sensor.noemie_left'', ''off'') or
+              state_attr(''light.l_noemie'', ''brightness'') == None or state_attr(''light.l_noemie'',
+              ''brightness'') | float == 0 }}'
+      - choose:
+        - conditions: '{{ state_attr(''light.l_noemie'', ''brightness'') == 0 or state_attr(''light.l_noemie'',
+            ''brightness'') == None }}'
+          sequence:
+          - service: light.turn_off
+            data:
+              entity_id: light.l_noemie
+- alias: SwitchNoemieRight
+  id: SwitchNoemieRight
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.noemie_right
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_noemie
+      - choose:
+        - conditions: '{{ is_state(''binary_sensor.femme_menage_presente'', ''on'')
+            and is_state(''light.l_noemie'', ''on'') }}'
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_noemie
+              brightness: '255'
+        default:
+        - choose:
+          - conditions: '{{ is_state(''light.l_noemie'', ''on'') and state_attr(''light.l_noemie'',
+              ''brightness'') | float < 5 }}'
+            sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.l_noemie
+                brightness: '{{ (0.05 * 255) | int }}'
+      long_click_action:
+      - repeat:
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_noemie
+              brightness_step_pct: 5
+          - delay: 0.2
+          until:
+          - condition: template
+            value_template: '{{ is_state(''binary_sensor.noemie_right'', ''off'')
+              or state_attr(''light.l_noemie'', ''brightness'') | float == 255 }}'
+- alias: SwitchCinema
+  id: SwitchCinema
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.cinema
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_cinema_lampe
+      - choose:
+        - conditions: '{{ is_state(''light.l_cinema_lampe'', ''on'') and state_attr(''light.l_cinema_lampe'',
+            ''brightness'') | float < 20 }}'
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_cinema_lampe
+              brightness: '{{ (0.40 * 255) | int }}'
+      long_click_action:
+      - service: script.dim_light
+        data:
+          light: light.l_cinema_lampe
+          button: binary_sensor.cinema
+      double_click_action:
+      - if: '{{ is_state(''light.l_billard_spots'', ''off'')}}'
+        then:
+        - service: light.turn_on
+          entity_id:
+          - light.l_bar
+          - light.wled_billard
+          - light.wled_bar
+          - light.l_billard_spots
+        else:
+        - service: light.turn_off
+          entity_id:
+          - light.l_billard
+          - light.l_bar
+          - light.wled_billard
+          - light.wled_bar
+          - light.l_billard_spots
+- alias: turnOnLightWhenStop
+  id: turnOnLightWhenStop
+  trigger:
+  - platform: state
+    entity_id: media_player.kodi_d2adb85b2731c0915692365c58375a6a
+    from: playing
+  condition: '{{ is_state(''light.l_cinema_lampe'', ''off'') }}'
+  action:
+  - service: python_script.light_transition
+    data:
+      entity_id: light.l_cinema_lampe
+      end_level_pct: 40
+      transition: 00:00:05
+- alias: turnOffLightWhenPlay
+  id: turnOffLightWhenPlay
+  trigger:
+  - platform: state
+    entity_id: media_player.kodi_d2adb85b2731c0915692365c58375a6a
+    to: playing
+  condition: '{{ is_state(''light.l_cinema_lampe'', ''on'') }}'
+  action:
+  - service: python_script.light_transition
+    data:
+      entity_id: light.l_cinema_lampe
+      end_level_pct: 0
+      transition: 00:00:05
+- alias: SwichCuisine2
+  id: SwichCuisine2
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.cuisine
+      short_click_action:
+      - service: light.toggle
+        entity_id: light.l_cuisine_plafond
+      long_click_action:
+      - service: light.toggle
+        entity_id: light.wled
+- alias: Dim Led Cuisine Sun Elevation
+  id: dim_led_cuisine_sun_elevation
+  description: ''
+  use_blueprint:
+    path: EvTheFuture/dim_lights_based_on_sun_elevation.yaml
+    input:
+      target_lights:
+        entity_id: light.wled
+      max_brightness: 70
+      allowance: 20
+      turn_on: true
+      turn_off: true
+- alias: SwitchDressingLeft
+  id: SwitchDressingLeft
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.dressing_left
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_dressing
+      - choose:
+        - conditions: '{{ is_state(''light.l_dressing'', ''on'') and state_attr(''light.l_dressing'',
+            ''brightness'') | float < 5 }}'
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_dressing
+              brightness: '{{ (0.05 * 255) | int }}'
+      long_click_action:
+      - repeat:
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_dressing
+              brightness_step_pct: -5
+          - delay: 0.2
+          until:
+          - condition: template
+            value_template: '{{ is_state(''binary_sensor.dressing_left'', ''off'')
+              or state_attr(''light.l_dressing'', ''brightness'') == None or state_attr(''light.l_dressing'',
+              ''brightness'') | float == 0 }}'
+      - choose:
+        - conditions: '{{ state_attr(''light.l_dressing'', ''brightness'') == 0 or
+            state_attr(''light.l_dressing'', ''brightness'') == None }}'
+          sequence:
+          - service: light.turn_off
+            data:
+              entity_id: light.l_dressing
+- alias: SwitchDressingRight
+  id: SwitchDressingRight
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.dressing_right
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_dressing
+      - choose:
+        - conditions: '{{ is_state(''light.l_dressing'', ''on'') and state_attr(''light.l_dressing'',
+            ''brightness'') | float < 5 }}'
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_dressing
+              brightness: '{{ (0.05 * 255) | int }}'
+      long_click_action:
+      - repeat:
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_dressing
+              brightness_step_pct: 5
+          - delay: 0.2
+          until:
+          - condition: template
+            value_template: '{{ is_state(''binary_sensor.dressing_right'', ''off'')
+              or state_attr(''light.l_dressing'', ''brightness'') | float == 255 }}'
+- id: flashAllLights
+  alias: Flash all lights
+  initial_state: true
+  trigger:
+    platform: mqtt
+    topic: /nonexisting/topic
+    payload: 'ON'
+  action:
+    repeat:
+      count: 10
+      sequence:
+      - service: light.toggle
+        entity_id: group.light_for_flash
+      - delay: 00:00:10
+      - service: light.toggle
+        entity_id: group.light_for_flash
+      - delay: 00:00:01
+- alias: SwitchGarageMelSwitchOff
+  id: SwitchGarageMelSwitchOff
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.garage_mel
+      short_click_action:
+      - service: light.toggle
+        entity_id: light.l_garage_mel
+      long_click_action:
+      - delay: 00:00:30
+      - service: light.turn_off
+        entity_id: light.l_garage_mel
+- alias: SwitchHallOff
+  id: SwitchHallOff
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.hall_all
+      long_click_action:
+      - service: light.turn_off
+        entity_id: group.light_all
+      - service: media_player.media_pause
+        entity_id: media_player.salon
+      - service: media_player.media_pause
+        entity_id: media_player.terrassebas
+      - service: media_player.media_pause
+        entity_id: media_player.terrassehaut
+      - service: media_player.media_pause
+        entity_id: media_player.salle_de_bain
+      - service: media_player.media_pause
+        entity_id: media_player.chambre
+- alias: SwichHallHautOFF
+  id: SwichHallHautOFF
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.hall_eteindre_bas
+      long_click_action:
+      - service: script.switch_off_rez
+- alias: Led Cuisine Turn Off Automation
+  id: led_cuisine_turn_off_automation
+  trigger:
+  - platform: state
+    entity_id: light.wled
+    to: 'off'
+  action:
+  - service: automation.turn_off
+    data:
+      entity_id: automation.dim_led_cuisine_sun_elevation
+- alias: SwichCuisine9OFF
+  id: SwichCuisine9OFF
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.eteindre_bas
+    to: 'on'
+  action:
+  - wait_template: '{{ is_state(''binary_sensor.eteindre_bas'', ''off'') }}'
+    timeout: 0.3
+    continue_on_timeout: true
+  - if: '{{ not wait.completed }}'
+    then:
+    - service: scene.create
+      data:
+        scene_id: store_before_long_press_bas
+        snapshot_entities:
+        - light.l_buanderie
+        - light.l_cuisine_plafond
+        - light.l_cuisineentree
+        - light.l_escalier
+        - light.l_escalier_ambiance
+        - light.l_garage_chris
+        - light.l_garage_mel
+        - light.l_hall_plafond
+        - light.l_salon_plafond
+        - light.l_sam_plafond
+        - light.l_toilette
+        - light.meuble_de_la_salle_a_manger
+        - media_player.cuisine
+        - media_player.salon
+        - media_player.mediacenter_salon
+        - media_player.terrassehaut
+        - media_player.terrassebas
+        - light.l_facade_avant
+        - light.l_terrasse_bas
+        - light.l_terrasse_haut
+    - service: script.switch_off_rez
+    - wait_template: '{{ is_state(''binary_sensor.eteindre_bas'', ''off'') }}'
+      continue_on_timeout: true
+    - wait_template: '{{ is_state(''binary_sensor.eteindre_bas'', ''on'') }}'
+      timeout: 10
+      continue_on_timeout: true
+    - if: '{{ wait.completed }}'
+      then:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.store_before_long_press_bas
+- alias: SwichCuisine10OFF
+  id: SwichCuisine10OFF
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.eteindre_haut
+    to: 'on'
+  action:
+  - wait_template: '{{ is_state(''binary_sensor.eteindre_haut'', ''off'') }}'
+    timeout: 0.3
+    continue_on_timeout: true
+  - if: '{{ not wait.completed }}'
+    then:
+    - service: scene.create
+      data:
+        scene_id: store_before_long_press
+        snapshot_entities:
+        - light.l_bureau
+        - light.l_chambre_parents
+        - light.l_dressing
+        - light.l_elise
+        - light.l_hall_ambiance
+        - light.l_hall_nuit
+        - light.l_noemie
+        - light.l_salle_jeu
+        - light.l_sdb
+        - light.l_sdb_eviers
+        - light.l_grenier
+        - media_player.chambre
+        - media_player.salle_de_bain
+    - service: script.switch_off_haut
+    - wait_template: '{{ is_state(''binary_sensor.eteindre_haut'', ''off'') }}'
+      continue_on_timeout: true
+    - wait_template: '{{ is_state(''binary_sensor.eteindre_haut'', ''on'') }}'
+      timeout: 10
+      continue_on_timeout: true
+    - if: '{{ wait.completed }}'
+      then:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.store_before_long_press
+- alias: SwitchSalonSingle
+  id: SwitchSalonSingle
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.salon_single
+      short_click_action:
+      - choose:
+        - conditions: '{{ is_state(''light.l_salon_plafond'', ''on'') }}'
+          sequence:
+          - service: light.turn_off
+            data:
+              entity_id: light.l_salon_plafond
+        default:
+        - service: light.turn_on
+          data:
+            entity_id: light.l_salon_plafond
+            brightness: 255
+      long_click_action:
+      - choose:
+        - conditions: '{{ state_attr(''light.l_salon_plafond'', ''brightness'') |
+            float < 255 }}'
+          sequence:
+          - repeat:
+              sequence:
+              - service: light.turn_on
+                data:
+                  entity_id: light.l_salon_plafond
+                  brightness_step_pct: 5
+              - delay: 0.2
+              until:
+              - condition: template
+                value_template: '{{ is_state(''binary_sensor.salon_single'', ''off'')
+                  or state_attr(''light.l_salon_plafond'', ''brightness'') | float
+                  == 255 }}'
+        default:
+        - repeat:
+            sequence:
+            - service: light.turn_on
+              data:
+                entity_id: light.l_salon_plafond
+                brightness_step_pct: -5
+            - delay: 0.2
+            until:
+            - condition: template
+              value_template: '{{ is_state(''binary_sensor.salon_single'', ''off'')
+                or state_attr(''light.l_salon_plafond'', ''brightness'') == None or
+                state_attr(''light.l_salon_plafond'', ''brightness'') | float == 0
+                }}'
+        - choose:
+          - conditions: '{{ state_attr(''light.l_salon_plafond'', ''brightness'')
+              == 0 or state_attr(''light.l_salon_plafond'', ''brightness'') == None
+              }}'
+            sequence:
+            - service: light.turn_off
+              data:
+                entity_id: light.l_salon_plafond
+- alias: SwitchSalonLeft
+  id: SwitchSalonLeft
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.salon_left
+      short_click_action:
+      - choose:
+        - conditions: '{{ is_state(''light.l_salon_plafond'', ''on'') }}'
+          sequence:
+          - service: light.turn_off
+            data:
+              entity_id: light.l_salon_plafond
+        default:
+        - service: light.turn_on
+          data:
+            entity_id: light.l_salon_plafond
+            brightness: 255
+- alias: SwitchSamMeuble
+  id: SwitchSamMeuble
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sam_meuble
+      short_click_action:
+      - service: light.toggle
+        data:
+          entity_id: light.l_hall_plafond
+      long_click_action:
+      - service: switch.toggle
+        data:
+          entity_id: switch.led_meuble_sam
+- alias: SwitchSamSingle
+  id: SwitchSamSingle
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sam_single
+      short_click_action:
+      - choose:
+        - conditions: '{{ is_state(''light.l_sam_plafond'', ''on'') }}'
+          sequence:
+          - service: light.turn_off
+            data:
+              entity_id: light.l_sam_plafond
+        default:
+        - service: light.turn_on
+          data:
+            entity_id: light.l_sam_plafond
+            brightness: 255
+      long_click_action:
+      - service: script.dim_light
+        data:
+          light: light.l_sam_plafond
+          button: binary_sensor.sam_single
+- alias: SwitchSAMLeft
+  id: SwitchSAMLeft
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sam_left
+      short_click_action:
+      - choose:
+        - conditions: '{{ is_state(''light.l_sam_plafond'', ''on'') }}'
+          sequence:
+          - service: light.turn_off
+            data:
+              entity_id: light.l_sam_plafond
+        default:
+        - service: light.turn_on
+          data:
+            entity_id: light.l_sam_plafond
+            brightness: 255
+      long_click_action:
+      - repeat:
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_sam_plafond
+              brightness_step_pct: -5
+          - delay: 0.2
+          until:
+          - condition: template
+            value_template: '{{ is_state(''binary_sensor.sam_left'', ''off'') or state_attr(''light.l_sam_plafond'',
+              ''brightness'') == None or state_attr(''light.l_sam_plafond'', ''brightness'')
+              | float == 0 }}'
+      - choose:
+        - conditions: '{{ state_attr(''light.l_sam_plafond'', ''brightness'') == 0
+            or state_attr(''light.l_sam_plafond'', ''brightness'') == None }}'
+          sequence:
+          - service: light.turn_off
+            data:
+              entity_id: light.l_sam_plafond
+- alias: SwitchSAMRight
+  id: SwitchSAMRight
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sam_right
+      short_click_action:
+      - choose:
+        - conditions: '{{ is_state(''light.l_sam_plafond'', ''on'') }}'
+          sequence:
+          - service: light.turn_off
+            data:
+              entity_id: light.l_sam_plafond
+        default:
+        - service: light.turn_on
+          data:
+            entity_id: light.l_sam_plafond
+            brightness: 255
+      long_click_action:
+      - repeat:
+          sequence:
+          - service: light.turn_on
+            data:
+              entity_id: light.l_sam_plafond
+              brightness_step_pct: 5
+          - delay: 0.2
+          until:
+          - condition: template
+            value_template: '{{ is_state(''binary_sensor.sam_right'', ''off'') or
+              state_attr(''light.l_sam_plafond'', ''brightness'') | float == 255 }}'
+- alias: SDB_timer
+  id: SDB_timer
+  initial_state: 'on'
+  trigger:
+  - platform: state
+    entity_id: light.l_sdb_eviers
+    to: 'on'
+    for: 00:10:00
+  condition:
+  - condition: time
+    after: 00:00:00
+    before: 06:45:00
+  action:
+  - service: light.turn_off
+    entity_id: light.l_sdb_eviers
+- alias: SwichBuanderie1
+  id: SwichBuanderie1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/7
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_buanderie
+- alias: SwichBuanderie2
+  id: SwichBuanderie2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/6
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_garage_chris
+- alias: SwichBuanderie3
+  id: SwichBuanderie3
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/4
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_buanderie
+- alias: SwichBuanderie4
+  id: SwichBuanderie4
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/5
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_buanderie
+- alias: SwichCuisine1
+  id: SwichCuisine1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/33
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_buanderie
+- alias: SwichCuisine4
+  id: SwichCuisine4
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/30
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier_ambiance
+- alias: SwichCuisine5
+  id: SwichCuisine5
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/29
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier
+- alias: SwichCuisine6
+  id: SwichCuisine6
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/28
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_cuisineentree
+- alias: SwitchGarageChris3
+  id: SwitchGarageChris3
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/1
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_garage_chris
+- alias: SwichHall1
+  id: SwichHall1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/43
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_facade_avant
+- alias: SwichHall2
+  id: SwichHall2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/42
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_plafond
+- alias: Switchportearriere1
+  id: Switchportearriere1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/19
+    payload: 'ON'
+  action:
+  - choose:
+    - conditions: '{{ is_state(''binary_sensor.femme_menage_presente'', ''off'') }}'
+      sequence:
+      - service: light.toggle
+        entity_id: light.l_terrasse_bas
+- alias: Switchportearriere2
+  id: Switchportearriere2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/18
+    payload: 'ON'
+  action:
+  - choose:
+    - conditions: '{{ is_state(''binary_sensor.femme_menage_presente'', ''off'') }}'
+      sequence:
+      - service: light.toggle
+        entity_id: light.l_terrasse_haut
+- alias: SwitchSAM6
+  id: SwitchSAM6
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/38
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier_cave
+- alias: SwichToilette
+  id: SwichToilette
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage1a/in/40
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_toilette
+- alias: SwichHallNuit1
+  id: SwichHallNuit1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/15
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_nuit
+- alias: SwichHallNuit3
+  id: SwichHallNuit3
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/22
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier_ambiance
+- alias: SwichHallNuit4
+  id: SwichHallNuit4
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/24
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_ambiance
+- alias: SwichHallNuit5
+  id: SwichHallNuit5
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/26
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_salle_jeu
+- alias: SwichHallNuit6
+  id: SwichHallNuit6
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/28
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier
+- alias: SwichChambre3
+  id: SwichChambre3
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/32
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_ambiance
+- alias: SwichLit1
+  id: SwichLit1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/17
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_chambre_parents
+- alias: SwichSdb1
+  id: SwichSdb1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/25
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_sdb
+- alias: SwichSdb2
+  id: SwichSdb2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2b/in/23
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_sdb_eviers
+- alias: SwichHallTrappe1
+  id: SwichHallTrappe1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/42
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_nuit
+- alias: SwichHallTrappe4
+  id: SwichHallTrappe4
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/18
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_hall_ambiance
+- alias: SwichHallTrappe2
+  id: SwichHallTrappe2
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/43
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_grenier
+- alias: SwichCaveEscalier1
+  id: SwichCaveEscalier1
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/43
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_escalier_cave
+- alias: SwichCaveEscalier3
+  id: SwichCaveEscalier3
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/41
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_cave_jardin
+- alias: SwichCaveEscalier5
+  id: SwichCaveEscalier5
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/39
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_kicker
+- alias: SwichCaveEscalier6
+  id: SwichCaveEscalier6
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/38
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_atelier_mel
+- alias: SwichUrinoir
+  id: SwichUrinoir
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage0a/in/34
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_urinoir
+- alias: SwichSalleJeu
+  id: SwichSalleJeu
+  trigger:
+  - platform: mqtt
+    topic: cmd/etage2a/in/30
+    payload: 'ON'
+  action:
+  - service: light.toggle
+    entity_id: light.l_salle_jeu
+- alias: Couper Lumière d'ambiance
+  id: Couper Lumière d'ambiance
+  trigger:
+  - platform: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    above: -2
+  action:
+  - service: light.turn_off
+    entity_id: light.l_hall_ambiance
+  mode: single
+- alias: Allume Lumière d'ambiance
+  id: Allume Lumière d'ambiance
+  trigger:
+  - platform: time
+    at: '20:00'
+  - platform: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    below: -2
+  condition:
+  - condition: time
+    after: '20:00:00'
+  - condition: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    below: -2
+  action:
+  - service: light.turn_on
+    entity_id: light.l_hall_ambiance
+  mode: single
+- alias: Couper Lumière de Noël
+  id: Couper Lumière de Noël
+  trigger:
+  - platform: time
+    at: '23:59'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.prise_ext_avant,switch.prise_ext_terrasse
+  mode: single
+- alias: Allume Lumière de Noël
+  id: Allume Lumière de Noël
+  trigger:
+  - platform: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    below: -2
+  action:
+  - service: switch.turn_on
+    entity_id: switch.prise_ext_avant,switch.prise_ext_terrasse
+  mode: single
+- alias: TV Led Effects
+  id: tv_led_effects
+  trigger:
+  - platform: state
+    entity_id: input_select.tv_led_effects
+  action:
+  - choose:
+    - conditions: '{{is_state(''input_select.tv_led_effects'', ''No effect'')}}'
+      sequence:
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.hyperion_args
+          value: -e 000000
+      - service: shell_command.hyperion_remote
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.hyperion_args
+          value: -x
+      - service: shell_command.hyperion_remote
+    default:
+    - service: light.turn_on
+      data:
+        entity_id: light.tv_led
+    - service: input_text.set_value
+      data:
+        entity_id: input_text.hyperion_args
+        value: '{{ ''-e "''~states(''input_select.tv_led_effects'')~''"'' }}'
+    - service: shell_command.hyperion_remote
+- id: record_show
+  alias: Enregistrement tv
+  trigger:
+  - platform: time_pattern
+    minutes: '*'
+  action:
+  - service: shell_command.record
+- id: change_daysoff_alarm
+  alias: change_daysoff_alarm
+  trigger:
+  - platform: state
+    entity_id: input_datetime.alarm_daysoff
+  action:
+  - service: shell_command.change_daysoff_alarm
+- id: morning_alarm_scenario
+  alias: morning_alarm_scenario
+  trigger:
+  - platform: template
+    value_template: "{%- if states('sensor.today_chambre_parents_alarm') != \"\" -%}\n
+      \ {{ now().strftime(\"%H:%M\") == states('sensor.today_chambre_parents_alarm')
+      }}\n{%- else -%}\n  False\n{%- endif -%}\n"
+  condition:
+  - condition: state
+    entity_id: switch.reveil_chambre
+    state: 'on'
+  - condition: time
+    after: 07:00:00
+    before: '10:00:00'
+  action:
+  - delay: 00:05:00
+  - service: light.turn_on
+    data:
+      entity_id: light.l_dressing
+      brightness_pct: 5
+  - delay: 00:01:00
+  - service: light.turn_on
+    data:
+      entity_id: light.l_dressing
+      brightness_pct: 10
+  - service: mqtt.publish
+    data:
+      topic: cmd/blinds_etage1a/63
+      payload: u
+- id: change_single_alarm
+  alias: change_single_alarm
+  trigger:
+  - platform: state
+    entity_id: input_datetime.alarm_single
+  action:
+  - service: shell_command.change_single_alarm
+- id: change_week_alarm
+  alias: change_week_alarm
+  trigger:
+  - platform: state
+    entity_id: input_datetime.alarm_weekday
+  action:
+  - service: shell_command.change_week_alarm
+- id: nightStartMotion
+  alias: Start Motion at Night
+  trigger:
+    platform: time
+    at: '23:30:00'
+  action:
+  - service: shell_command.start_motion
+- id: nightStopMotion
+  alias: Stop Motion at Night
+  trigger:
+    platform: time
+    at: 05:50:00
+  condition:
+    condition: state
+    entity_id: person.christophe
+    state: home
+  action:
+  - service: shell_command.stop_motion
+- id: someoneAtHome
+  alias: 'Someone is coming home: stopping cam'
+  trigger:
+    platform: state
+    entity_id: group.quiestla
+    to: home
+  action:
+  - service: shell_command.stop_motion
+- id: nobodyAtHome
+  alias: 'Nobody''s home: starting cam'
+  trigger:
+  - platform: state
+    entity_id: person.melanie
+    from: home
+    to: not_home
+  - platform: state
+    entity_id: person.christophe
+    from: home
+    to: not_home
+  condition:
+  - condition: template
+    value_template: '{{ states("person.christophe") != "home" and states("person.melanie")
+      != "home" }}'
+  action:
+  - service: shell_command.start_motion
+    data: {}
+- id: garageChrisMotion
+  alias: Détection mouvement garage de Chris
+  initial_state: false
+  trigger:
+    platform: state
+    entity_id: sensor.motion_detected_garage_chris
+    from: 'OFF'
+    to: 'ON'
+  condition:
+    condition: template
+    value_template: '{{ (as_timestamp(now()) - as_timestamp(states.switch.camera_rpi.last_updated))
+      / 60 > 5 }}'
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Mouvement détecté dans le garage
+- id: newPhotoVideoCam
+  alias: New image created by motion detection
+  initial_state: false
+  trigger:
+    platform: event
+    event_type: folder_watcher
+    event_data:
+      event_type: created
+  condition:
+    condition: template
+    value_template: '{{ (as_timestamp(now()) - as_timestamp(states.switch.camera_rpi.last_updated))
+      / 60 > 5 }}'
+  action:
+    service: notify.mail
+    data_template:
+      title: New image captured!
+      message: Created {{ trigger.event.data.file }} path {{ trigger.event.data.path
+        }}
+      data:
+        images:
+        - '{{ trigger.event.data.path }}'
+- id: newPhotoVideoCam_2
+  alias: New image created by motion detection
+  trigger:
+    platform: state
+    entity_id: sensor.last_cam_file
+  condition:
+    condition: template
+    value_template: '{{ (as_timestamp(now()) - as_timestamp(states.switch.camera_rpi.last_updated))
+      / 60 > 5 }}'
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Mouvement détecté dans le garage
+  - service: notify.mail
+    data_template:
+      title: Motion detected
+      message: Motion detected, here is the last video
+      data:
+        html: "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n
+          \               <html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\">\n
+          \               <head/>\n                <body>\n                <img src=\"cid:{{
+          states('sensor.last_cam_img') }}\" />\n                <a href=\"sftp://slashback.no-ip.org:8762//mnt/extHdd/rpicam/{{
+          states('sensor.last_cam_file') }}\">Video</a>\n                </body>\n
+          \               </html>\n"
+        images:
+        - /mnt/rpicam/{{ states("sensor.last_cam_img") }}
+- alias: refreshCam
+  id: refreshCam
+  initial_state: 'on'
+  trigger:
+    platform: time_pattern
+    hours: '*'
+    minutes: '*'
+    seconds: /30
+  condition:
+    condition: state
+    entity_id: switch.camera_rpi
+    state: 'on'
+  action:
+  - service: homeassistant.update_entity
+    data:
+      entity_id:
+      - camera.mycam
+- id: salonBalanceLeft
+  alias: Balance à gauche dans le salon
+  trigger:
+  - platform: mqtt
+    topic: dummy/topic/salonBalanceLeft
+    payload: 'ON'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/salonMusic/balance
+      payload: left
+- id: salonBalanceRight
+  alias: Balance à droite dans le salon
+  trigger:
+  - platform: mqtt
+    topic: dummy/topic/salonBalanceRight
+    payload: 'ON'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/salonMusic/balance
+      payload: right
+- id: salonBalanceBoth
+  alias: Balance au milieu dans le salon
+  trigger:
+  - platform: mqtt
+    topic: dummy/topic/salonBalanceBoth
+    payload: 'ON'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/salonMusic/balance
+      payload: both
+- id: extHautBalanceLeft
+  alias: Balance à gauche Terrasse Haut
+  trigger:
+  - platform: mqtt
+    topic: dummy/topic/extHautBalanceLeft
+    payload: 'ON'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/extHautMusic/balance
+      payload: left
+- id: extHautBalanceRight
+  alias: Balance à droite Terrasse Haut
+  trigger:
+  - platform: mqtt
+    topic: dummy/topic/extHautBalanceRight
+    payload: 'ON'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/extHautMusic/balance
+      payload: right
+- id: extHautBalanceBoth
+  alias: Balance au milieu Terrasse Haut
+  trigger:
+  - platform: mqtt
+    topic: dummy/topic/extHautBalanceBoth
+    payload: 'ON'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/extHautMusic/balance
+      payload: both
+- id: extBasBalanceLeft
+  alias: Balance à gauche Terrasse Bas
+  trigger:
+  - platform: mqtt
+    topic: dummy/topic/extBasBalanceLeft
+    payload: 'ON'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/extBasMusic/balance
+      payload: left
+- id: extBasBalanceRight
+  alias: Balance à droite Terrasse Bas
+  trigger:
+  - platform: mqtt
+    topic: dummy/topic/extBasBalanceRight
+    payload: 'ON'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/extBasMusic/balance
+      payload: right
+- id: extBasBalanceBoth
+  alias: Balance au milieu Terrasse Bas
+  trigger:
+  - platform: mqtt
+    topic: dummy/topic/extBasBalanceBoth
+    payload: 'ON'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/extBasMusic/balance
+      payload: both
+- alias: SwitchMusicChambreEntreeMinus
+  id: SwitchMusicChambreEntreeMinus
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.chambre_entree_music_minus
+      long_click_action:
+      - service: media_player.media_play_pause
+        entity_id: media_player.chambre
+      short_click_action:
+      - service: media_player.volume_down
+        entity_id: media_player.chambre
+- alias: SwitchMusicChambreEntreePlus
+  id: SwitchMusicChambreEntreePlus
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.chambre_entree_music_plus
+      long_click_action:
+      - service: media_player.media_next_track
+        entity_id: media_player.chambre
+      short_click_action:
+      - service: media_player.volume_up
+        entity_id: media_player.chambre
+- alias: SwitchMusicChambreMinus
+  id: SwitchMusicChambreMinus
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.chambre_music_minus
+      long_click_action:
+      - service: media_player.media_play_pause
+        entity_id: media_player.chambre
+      short_click_action:
+      - service: media_player.volume_down
+        entity_id: media_player.chambre
+- alias: SwitchMusicChambrePlus
+  id: SwitchMusicChambrePlus
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.chambre_music_plus
+      long_click_action:
+      - service: media_player.media_next_track
+        entity_id: media_player.chambre
+      short_click_action:
+      - service: media_player.volume_up
+        entity_id: media_player.chambre
+- alias: SwitchMusicExtBasMinus
+  id: SwitchMusicExtBasMinus
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.extBas_music_minus
+      long_click_action:
+      - if: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'', ''unknown'']
+          }}'
+        then:
+        - choose:
+          - conditions: '{{ is_state(''media_player.salon'', ''playing'') and not
+              is_state(''media_player.terrassebas'', ''playing'')}}'
+            sequence:
+            - service: squeezebox.sync
+              data:
+                entity_id: media_player.salon
+                other_player: media_player.terrassebas
+          - conditions: '{{ is_state(''media_player.terrassebas'', ''playing'') and
+              ''media_player.terrassebas'' in state_attr(''media_player.salon'', ''group_members'')
+              }}'
+            sequence:
+            - service: squeezebox.unsync
+              data:
+                entity_id: media_player.terrassebas
+          default:
+          - service: media_player.media_play_pause
+            entity_id: media_player.terrassebas
+      short_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.volume_down
+            entity_id: media_player.terrassebas
+- alias: SwitchMusicExtBasPlus
+  id: SwitchMusicExtBasPlus
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.extBas_music_plus
+      long_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.media_next_track
+            entity_id: media_player.terrassebas
+      short_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.volume_up
+            entity_id: media_player.terrassebas
+- alias: SwitchMusicExtHautMinus
+  id: SwitchMusicExtHautMinus
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.extHaut_music_minus
+      long_click_action:
+      - if: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'', ''unknown'']
+          }}'
+        then:
+        - choose:
+          - conditions: '{{ is_state(''media_player.salon'', ''playing'') and not
+              is_state(''media_player.terrassehaut'', ''playing'')}}'
+            sequence:
+            - service: squeezebox.sync
+              data:
+                entity_id: media_player.salon
+                other_player: media_player.terrassehaut
+          - conditions: '{{ is_state(''media_player.terrassehaut'', ''playing'')
+              and ''media_player.terrassehaut'' in state_attr(''media_player.salon'',
+              ''group_members'') }}'
+            sequence:
+            - service: squeezebox.unsync
+              data:
+                entity_id: media_player.terrassehaut
+          default:
+          - service: media_player.media_play_pause
+            entity_id: media_player.terrassehaut
+      short_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.volume_down
+            entity_id: media_player.terrassehaut
+- alias: SwitchMusicExtHautPlus
+  id: SwitchMusicExtHautPlus
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.extHaut_music_plus
+      long_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.media_next_track
+            entity_id: media_player.terrassehaut
+      short_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.volume_up
+            entity_id: media_player.terrassehaut
+- alias: SwitchCuisine12
+  id: SwitchCuisine12
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.salon_music_minus
+      short_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - choose:
+            - conditions: '{{ states(''media_player.salon'') in [''paused'', ''idle'']
+                }}'
+              sequence:
+              - service: shell_command.tts_meteo_salon
+            default:
+            - service: media_player.volume_down
+              entity_id: media_player.salon
+      long_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.media_play_pause
+            entity_id: media_player.salon
+- alias: SwitchCuisine11
+  id: SwitchCuisine11
+  initial_state: 'on'
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.salon_music_plus
+      short_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.volume_up
+            entity_id: media_player.salon
+      long_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.media_next_track
+            entity_id: media_player.salon
+- alias: SwitchMusicSdbMinus
+  id: SwitchMusicSdbMinus
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sdb_music_plus
+      long_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.media_play_pause
+            entity_id: media_player.salle_de_bain
+      short_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - choose:
+            - conditions: '{{ states(''media_player.salle_de_bain'') in [''paused'',
+                ''idle''] }}'
+              sequence:
+              - service: shell_command.tts_meteo_sdb
+            default:
+            - service: media_player.volume_down
+              entity_id: media_player.salle_de_bain
+- alias: SwitchMusicSdbPlus
+  id: SwitchMusicSdbPlus
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sdb_music_minus
+      short_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.volume_up
+            entity_id: media_player.salle_de_bain
+      long_click_action:
+      - choose:
+        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
+          sequence:
+          - service: media_player.media_next_track
+            entity_id: media_player.salle_de_bain
+- alias: MuteCuisineForSomeArtists
+  id: MuteCuisineForSomeArtists
+  mode: queued
+  max: 2
+  use_blueprint:
+    path: mute_artist.yaml
+    input:
+      music_player: media_player.cuisine
+      blacklist: input_text.artist_blacklist
+      person: person.christophe
+- alias: MuteSalonForSomeArtists
+  id: MuteSalonForSomeArtists
+  mode: queued
+  max: 2
+  use_blueprint:
+    path: mute_artist.yaml
+    input:
+      music_player: media_player.salon
+      blacklist: input_text.artist_blacklist
+      person: person.christophe
+- alias: SpottySearch
+  id: SpottySearch
+  trigger:
+  - platform: state
+    entity_id: input_text.spotty_rechercher
+  condition:
+  - condition: template
+    value_template: '{{ states(''input_text.spotty_rechercher'') != ''''}}'
+  action:
+  - service: script.search_and_play_spotty_salon
+    data:
+      to_search: '{{ states(''input_text.spotty_rechercher'') }}'
+- alias: TurnOffMusicWhenStartingFilm
+  id: TurnOffMusicWhenStartingFilm
+  trigger:
+  - platform: state
+    entity_id: media_player.mediacenter_salon
+    to: playing
+  - platform: state
+    entity_id: switch.prog_kodi
+    to: 'on'
+  action:
+  - choose:
+    - conditions: '{{ is_state(''media_player.salon'', ''playing'') }}'
+      sequence:
+      - service: media_player.media_pause
+        entity_id: media_player.salon
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.hyperion_args
+      value: -x
+  - service: shell_command.hyperion_remote
+  - choose:
+    - conditions: '{{ trigger.from_state in [''stop'', ''off'']  }}'
+      sequence:
+      - service: media_player.volume_set
+        data:
+          volume_level: 0.3
+          entity_id: media_player.salon
+- alias: SyncUnsyncKitchen
+  id: SyncUnsyncKitchen
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.cuisine_sync
+      short_click_action:
+      - choose:
+        - conditions: '{{ state_attr(''media_player.cuisine'', ''sync_group'') | count
+            > 0}}'
+          sequence:
+          - service: squeezebox.unsync
+            data:
+              entity_id: media_player.cuisine
+        default:
+        - service: squeezebox.sync
+          data:
+            entity_id: media_player.salon
+            other_player: media_player.cuisine
+      long_click_action:
+      - service: squeezebox.unsync
+        data:
+          entity_id: media_player.cuisine
+      - service: media_player.media_pause
+        data:
+          entity_id: media_player.salon
+      - service: media_player.media_play
+        data:
+          entity_id: media_player.cuisine
+- id: ack_internet_papa
+  alias: Couper les alertes de coupure de courant à Beaufays par action sur notif
+  trigger:
+    platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: ACK_INTER
+  action:
+  - service: alert.turn_off
+    data:
+      entity_id: alert.blackout_dady
+- id: internet_papa
+  alias: Plus d'internet chez papa
+  trigger:
+    platform: state
+    entity_id: binary_sensor.internet_papa
+    to: 'off'
+    for: 00:10:00
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Plus d'internet chez papa
+      title: Papa
+- id: presence_simulation_someoneAtHome
+  alias: 'Someone is coming home: stopping presence simulation'
+  trigger:
+  - platform: state
+    entity_id: group.quiestla
+    to: home
+  - platform: state
+    entity_id: binary_sensor.femme_menage_presente
+    to: 'on'
+  action:
+  - service: presence_simulation.stop
+    data:
+      switch_id: switch.presence_simulation
+- id: presence_simulation_nobodyAtHome
+  alias: 'Nobody''s home: starting presence simulation'
+  trigger:
+  - platform: state
+    entity_id: person.melanie
+    from: home
+    to: not_home
+  - platform: state
+    entity_id: person.christophe
+    from: home
+    to: not_home
+  - platform: state
+    entity_id: binary_sensor.femme_menage_presente
+    to: 'off'
+    for: 00:10:00
+  condition: '{{ states("person.christophe") != "home" and states("person.melanie")
+    != "home" and states("binary_sensor.femme_menage_presente") == "off" }}'
+  action:
+  - service: presence_simulation.start
+    data:
+      switch_id: switch.presence_simulation
+      restore_states: true
+- alias: getProduction
+  id: getProduction
+  initial_state: 'on'
+  trigger:
+    platform: time_pattern
+    hours: '*'
+    minutes: '*'
+    seconds: '0'
+  condition:
+    condition: and
+    conditions:
+    - condition: sun
+      after: sunrise
+    - condition: sun
+      before: sunset
+  action:
+  - service: homeassistant.update_entity
+    data:
+      entity_id:
+      - sensor.production_instantanee
+      - sensor.production_du_jour
+      - sensor.production_total
+- alias: activate_hellofresh
+  id: activate_hellofresh
+  mode: single
+  trigger:
+  - platform: calendar
+    event: start
+    entity_id: calendar.calendier_famille
+  condition:
+  - condition: template
+    value_template: '{{ ''HelloFresh'' in trigger.calendar_event.summary }}'
+  action:
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.hello_fresh
+- alias: deactivate_hellofresh
+  id: deactivate_hellofresh
+  mode: single
+  trigger:
+  - platform: calendar
+    event: end
+    entity_id: calendar.calendier_famille
+  condition:
+  - condition: template
+    value_template: '{{ ''HelloFresh'' in trigger.calendar_event.summary }}'
+  action:
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.hello_fresh
+- alias: activate_auto_reply_hellofresh
+  id: activate_auto_reply_hellofresh
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: input_boolean.hello_fresh
+    to: 'on'
+  - platform: state
+    entity_id: zone.home
+    to: '0'
+  condition:
+  - condition: state
+    entity_id: input_boolean.hello_fresh
+    state: 'on'
+  - condition: state
+    entity_id: zone.home
+    state: '0'
+  action:
+  - service: select.select_option
+    data:
+      entity_id: select.sonnette_auto_quick_reply_message
+      option: HelloFresh
+- alias: deactivate_auto_reply_hellofresh
+  id: deactivate_auto_reply_hellofresh
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: input_boolean.hello_fresh
+    to: 'off'
+  - platform: state
+    entity_id: zone.home
+    from: '0'
+  condition:
+  - condition: template
+    value_template: '{{not is_state(''select.sonnette_auto_quick_reply_message'',
+      ''off'')}}'
+  action:
+  - service: select.select_option
+    data:
+      entity_id: select.sonnette_auto_quick_reply_message
+      option: 'off'
+- alias: sonette_notif_critical_hellofresh
+  id: sonette_notif_critical_hellofresh
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.hello_fresh
+    state: 'on'
+  action:
+  - service: notify.mobile_app_sm_a525f
+    data:
+      message: HelloFresh sonne à la porte
+      data:
+        image: https://slashbackdomo.ddns.net:4294/{{state_attr('camera.sonnette_les_instantanes_clair','entity_picture')}}
+  - variables:
+      action_open_garage: '{{ ''OPEN_GARAGE_'' ~ context_id }}'
+      action_close_garage: '{{ ''CLOSE_GARAGE_'' ~ context_id }}'
+  - choose:
+    - conditions: '{{ is_state(''binary_sensor.alarme_activee'', ''off'') }}'
+      sequence:
+      - service: notify.mobile_app_chriss_iphone
+        data:
+          message: HelloFresh sonne à la porte
+          data:
+            entity_id: camera.sonnette_fluent
+            push:
+              sound:
+                name: Ringtone_2_Haptic-sashimi.caf
+                critical: 1
+                volume: 0.5
+            actions:
+            - action: '{{ action_open_garage }}'
+              title: Ouvrir le garage
+      - wait_for_trigger:
+        - platform: event
+          event_type: mobile_app_notification_action
+          event_data:
+            action: '{{ action_open_garage }}'
+        timeout:
+          minutes: 2
+        continue_on_timeout: false
+      - choose:
+        - conditions: '{{ wait.trigger.event.data.action == action_open_garage }}'
+          sequence:
+          - service: cover.open_cover
+            target:
+              entity_id: cover.garage_de_chris
+          - service: notify.mobile_app_chriss_iphone
+            data:
+              message: Caméra du garage
+              data:
+                entity_id: camera.mycam
+                actions:
+                - action: '{{ action_close_garage }}'
+                  title: Fermer le garage
+          - wait_for_trigger:
+            - platform: event
+              event_type: mobile_app_notification_action
+              event_data:
+                action: '{{ action_close_garage }}'
+            timeout:
+              minutes: 2
+            continue_on_timeout: false
+          - choose:
+            - conditions: '{{ wait.trigger.event.data.action == action_close_garage
+                }}'
+              sequence:
+              - service: cover.close_cover
+                target:
+                  entity_id: cover.garage_de_chris
+              - service: notify.mobile_app_chriss_iphone
+                data:
+                  message: Caméra du garage
+                  data:
+                    entity_id: camera.mycam
+    default:
+    - service: notify.mobile_app_chriss_iphone
+      data:
+        message: HelloFresh sonne à la porte (! alarme allumée)
+        data:
+          entity_id: camera.sonnette_fluent
+          push:
+            sound:
+              name: Ringtone_2_Haptic-sashimi.caf
+              critical: 1
+              volume: 0.5
+  - delay:
+      milliseconds: 5000
+- alias: cam_jardin_peephole
+  id: cam_jardin_peephole
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.jardin_humain
+  action:
+  - choose:
+    - conditions: '{{ is_state(''binary_sensor.jardin_humain'', ''off'') }}'
+      sequence:
+      - service: switch.turn_off
+        data:
+          entity_id: switch.chris_galaxy_tab_screen
+    default:
+    - service: switch.turn_on
+      data:
+        entity_id: switch.chris_galaxy_tab_screen
+    - service: fully_kiosk.load_url
+      data:
+        url: https://slashbackdomo.ddns.net:4294/lovelace/jardin
+      target:
+        device_id: 479efd4d9e1f4570884d84fc0f4261eb
+- id: cam_jardin_notif
+  alias: cam_jardin_notif
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.jardin_humain
+    to: 'on'
+  action:
+  - alias: Set up variables for the actions
+    variables:
+      action_15m: '{{ ''PAUSE_J_15m_'' ~ context.id }}'
+      action_1h: '{{ ''PAUSE_J_1h_'' ~ context.id }}'
+      action_4h: '{{ ''PAUSE_J_4h_'' ~ context.id }}'
+      action_8h: '{{ ''PAUSE_J_8h_'' ~ context.id }}'
+  - service: notify.mobile_app_sm_a525f
+    data:
+      message: Quelqu'un est détecté dans le jardin
+    enabled: true
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Quelqu'un est détecté dans le jardin
+      data:
+        entity_id: camera.jardin_fluent
+        actions:
+        - action: '{{ action_15m }}'
+          title: Désactiver 15 minutes
+        - action: '{{ action_1h }}'
+          title: Désactiver 1 heure
+        - action: '{{ action_4h }}'
+          title: Désactiver 4 heure
+        - action: '{{ action_8h }}'
+          title: Désactiver 8 heure
+  - alias: Wait for a response
+    wait_for_trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_15m }}'
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_1h }}'
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_4h }}'
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_8h }}'
+    timeout:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - alias: Perform the action
+    choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger.event.data.action == action_15m }}'
+      sequence:
+      - service: switch.turn_off
+        entity_id: switch.jardin_enregistrer
+      - delay:
+          hours: 0
+          minutes: 15
+          seconds: 0
+          milliseconds: 0
+      - service: switch.turn_on
+        entity_id: switch.jardin_enregistrer
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger.event.data.action == action_1h }}'
+      sequence:
+      - service: switch.turn_off
+        entity_id: switch.jardin_enregistrer
+      - delay:
+          hours: 1
+      - service: switch.turn_on
+        entity_id: switch.jardin_enregistrer
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger.event.data.action == action_4h }}'
+      sequence:
+      - service: switch.turn_off
+        entity_id: switch.jardin_enregistrer
+      - delay:
+          hours: 4
+      - service: switch.turn_on
+        entity_id: switch.jardin_enregistrer
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger.event.data.action == action_8h }}'
+      sequence:
+      - service: switch.turn_off
+        entity_id: switch.jardin_enregistrer
+      - delay:
+          hours: 8
+      - service: switch.turn_on
+        entity_id: switch.jardin_enregistrer
+  mode: single
+- id: peephole
+  alias: peephole
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.sonnette_visiteur
+  - platform: state
+    entity_id:
+    - binary_sensor.sonnette_humain
+  action:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ is_state(''binary_sensor.sonnette_visiteur'', ''off'')
+          and is_state(''binary_sensor.sonnette_humain'', ''off'') }}'
+      sequence:
+      - service: switch.turn_off
+        data:
+          entity_id: switch.chris_galaxy_tab_screen
+    default:
+    - service: switch.turn_on
+      data:
+        entity_id: switch.chris_galaxy_tab_screen
+    - service: fully_kiosk.load_url
+      data:
+        url: https://slashbackdomo.ddns.net:4294/lovelace/peephole
+      target:
+        device_id: 479efd4d9e1f4570884d84fc0f4261eb
+  mode: single
+- alias: poophole_battery
+  id: poophole_battery
+  mode: single
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.chris_galaxy_tab_batterie
+    below: 10
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: La galaxy tab a moins de 10% de batterie
+- alias: sonette_bas_notif
+  id: sonette_bas_notif
+  mode: single
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sonette_bas
+      delay: 2
+      short_click_action:
+      - service: notify.mobile_app_chriss_iphone
+        data:
+          message: Quelqu'un sonne à la porte d'en bas
+      - service: notify.mobile_app_sm_a525f
+        data:
+          message: Quelqu'un sonne à la porte d'en bas
+      - delay:
+          milliseconds: 5000
+- alias: sonette_bas_notif_critical
+  id: sonette_bas_notif_critical
+  mode: single
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sonette_bas
+      delay: 2
+      short_click_action:
+      - service: notify.mobile_app_chriss_iphone
+        data:
+          message: Quelqu'un sonne à la porte d'en bas
+          data:
+            push:
+              sound:
+                name: Ringtone_2_Haptic-sashimi.caf
+                critical: 1
+                volume: 0.5
+      - service: notify.mobile_app_sm_a525f
+        data:
+          message: Quelqu'un sonne à la porte d'en bas
+      - delay:
+          milliseconds: 5000
+- alias: sonette_bas_lampe_sam
+  id: sonette_bas_lampe_sam
+  mode: single
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sonette_bas
+      delay: 2
+      short_click_action:
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+          milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+          milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+          milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_sam_plafond
+      - delay:
+          milliseconds: 5000
+- alias: sonette_bas_lampe_billard
+  id: sonette_bas_lampe_billard
+  mode: single
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sonette_bas
+      delay: 2
+      short_click_action:
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+          milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+          milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+          milliseconds: 700
+      - service: light.toggle
+        entity_id: light.l_billard
+      - delay:
+          milliseconds: 5000
+- alias: sonette_bas_ext_bas_force
+  id: sonette_bas_ext_bas_force
+  mode: single
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sonette_bas
+      delay: 2
+      short_click_action:
+      - service: shell_command.ringextbas
+      - delay:
+          milliseconds: 5000
+- alias: sonette_bas_ext_bas_ifplaying
+  id: sonette_bas_ext_bas_ifplaying
+  mode: single
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sonette_bas
+      delay: 2
+      short_click_action:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: media_player.terrassebas
+            state: playing
+          sequence:
+          - service: shell_command.ringextbas
+          - delay:
+              milliseconds: 5000
+- alias: sonette_bas_allumer_atelier
+  id: sonette_bas_allumer_atelier
+  mode: single
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sonette_bas
+      delay: 2
+      short_click_action:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: light.l_cave_jardin
+            state: 'off'
+          sequence:
+          - service: light.turn_on
+            entity_id: light.l_cave_jardin
+          - delay:
+              seconds: 90
+          - service: light.turn_off
+            entity_id: light.l_cave_jardin
+          - delay:
+              milliseconds: 5000
+- alias: sonette_bas_long
+  id: sonette_bas_long
+  mode: single
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.sonette_bas
+      delay: 2
+      long_click_action:
+      - service: light.toggle
+        entity_id: light.l_cave_jardin
+- alias: SonetteAutomationNight
+  id: SonetteAutomationNight
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  action:
+  - service: automation.turn_off
+    entity_id: automation.sonette_bing
+  - service: automation.turn_on
+    entity_id: automation.sonette_lampe_sam
+- alias: SonetteAutomatioDay
+  id: SonetteAutomatioDay
+  trigger:
+  - platform: time
+    at: 07:00:00
+  action:
+  - service: automation.turn_on
+    entity_id: automation.sonette_bing
+  - service: automation.turn_off
+    entity_id: automation.sonette_lampe_sam
+- alias: sonette_hall_entree
+  id: sonette_hall_entree
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  condition:
+  - condition: numeric_state
+    entity_id: sun.sun
+    value_template: '{{ state.attributes.elevation }}'
+    below: -2
+  - condition: state
+    state: home
+    entity_id: group.quiestla
+  action:
+  - delay:
+      seconds: 3
+  - service: light.turn_on
+    entity_id: light.l_hall_plafond
+- id: sonette_bing
+  alias: sonette_bing
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  condition:
+  - condition: numeric_state
+    entity_id: zone.home
+    above: 0
+    enabled: false
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/out/61
+      payload: 'ON'
+  - delay:
+      milliseconds: 100
+  - service: mqtt.publish
+    data:
+      topic: cmd/etage1a/out/61
+      payload: 'OFF'
+  - delay:
+      milliseconds: 5000
+  mode: single
+- id: sonette_notif
+  alias: sonette_detectin_humain
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_humain
+    to: 'on'
+  action:
+  - alias: Set up variables for the actions
+    variables:
+      action_15m: '{{ ''PAUSE_J_15m_'' ~ context.id }}'
+      action_1h: '{{ ''PAUSE_J_1h_'' ~ context.id }}'
+      action_4h: '{{ ''PAUSE_J_4h_'' ~ context.id }}'
+      action_8h: '{{ ''PAUSE_J_8h_'' ~ context.id }}'
+  - service: notify.mobile_app_sm_a525f
+    data:
+      message: Quelqu'un est détecté devant la maison
+      data:
+        image: https://slashbackdomo.ddns.net:4294/{{state_attr('camera.sonnette_les_instantanes_clair','entity_picture')}}
+    enabled: true
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Quelqu'un est détecté devant la maison
+      data:
+        entity_id: camera.sonnette_fluent
+        actions:
+        - action: '{{ action_15m }}'
+          title: Désactiver 15 minutes
+        - action: '{{ action_1h }}'
+          title: Désactiver 1 heure
+        - action: '{{ action_4h }}'
+          title: Désactiver 4 heure
+        - action: '{{ action_8h }}'
+          title: Désactiver 8 heure
+  - alias: Wait for a response
+    wait_for_trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_15m }}'
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_1h }}'
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_4h }}'
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_8h }}'
+    timeout:
+      hours: 0
+      minutes: 10
+      seconds: 0
+      milliseconds: 0
+  - alias: Perform the action
+    choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger.event.data.action == action_15m }}'
+      sequence:
+      - delay:
+          minutes: 15
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger.event.data.action == action_1h }}'
+      sequence:
+      - delay:
+          hours: 1
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger.event.data.action == action_4h }}'
+      sequence:
+      - delay:
+          hours: 4
+    - conditions:
+      - condition: template
+        value_template: '{{ wait.trigger.event.data.action == action_8h }}'
+      sequence:
+      - delay:
+          hours: 8
+  mode: single
+- alias: sonette_notif_critical
+  id: sonette_notif_critical
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.hello_fresh
+    state: 'off'
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Quelqu'un sonne à la porte
+      data:
+        entity_id: camera.sonnette_fluent
+        push:
+          sound:
+            name: Ringtone_2_Haptic-sashimi.caf
+            critical: 1
+            volume: 0.5
+  - service: notify.mobile_app_sm_a525f
+    data:
+      message: Quelqu'un sonne à la porte
+      data:
+        image: https://slashbackdomo.ddns.net:4294/{{state_attr('camera.sonnette_les_instantanes_clair','entity_picture')}}
+  - delay:
+      milliseconds: 5000
+- alias: sonette_lampe_sam
+  id: sonette_lampe_sam
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  action:
+  - service: light.toggle
+    entity_id: light.l_sam_plafond
+  - delay:
+      milliseconds: 700
+  - service: light.toggle
+    entity_id: light.l_sam_plafond
+  - delay:
+      milliseconds: 700
+  - service: light.toggle
+    entity_id: light.l_sam_plafond
+  - delay:
+      milliseconds: 700
+  - service: light.toggle
+    entity_id: light.l_sam_plafond
+  - delay:
+      milliseconds: 5000
+- alias: sonette_lampe_billard
+  id: sonette_lampe_billard
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  action:
+  - service: light.toggle
+    entity_id: light.l_billard
+  - delay:
+      milliseconds: 700
+  - service: light.toggle
+    entity_id: light.l_billard
+  - delay:
+      milliseconds: 700
+  - service: light.toggle
+    entity_id: light.l_billard
+  - delay:
+      milliseconds: 700
+  - service: light.toggle
+    entity_id: light.l_billard
+  - delay:
+      milliseconds: 5000
+- alias: sonette_lampe ext
+  id: sonette_lampe ext
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+    - condition: or
+      conditions:
+      - condition: sun
+        after: sunset
+        after_offset: +00:01:00
+      - condition: sun
+        before: sunrise
+    - condition: state
+      entity_id: light.l_facade_avant
+      state: 'off'
+  action:
+  - service: light.turn_on
+    entity_id: light.l_facade_avant
+  - delay:
+      minutes: 2
+  - service: light.turn_off
+    entity_id: light.l_facade_avant
+  - delay:
+      milliseconds: 5000
+- alias: sonette_ext_haut_force
+  id: sonette_ext_haut_force
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  action:
+  - service: shell_command.ringexthaut
+  - delay:
+      milliseconds: 5000
+- alias: sonette_ext_bas_force
+  id: sonette_ext_bas_force
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  action:
+  - service: shell_command.ringextbas
+  - delay:
+      milliseconds: 5000
+- alias: sonette_ext_haut_ifplaying
+  id: sonette_ext_haut_ifplaying
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: media_player.terrassehaut
+    state: playing
+  action:
+  - service: shell_command.ringexthaut
+  - delay:
+      milliseconds: 5000
+- alias: sonette_ext_bas_ifplaying
+  id: sonette_ext_bas_ifplaying
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: media_player.terrassebas
+    state: playing
+  action:
+  - service: shell_command.ringextbas
+  - delay:
+      milliseconds: 5000
+- alias: sonette_lampe_cave_tech
+  id: sonette_lampe_cave_tech
+  mode: single
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.sonnette_visiteur
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: light.l_cave_technique
+    state: 'on'
+  action:
+  - service: light.toggle
+    entity_id: light.l_cave_technique
+  - delay:
+      milliseconds: 700
+  - service: light.toggle
+    entity_id: light.l_cave_technique
+  - delay:
+      milliseconds: 700
+  - service: light.toggle
+    entity_id: light.l_cave_technique
+  - delay:
+      milliseconds: 700
+  - service: light.toggle
+    entity_id: light.l_cave_technique
+  - delay:
+      milliseconds: 5000
+- id: HDD space
+  alias: '[System] SD Card Space at 90%'
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.disk_use_percent
+    above: 89
+  action:
+  - service: persistent_notification.create
+    data:
+      title: Low SD Card Space
+      message: SD card usage is at {{ states.sensor.disk_use_percent_.state }}%
+      notification_id: low_disk_space
+- id: send_notif_new_ip_banned
+  alias: Send Notif if a new ip has been banned
+  trigger:
+    platform: state
+    entity_id: sensor.ip_bans_file
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Une ip a été bannie ({{trigger.to_state.state}})
+- alias: Remove login attempt failed notif
+  id: remove_login_attempt_failed_notif
+  trigger:
+  - platform: event
+    event_type: call_service
+    event_data:
+      domain: persistent_notification
+      service: create
+  - platform: event
+    event_type: persistent_notifications_updated
+  action:
+  - service: persistent_notification.dismiss
+    data:
+      notification_id: http_login
+  - choose:
+    - conditions: '{{ trigger.event.data.service_data.title == ''Login attempt failed''
+        }}'
+      sequence:
+        service: persistent_notification.dismiss
+        data:
+          notification_id: http_login
+- id: reset_cave_after_light_on
+  alias: Reset cave après allumage lumière
+  trigger:
+    platform: state
+    entity_id: light.l_escalier_cave
+    to: 'on'
+  action:
+  - service: homeassistant.update_entity
+    data:
+      entity_id: binary_sensor.etage0a
+  - delay:
+      milliseconds: 1000
+  - repeat:
+      while:
+      - condition: state
+        entity_id: binary_sensor.etage0a
+        state: 'off'
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: cmd/esp_watchdog_etage0a/watchdog
+          payload: '1'
+          retain: true
+      - delay:
+          milliseconds: 2000
+      - service: mqtt.publish
+        data:
+          topic: cmd/esp_watchdog_etage0a/watchdog
+          payload: '{{ states("input_number.arduino_watchdog") }}'
+          retain: true
+      - service: homeassistant.update_entity
+        data:
+          entity_id: binary_sensor.etage0a
+      - delay:
+          milliseconds: 1000
+- id: reset_rdc_after_light_on
+  alias: Reset rez-de-chaussée après allumage lumière
+  trigger:
+    platform: state
+    entity_id: light.l_toilette
+    to: 'on'
+  action:
+  - service: homeassistant.update_entity
+    data:
+      entity_id: binary_sensor.etage1a
+  - delay:
+      milliseconds: 1000
+  - repeat:
+      while:
+      - condition: state
+        entity_id: binary_sensor.etage1a
+        state: 'off'
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: cmd/esp_watchdog_etage1a/watchdog
+          payload: '1'
+          retain: true
+      - delay:
+          milliseconds: 2000
+      - service: mqtt.publish
+        data:
+          topic: cmd/esp_watchdog_etage1a/watchdog
+          payload: '{{ states("input_number.arduino_watchdog") }}'
+          retain: true
+      - service: homeassistant.update_entity
+        data:
+          entity_id: binary_sensor.etage1a
+      - delay:
+          milliseconds: 1000
+- id: wifi_off
+  alias: Turn off wifi
+  trigger:
+    platform: time
+    at: 00:00:00
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage0a/watchdog
+      payload: '999999'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage1a/watchdog
+      payload: '999999'
+      retain: true
+  - service: input_text.set_value
+    data:
+      entity_id: input_text.hyperion_args
+      value: -c 000000
+  - service: automation.turn_off
+    data:
+      entity_id: automation.dim_led_cuisine_sun_elevation
+      stop_actions: true
+  - service: light.turn_off
+    data:
+      entity_id: light.wled
+  - service: shell_command.hyperion_remote
+  - service: shell_command.hyperion_stop
+  - service: switch.turn_off
+    data:
+      entity_id: switch.unifi_rdc
+  - delay: 300
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage0a/watchdog
+      payload: '{{states("input_number.arduino_watchdog")|int}}'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage1a/watchdog
+      payload: '{{states("input_number.arduino_watchdog")|int}}'
+      retain: true
+- id: wifi_on
+  alias: Turn on wifi
+  trigger:
+    platform: time
+    at: 07:10:00
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage0a/watchdog
+      payload: '999999'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage1a/watchdog
+      payload: '999999'
+      retain: true
+  - service: switch.turn_on
+    data:
+      entity_id: switch.unifi_rdc
+  - service: shell_command.hyperion_start
+  - delay: 300
+  - service: automation.turn_on
+    data:
+      entity_id: automation.dim_led_cuisine_sun_elevation
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage0a/watchdog
+      payload: '{{states("input_number.arduino_watchdog")|int}}'
+      retain: true
+  - service: mqtt.publish
+    data:
+      topic: cmd/esp_watchdog_etage1a/watchdog
+      payload: '{{states("input_number.arduino_watchdog")|int}}'
+      retain: true
+- id: comingHome
+  alias: 'Chris Coming Home: open garage?'
+  trigger:
+    platform: state
+    entity_id: person.christophe
+    to: home
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Ouvir le garage ?
+      data:
+        actions:
+        - action: OPENGARAGECHRIS
+          title: Ouvrir Garage de Chris
+          activationMode: background
+          authenticationRequired: true
+          destructive: false
+          behavior: default
+        - action: OPENGARAGEMEL
+          title: Ouvrir Garage de Mel
+          activationMode: background
+          authenticationRequired: true
+          destructive: false
+          behavior: default
+- id: melComingHome
+  alias: 'Mel Coming Home: open garage?'
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: person.melanie
+    to: home
+  action:
+  - service: notify.mobile_app_sm_a525f
+    data:
+      message: Ouvir le garage ?
+      data:
+        actions:
+        - action: OPENGARAGECHRIS
+          title: Ouvrir Garage de Chris
+          activationMode: background
+          authenticationRequired: true
+          destructive: false
+          behavior: default
+        - action: OPENGARAGEMEL
+          title: Ouvrir Garage de Mel
+          activationMode: background
+          authenticationRequired: true
+          destructive: false
+          behavior: default
+- id: comingHomeAtNight
+  alias: 'Coming Home At Night: turning on light'
+  trigger:
+    platform: state
+    entity_id: person.christophe
+    to: home
+  condition:
+    condition: or
+    conditions:
+    - condition: sun
+      after: sunset
+      after_offset: +00:01:00
+    - condition: sun
+      before: sunrise
+  action:
+  - service: light.turn_on
+    entity_id: light.l_facade_avant
+  - delay: 00:05:00
+  - service: light.turn_off
+    data:
+      entity_id: light.l_facade_avant
+- id: leavingHome_CheckPorteGarageChris
+  alias: Leaving Home Check Garage
+  trigger:
+    platform: state
+    entity_id: person.christophe
+    from: home
+  condition:
+  - condition: state
+    entity_id: binary_sensor.garage_de_chris
+    state: 'on'
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Garage Ouvert !!
+      data:
+        push:
+          sound:
+            name: Bloom.caf
+            critical: 1
+            volume: 0.8
+- id: leavingHome_CheckLight_2
+  alias: Leaving Home Check Light
+  trigger:
+  - platform: state
+    entity_id: person.melanie
+    from: home
+    to: not_home
+  - platform: state
+    entity_id: person.christophe
+    from: home
+    to: not_home
+  condition:
+  - and:
+    - condition: template
+      value_template: '{{ states("person.christophe") != "home" }}'
+    - condition: template
+      value_template: '{{ states("person.melanie") != "home" }}'
+    - or:
+      - condition: state
+        entity_id: group.light_to_check
+        state: 'on'
+      - condition: template
+        value_template: '{{ expand(state_attr("group.music_players", "entity_id"))
+          | selectattr("state", "eq", "playing") | list  | count > 0 }}'
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data_template:
+      message: '
+
+        {% set l = states[''light''] | selectattr(''state'',''eq'', ''on'') | map(attribute=''attributes.friendly_name'')
+        | list %} {% if l | count > 0 %} {{ "Lumière(s) allumée(s): " }} {{ l | join
+        (", ") }} {% endif %} {% set m = expand(state_attr("group.music_players",
+        "entity_id")) | selectattr("state", "eq", "playing") | map(attribute=''attributes.friendly_name'')
+        | list %} {% if l | count > 0 and m | count > 0 %} {{" "}} {% endif %} {%
+        if m | count > 0 %} {{ "Musique allumée: " }} {{ m | join (", ") }} {% endif
+        %}
+
+        '
+      data:
+        actions:
+        - action: 'OFF'
+          title: Tout éteindre
+          activationMode: background
+          authenticationRequired: true
+          destructive: true
+          behavior: default
+- id: leavingHome_ProposeCloseGarage
+  mode: single
+  alias: Leaving Home Propose To Close Garage Chris
+  trigger:
+    platform: state
+    entity_id: cover.garage_de_chris
+    to: open
+  condition:
+    condition: state
+    entity_id: device_tracker.iphone_3
+    state: home
+  action:
+  - service: notify.mobile_app_chriss_iphone
+    data:
+      message: Fermer le garage de Chris ?
+      data:
+        actions:
+        - action: FERMERGARAGECHRIS
+          title: Fermer
+          activationMode: background
+          authenticationRequired: true
+          destructive: true
+          behavior: default
+  - delay: 00:01:00
+- id: '1713083942284'
+  alias: Assist Diminuer Vol Salon
+  description: T'arrête de gueuler René
+  trigger:
+  - platform: conversation
+    command: T'arrête de gueuler René
+  condition: []
+  action:
+  - service: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.15
+    target:
+      entity_id: media_player.salon
+  mode: single
+- id: '1713084156126'
+  alias: Assist Salon Next
+  description: Changer de musique salon
+  trigger:
+  - platform: conversation
+    command: Changer de musique
+  condition: []
+  action:
+  - service: media_player.media_next_track
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.salon
   mode: single

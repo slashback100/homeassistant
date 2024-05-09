@@ -1,4 +1,5 @@
     name: "bureau"
+    unique_id: "bureau"
     state_topic: cmd/etage2a/in/23
     payload_off: "OFF"
     payload_on: "ON"

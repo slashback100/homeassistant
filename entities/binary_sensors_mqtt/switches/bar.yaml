@@ -1,4 +1,5 @@
     name: "bar"
+    unique_id: "bar"
     state_topic: cmd/etage0a/in/35
     payload_off: "OFF"
     payload_on: "ON"

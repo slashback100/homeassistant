@@ -1,5 +1,6 @@
     platform: history_stats
     name: running_time_today
+      #unique_id: running_time_today
     entity_id: sensor.iphone_activity
     state: "Running"
     type: time

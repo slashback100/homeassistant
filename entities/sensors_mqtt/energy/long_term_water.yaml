@@ -1,4 +1,5 @@
     name: "Consommation d'eau"
+    unique_id: "Consommation d'eau"
     state_topic: "consommation/eau/main/value"
     qos: 1
     unit_of_measurement: "m³"

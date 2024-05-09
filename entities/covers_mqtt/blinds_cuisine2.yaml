@@ -1,4 +1,5 @@
     name: Volet Cuisine 2
+    unique_id: Volet Cuisine 2
     object_id: volet_cuisine_2
     device_class: blind
     command_topic: cmd/blinds_etage1a/02

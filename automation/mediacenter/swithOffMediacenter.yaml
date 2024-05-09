@@ -5,11 +5,11 @@
       - platform: state
         entity_id: media_player.mediacenter_salon
         to: 'idle'
-        for: "00:15:00"
+        for: "00:05:00"
     action:
       - service: switch.turn_off
         entity_id: switch.prog_kodi
-      - service: media_player.volume_set
-        data: 
-          volume_level: 0.2
-          entity_id: media_player.salon
+      #- service: media_player.volume_set
+      #  data: 
+      #    volume_level: 0.2
+      #    entity_id: media_player.salon

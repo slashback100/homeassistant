@@ -11,4 +11,4 @@
             long_click_action:
               - service: light.toggle
                 data:
-                    entity_id: light.wled_3
+                    entity_id: light.wled_bar

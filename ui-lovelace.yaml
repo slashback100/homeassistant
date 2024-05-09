@@ -1,6 +1,8 @@
 resources:
   - url: /local/buien-rain-card.js
     type: module
+  - url: /local/custom-lovelace/upcoming-media-card/upcoming-media-card.js?v=0.1.1
+    type: js
 #  - url: /hacsfiles/custom-header/custom-header.js
 #    type: module
 #  - url: /community_plugin/dual-gauge-card/dual-gauge-card.js

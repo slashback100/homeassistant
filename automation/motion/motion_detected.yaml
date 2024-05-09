@@ -10,7 +10,7 @@
         condition: template
         value_template: "{{ (as_timestamp(now()) - as_timestamp(states.switch.camera_rpi.last_updated)) / 60 > 5 }}"
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Mouvement détecté dans le garage"
   - id: newPhotoVideoCam
@@ -43,7 +43,7 @@
         condition: template
         value_template: "{{ (as_timestamp(now()) - as_timestamp(states.switch.camera_rpi.last_updated)) / 60 > 5 }}"
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Mouvement détecté dans le garage"
       - service: notify.mail

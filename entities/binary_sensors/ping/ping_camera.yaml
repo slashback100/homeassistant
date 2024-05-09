@@ -1,6 +1,0 @@
-
-   platform: ping
-   count: 1
-   host: 192.168.0.203
-   name: Camera garage
-   scan_interval: 60

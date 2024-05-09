@@ -8,4 +8,4 @@
       state: 'off'
       notifiers:
 #        - ios_chris
-        - mobile_app_iphone
+        - mobile_app_chriss_iphone

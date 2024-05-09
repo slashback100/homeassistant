@@ -9,7 +9,7 @@
         entity_id: binary_sensor.garage_de_chris
         state: 'on'
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Garage Ouvert !!"
             data:
@@ -43,7 +43,7 @@
               - condition: template
                 value_template: '{{ expand(state_attr("group.music_players", "entity_id")) | selectattr("state", "eq", "playing") | list  | count > 0 }}'
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data_template:
             message: >
               
@@ -82,7 +82,7 @@
         entity_id: device_tracker.iphone_3
         state: 'home'
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Fermer le garage de Chris ?"
             data:

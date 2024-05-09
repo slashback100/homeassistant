@@ -1,4 +1,5 @@
     name: "eteindre_haut"
+    unique_id: "eteindre_haut"
     state_topic: cmd/etage1a/in/24
     payload_off: "OFF"
     payload_on: "ON"

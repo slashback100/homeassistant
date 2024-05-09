@@ -1,4 +1,5 @@
     name: "turn_off_cave"
+    unique_id: "turn_off_cave"
     state_topic: cmd/etage0a/in/40
     payload_off: "OFF"
     payload_on: "ON"

@@ -1,4 +1,5 @@
-    name: "Consommation de Gaz"
+    name: "Consommation de Gaz OLD"
+    unique_id: "Consommation de Gaz OLD"
     state_topic: "consommation/gaz"
     qos: 1
     unit_of_measurement: "m2"

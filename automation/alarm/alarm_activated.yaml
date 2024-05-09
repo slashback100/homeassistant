@@ -5,7 +5,7 @@
         entity_id: sensor.statut_de_l_alarme
         to: 'alarme'
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "L'alarme sonne !"
             data:

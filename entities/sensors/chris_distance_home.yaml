@@ -2,11 +2,13 @@
     sensors:
         chris_distance_to_home:
             friendly_name: "Distance de Christophe à la maison"
+            unique_id: "Distance de Christophe à la maison"
             unit_of_measurement: m
             icon_template: "mdi:selection-ellipse-arrow-inside"
             value_template: "{{ (distance('person.christophe')*1000) | int}}"
         mel_distance_to_home:
             friendly_name: "Distance de Mélanie à la maison"
+            unique_id: "Distance de Mélanie à la maison"
             unit_of_measurement: m
             icon_template: "mdi:selection-ellipse-arrow-inside"
             value_template: "{{ (distance('person.melanie')*1000) | int}}"

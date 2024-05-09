@@ -1,4 +1,5 @@
     name: "cover_garage_mel"
+    unique_id: "cover_garage_mel"
     state_topic: cmd/etage1a/in/3
     payload_off: "OFF"
     payload_on: "ON"

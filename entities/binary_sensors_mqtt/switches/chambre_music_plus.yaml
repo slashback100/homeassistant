@@ -1,4 +1,5 @@
     name: "chambre_music_plus"
+    unique_id: "chambre_music_plus"
     state_topic: cmd/etage2b/in/15
     payload_off: "OFF"
     payload_on: "ON"

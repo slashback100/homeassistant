@@ -13,9 +13,9 @@
               - service: media_player.media_pause
                 entity_id: media_player.salon
               - service: media_player.media_pause
-                entity_id: media_player.terrassebas_3
+                entity_id: media_player.terrassebas
               - service: media_player.media_pause
-                entity_id: media_player.terrassehaut_2
+                entity_id: media_player.terrassehaut
               - service: media_player.media_pause
                 entity_id: media_player.salle_de_bain
               - service: media_player.media_pause

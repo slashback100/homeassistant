@@ -187,9 +187,9 @@ media_player.salon:
   device_class: speaker
 media_player.chambre:
   device_class: speaker
-media_player.terrassebas_3:
+media_player.terrassebas:
   device_class: speaker
-media_player.terrassehaut_2:
+media_player.terrassehaut:
   device_class: speaker
 device_tracker.nmap_tracker_4a_80_2e_6c_2d_89:
   friendly_name: Femme de ménage

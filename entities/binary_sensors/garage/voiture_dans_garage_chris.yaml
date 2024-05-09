@@ -3,3 +3,4 @@
     voiture_presente_garage_chris:
       friendly_name: "Voiture preésente dans le garage de Christ"
       value_template: "{{ states('sensor.distance_voiture_garage_christ') | int(100) < 70}}"
+      unique_id: "Voiture preésente dans le garage de Christ"

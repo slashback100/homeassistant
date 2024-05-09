@@ -1,3 +1,4 @@
     name: "Humidité dans le cinéma"
+    unique_id: "Humidité dans le cinéma"
     state_topic: "cmd/esp_cinema/hygro"
     unit_of_measurement: '%'

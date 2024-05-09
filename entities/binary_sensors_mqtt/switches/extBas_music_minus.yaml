@@ -1,4 +1,5 @@
     name: "extBas_music_minus"
+    unique_id: "extBas_music_minus"
     state_topic: cmd/etage1a/in/16
     payload_off: "OFF"
     payload_on: "ON"

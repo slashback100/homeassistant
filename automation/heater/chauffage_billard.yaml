@@ -62,3 +62,13 @@
         entity_id: 
           #- switch.billard_chauffage_entree #sera activé par SyncChauffageBillardON
           - switch.billard_chauffage_fond
+  - alias: ClimateBillard_off
+    id: ClimateBillard_off
+    trigger:
+      - platform: state
+        entity_id:  climate.chauffage_du_billard
+        to: 'off'
+    action:
+      - service: switch.turn_off
+        entity_id: 
+          - switch.billard_chauffage_fond

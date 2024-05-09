@@ -30,7 +30,7 @@ shell_command:
   disable_single_alarm: >-
       /usr/bin/curl -H 'Content-Type: application/json' -X POST -d '{"id":0,"method":"slim.request","params":["b8:27:eb:17:f1:d0",["alarm","update","id:{{states('input_text.alarm_single_id')}}","enabled:0"]]}' 'http://192.168.0.175:9000/jsonrpc.js'
   hyperion_remote: >-
-      /usr/bin/hyperion-remote -a 192.168.0.205:19444 {{ states('input_text.hyperion_args') }}
+      ssh pi@192.168.0.205 '/usr/bin/hyperion-remote -a 192.168.0.205:19444 {{ states('input_text.hyperion_args') }}'
   hyperion_nograbber_stop: >-
       ssh pi@192.168.0.205 'sudo service hyperion_nograbber stop'
   hyperion_nograbber_start: >-
@@ -39,6 +39,10 @@ shell_command:
       ssh pi@192.168.0.205 'sudo service hyperion stop'
   hyperion_start: >-
       ssh pi@192.168.0.205 'sudo service hyperion start'
+  grabber_start: >-
+      ssh pi@192.168.0.205 'sudo service drm-v4-capture start'
+  grabber_stop: >-
+      ssh pi@192.168.0.205 'sudo service drm-v4-capture stop'
 
 
   radio_of_title_add_salon: >-

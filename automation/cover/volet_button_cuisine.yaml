@@ -1,4 +1,5 @@
   - alias: Volet Toggle
+    id: volet_toggle
     description: Volet_toggle
     use_blueprint:
       path: clicks.yaml

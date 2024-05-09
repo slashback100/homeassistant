@@ -27,6 +27,9 @@
       - service: logger.set_default_level
         data:
             level: error
+      - service: logger.set_level
+        data:
+            custom_components.presence_simulation: debug
       - service: mqtt.publish
         data:
             topic: cmd/blinds_etage1a_position/01

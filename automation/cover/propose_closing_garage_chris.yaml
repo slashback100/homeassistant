@@ -9,7 +9,7 @@
       - choose:
           - conditions: "{{ states('person.christophe') and now().timestamp() - states.person.christophe.last_changed.timestamp()  < 60 }}"          
             sequence:
-              - service: notify.mobile_app_iphone
+              - service: notify.mobile_app_chriss_iphone
                 data:
                     message: "Fermer le garage de Christophe ?"
                     data:
@@ -34,7 +34,7 @@
       - choose:
           - conditions: "{{ states('person.christophe') and now().timestamp() - states.person.christophe.last_changed.timestamp()  < 60 }}"          
             sequence:
-              - service: notify.mobile_app_iphone
+              - service: notify.mobile_app_chriss_iphone
                 data:
                     message: "Fermer le garage de Mel ?"
                     data:

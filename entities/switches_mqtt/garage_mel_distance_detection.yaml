@@ -1,4 +1,5 @@
   - name: "Activation détecteur de distance garage mel"
+    unique_id: "Activation détecteur de distance garage mel"
     command_topic: "cmd/esp_garage_mel_dist/activate"
     retain: true
     payload_on: '1'

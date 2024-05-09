@@ -1,4 +1,5 @@
     name: "salon_single"
+    unique_id: "salon_single"
     state_topic: cmd/etage1a/in/26
     payload_off: "OFF"
     payload_on: "ON"

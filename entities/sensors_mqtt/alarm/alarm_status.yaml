@@ -1,2 +1,3 @@
     name: "Statut de l'alarme"
+    unique_id: "Statut de l'alarme"
     state_topic: cmd/alarme/status

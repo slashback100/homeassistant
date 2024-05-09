@@ -7,10 +7,10 @@
             action: "OFF"
     action:
       - choose:
-          - conditions: "{{ is_state('switch.presence_simulation_2', 'on') }}"
+          - conditions: "{{ is_state('switch.presence_simulation', 'on') }}"
             sequence: 
               - service: switch.turn_off
-                entity_id: switch.presence_simulation_2
+                entity_id: switch.presence_simulation
               - delay: 5
               - service: light.turn_off
                 entity_id: all
@@ -18,7 +18,7 @@
                 data: 
                   entity_id: all
               - service: switch.turn_on
-                entity_id: switch.presence_simulation_2
+                entity_id: switch.presence_simulation
         default:
           - service: light.turn_off
             entity_id: all

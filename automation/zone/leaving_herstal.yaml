@@ -5,6 +5,6 @@
         entity_id: person.melanie
         from: 'Herstal'
     action:
-      - service: notify.mobile_app_iphone
+      - service: notify.mobile_app_chriss_iphone
         data:
             message: "Mel quitte Herstal"

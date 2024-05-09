@@ -11,7 +11,7 @@
         - 60
       skip_first: true
       notifiers:
-        - mobile_app_iphone
+        - mobile_app_chriss_iphone
       data:
          actions: 
            - action: "ACK_CHRIS"

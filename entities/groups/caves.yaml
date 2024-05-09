@@ -10,6 +10,6 @@ caves:
             - light.l_escalier_cave
             - light.l_kicker
             - light.l_urinoir
-            - light.wled_2
-            - light.wled_3
+            - light.wled_billard
+            - light.wled_bar
             - light.l_billard_spots

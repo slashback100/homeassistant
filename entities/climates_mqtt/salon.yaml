@@ -1,4 +1,5 @@
     name: Chauffage du salon
+    unique_id: chauffage_du_salon
     payload_on: "ON"
     payload_off: "OFF"
     #power_command_topic: log/info/set_temp_chauf_salon

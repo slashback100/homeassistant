@@ -1,4 +1,5 @@
     name: "Consommation d'électricité"
+    unique_id: "Consommation d'électricité"
     state_topic: "consommation/electricite"
     qos: 1
     unit_of_measurement: "kWh"

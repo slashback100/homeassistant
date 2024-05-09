@@ -12,3 +12,7 @@
         data:
             message: "Nettoyer le filtre de la machine à laver"
             title: "Entretien"
+      - service: todo.add_item
+        data:
+            entity_id: todo.taches_maison
+            item:  "Nettoyer le filtre de la machine à laver"

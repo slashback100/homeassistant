@@ -1,4 +1,5 @@
     name: Chauffage du Cinema
+    unique_id: chauffage_du_cinema
     payload_on: "ON"
     payload_off: "OFF"
     mode_command_topic: cmd/etage0a/out/48

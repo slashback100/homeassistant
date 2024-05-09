@@ -1,3 +1,4 @@
     platform: file
     name: "ip bans file"
-    file_path: /mnt/extHdd/ip_bans.yaml
+      #    file_path: /home/homeassistant/.homeassistant/ip_bans.yaml
+    file_path: /config/ip_bans.yaml

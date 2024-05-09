@@ -1,6 +1,0 @@
-
-   platform: ping
-   count: 1
-   host: 192.168.0.59
-   name: Slimmelezer
-   scan_interval: 60

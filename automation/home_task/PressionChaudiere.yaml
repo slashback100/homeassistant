@@ -12,3 +12,7 @@
         data:
             message: "Vérifier la pression de la chaudière"
             title: "Entretien"
+      - service: todo.add_item
+        data:
+            entity_id: todo.taches_maison
+            item: "Vérifier la pression de la chaudière"

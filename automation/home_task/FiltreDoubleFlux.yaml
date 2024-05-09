@@ -11,6 +11,10 @@
         data:
             message: "Aspirer les filtres de la ventillation double flux"
             title: "Entretien"
+      - service: todo.add_item
+        data:
+            entity_id: todo.taches_maison
+            item: "Aspirer les filtres de la ventillation double flux"
   - alias: AchatFiltreDoubleFlux
     id: AchatFiltreDoubleFlux
     trigger:
@@ -24,3 +28,7 @@
         data:
             message: "Remplacer les filtres de la VMC"
             title: "Entretien"
+      - service: todo.add_item
+        data:
+            entity_id: todo.taches_maison
+            item: "Remplacer les filtres de la VMC"

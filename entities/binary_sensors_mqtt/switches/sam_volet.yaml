@@ -1,4 +1,5 @@
     name: "sam_volet"
+    unique_id: "sam_volet"
     state_topic: cmd/etage1a/in/37
     payload_off: "OFF"
     payload_on: "ON"
