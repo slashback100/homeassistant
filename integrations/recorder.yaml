@@ -5,3 +5,5 @@ recorder:
     exclude:
         entities:
           - sensor.since_last_boot
+          - automation.enregistrement_tv
+          - automation.homekit_update_sensor

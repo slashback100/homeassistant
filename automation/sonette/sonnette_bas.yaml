@@ -112,7 +112,7 @@
               - choose:
                   - conditions:
                       - condition: state
-                        entity_id: media_player.terrassebas
+                        entity_id: media_player.terrassebas_3
                         state: playing 
                     sequence:
                       - service: shell_command.ringextbas

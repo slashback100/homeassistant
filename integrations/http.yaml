@@ -2,8 +2,8 @@
 http:
     #ssl_certificate: /etc/letsencrypt/live/slashbackdomo.ddns.net/fullchain.pem
     #ssl_key: /etc/letsencrypt/live/slashbackdomo.ddns.net/privkey.pem
-    ssl_certificate: /home/homeassistant/certbot/certboot-venv/conf/live/slashbackdomo.ddns.net/fullchain.pem
-    ssl_key: /home/homeassistant/certbot/certboot-venv/conf/live/slashbackdomo.ddns.net/privkey.pem
+    ssl_certificate: /home/homeassistant/.homeassistant/certbot/certboot-venv/conf/live/slashbackdomo.ddns.net-0001/fullchain.pem
+    ssl_key: /home/homeassistant/.homeassistant/certbot/certboot-venv/conf/live/slashbackdomo.ddns.net-0001/privkey.pem
     #ssl_certificate: /etc/letsencrypt/live/slashbackdomo.ddns.net/fullchain.pem
     #ssl_key: /etc/letsencrypt/live/slashbackdomo.ddns.net/privkey.pem
     server_port: 4294

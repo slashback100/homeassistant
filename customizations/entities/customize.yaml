@@ -187,7 +187,7 @@ media_player.salon:
   device_class: speaker
 media_player.chambre:
   device_class: speaker
-media_player.terrassebas:
+media_player.terrassebas_3:
   device_class: speaker
 media_player.terrassehaut:
   device_class: speaker

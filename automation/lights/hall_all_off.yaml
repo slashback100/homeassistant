@@ -13,7 +13,7 @@
               - service: media_player.media_pause
                 entity_id: media_player.salon
               - service: media_player.media_pause
-                entity_id: media_player.terrassebas
+                entity_id: media_player.terrassebas_3
               - service: media_player.media_pause
                 entity_id: media_player.terrassehaut
               - service: media_player.media_pause

@@ -12,28 +12,28 @@
                 then:
                   - choose:
                         #si il y a de la music dans le salon et pas dehors -> lier exterieur et salon
-                      - conditions: "{{ is_state('media_player.salon', 'playing') and not is_state('media_player.terrassebas', 'playing')}}"
+                      - conditions: "{{ is_state('media_player.salon', 'playing') and not is_state('media_player.terrassebas_3', 'playing')}}"
                         sequence:
                           - service: squeezebox.sync
                             data:
                                 entity_id: media_player.salon
-                                other_player: media_player.terrassebas
+                                other_player: media_player.terrassebas_3
                         #si on veut couper la musique dehors et qu'elle est liée avec le salon -> délier
-                      - conditions: "{{ is_state('media_player.terrassebas', 'playing') and 'media_player.terrassebas' in state_attr('media_player.salon', 'group_members') }}"
+                      - conditions: "{{ is_state('media_player.terrassebas_3', 'playing') and 'media_player.terrassebas_3' in state_attr('media_player.salon', 'group_members') }}"
                         sequence:
                           - service: squeezebox.unsync
                             data:
-                                entity_id: media_player.terrassebas
+                                entity_id: media_player.terrassebas_3
                     # sinon, simple switch
                     default:
                       - service: media_player.media_play_pause
-                        entity_id: media_player.terrassebas
+                        entity_id: media_player.terrassebas_3
             short_click_action:
               - choose:
                   - conditions: "{{ states('binary_sensor.femme_menage_presente') in ['off', 'unknown'] }}"
                     sequence:
                       - service: media_player.volume_down
-                        entity_id: media_player.terrassebas
+                        entity_id: media_player.terrassebas_3
   - alias: SwitchMusicExtBasPlus
     id: SwitchMusicExtBasPlus
     initial_state: 'on'
@@ -46,10 +46,10 @@
                   - conditions: "{{ states('binary_sensor.femme_menage_presente') in ['off', 'unknown'] }}"
                     sequence:
                       - service: media_player.media_next_track
-                        entity_id: media_player.terrassebas
+                        entity_id: media_player.terrassebas_3
             short_click_action:
               - choose:
                   - conditions: "{{ states('binary_sensor.femme_menage_presente') in ['off', 'unknown'] }}"
                     sequence:
                       - service: media_player.volume_up
-                        entity_id: media_player.terrassebas
+                        entity_id: media_player.terrassebas_3

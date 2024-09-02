@@ -10,9 +10,9 @@ for_presence_simulation:
       - light.l_garage_chris
       - light.l_garage_mel
       - light.l_escalier
-      - light.l_chambre_parents
-      - light.l_dressing
-      - light.l_elise
+        #      - light.l_chambre_parents
+        #      - light.l_dressing
+        #      - light.l_elise
       - light.l_escalier_ambiance
       - light.l_hall_nuit
       - light.l_sdb
@@ -20,12 +20,12 @@ for_presence_simulation:
       - light.l_bureau
       - light.l_facade_avant
       - light.meuble_de_la_salle_a_manger
-      - cover.volet_cuisine_1
-      - cover.volet_cuisine_2
-      - cover.volet_cuisine_3
-      - cover.volet_cuisine_entree
-      - cover.volet_sam_1
-      - cover.volet_sam_2
+        #      - cover.volet_cuisine_1
+        #      - cover.volet_cuisine_2
+        #      - cover.volet_cuisine_3
+        #      - cover.volet_cuisine_entree
+        #      - cover.volet_sam_1
+        #      - cover.volet_sam_2
 #      - light.l_terrasse_haut
 #      - light.l_terrasse_bas
 

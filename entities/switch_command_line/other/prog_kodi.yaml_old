@@ -1,0 +1,5 @@
+ - switch:
+     name: prog_kodi
+     command_on: "ssh pi@prog 'sudo service kodi start'"
+     command_off: "ssh pi@prog 'sudo service kodi stop'"
+     command_state: "ssh pi@prog 'sudo service kodi status' | grep '(running)' > /dev/null 2>&1"
