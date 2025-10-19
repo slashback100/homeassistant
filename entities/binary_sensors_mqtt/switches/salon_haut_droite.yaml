@@ -1,0 +1,5 @@
+    name: "salon_haut_droit"
+    unique_id: "salon_haut_droit"
+    state_topic: cmd/etage1a/in/18
+    payload_off: "OFF"
+    payload_on: "ON"

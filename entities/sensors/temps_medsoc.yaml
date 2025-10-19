@@ -1,0 +1,7 @@
+    platform: history_stats
+    name: Temps au travail aujourd'hui
+    entity_id: person.christophe
+    state: 'MEDSOC'  # ou le nom exact de la zone
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now() }}'

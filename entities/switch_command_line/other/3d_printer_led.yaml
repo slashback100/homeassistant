@@ -1,0 +1,4 @@
+ - switch:
+     name: led_3d_printer
+     command_on: "ssh pi@threedprinter 'sudo ~/simple.py'"
+     command_off: "ssh pi@threedprinter 'sudo ~/simple.py -c'"

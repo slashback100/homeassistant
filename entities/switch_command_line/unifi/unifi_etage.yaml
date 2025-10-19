@@ -1,0 +1,9 @@
+ - switch:
+     name: unifi_etage
+     command_on: >-
+           cookie=$(wget -S -qO- -T 5 --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.10.186:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && curl -X PUT --insecure -d '{"disabled": false}' -H "Cookie: $cookie" "https://192.168.10.186:8443/api/s/default/rest/device/67c0bc1d34e802026000c1bc" && wget -T 5 -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.10.186:8443/api/logout' > /dev/null
+     command_off: >-
+           cookie=$(wget -S -qO- -T 5 --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.10.186:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && curl -X PUT --insecure -d '{"disabled": true}' -H "Cookie: $cookie" "https://192.168.10.186:8443/api/s/default/rest/device/67c0bc1d34e802026000c1bc" && wget -T 5 -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.10.186:8443/api/logout' > /dev/null
+     command_state: >-
+       cookie=$(wget -S -qO- -T 5 --no-check-certificate --post-data='{"username":"christ", "password": "hirwyx-0jompy-rujWiz"}' 'https://192.168.10.186:8443/api/login' 2>&1 | grep Set-Cookie | cut -f2 -d':' | cut -f1 -d';' | xargs echo | sed -E 's/ /;/') && wget -T 5 -qO- --no-check-certificate --header="Cookie: $cookie" "https://192.168.10.186:8443/api/s/default/stat/device/f0:9f:c2:f3:d8:f4" | jq '.data[0].disabled' && wget -T 5 -qO- --no-check-certificate --header="Cookie: $cookie" --post-data='{}' 'https://192.168.10.186:8443/api/logout' > /dev/null
+     value_template: '{{ value == "false" }}'
