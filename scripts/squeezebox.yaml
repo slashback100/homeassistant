@@ -3,11 +3,11 @@ squeeze_defaults:
     sequence:
       - service: shell_command.curl
         data: &defaults
-          url: "http://192.168.0.175:9000/jsonrpc.js"
+          url: "http://192.168.40.175:9000/jsonrpc.js"
           method: "post"
           headers:    
             content-type: "application/json"
-squeeze_sync_salon_terrassebas_3:
+squeeze_sync_salon_terrassebas:
     sequence:
       - service: shell_command.curl
         data:
@@ -59,7 +59,7 @@ squeeze_unsync_terrassehaut_2:
               - 
                 - sync
                 - "-"
-squeeze_sync_terrassehaut_2_terrassebas_3:
+squeeze_sync_terrassehaut_2_terrassebas:
     sequence:
       - service: shell_command.curl
         data:

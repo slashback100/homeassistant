@@ -59,7 +59,7 @@
             message: "Quelqu'un est détecté devant la maison"
             data:
                 entity_id: camera.sonnette_main
-      - service: notify.mobile_app_sm_a525f
+      - service: notify.mobile_app_s25_mel
         data:
             message: "Quelqu'un est détecté devant la maison"
             data:
@@ -88,7 +88,7 @@
                         name: "Ringtone_2_Haptic-sashimi.caf"
                         critical: 1
                         volume: 0.5
-      - service: notify.mobile_app_sm_a525f
+      - service: notify.mobile_app_s25_mel
         data:
             message: "Quelqu'un sonne à la porte"
             data:
@@ -218,7 +218,7 @@
         to: 'on'
     condition:
       - condition: state
-        entity_id: media_player.terrassebas_3
+        entity_id: media_player.terrassebas
         state: playing 
     action:
       - service: shell_command.ringextbas

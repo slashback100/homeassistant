@@ -80,3 +80,12 @@
     command_topic: "cmd/etage1a/out/58"
     state_topic: "cmd/etage1a/out/58"
     retain: true
+  - state_on: 'ON'
+    state_off: 'OFF'
+    payload_off: 'OFF'
+    payload_on: 'ON'
+    name: "cuisine_ext"
+    unique_id: "cuisine_ext"
+    command_topic: "cmd/etage0a/out/69"
+    state_topic: "cmd/etage0a/out/69"
+    retain: true

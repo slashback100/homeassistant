@@ -81,7 +81,7 @@
         entity_id: input_boolean.hello_fresh
         state: "on"
     action:
-      - service: notify.mobile_app_sm_a525f
+      - service: notify.mobile_app_s25_mel
         data:
             message: "HelloFresh sonne à la porte"
             data:

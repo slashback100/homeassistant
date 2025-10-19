@@ -1,6 +1,6 @@
     name: Volet Salle à manger 1
     unique_id: Volet Salle à manger 1
-    object_id: volet_sam_1
+    default_entity_id: cover.volet_sam_1
     device_class: blind
     command_topic: cmd/blinds_etage1a/16
     payload_close: 'd'

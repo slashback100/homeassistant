@@ -54,3 +54,15 @@
   - device_id: loisir_loncin
     ignore_availability: true
     name: Loisir Loncin
+
+- cal_id: family09783419670131560764@group.calendar.google.com
+  entities:
+  - device_id: famille
+    ignore_availability: true
+    name: Famille
+
+- cal_id: ihugmmghaablelkp2j99miln5q07ifqa@import.calendar.google.com
+  entities:
+  - device_id: vollamacp3h
+    ignore_availability: true
+    name: VollamacP3h

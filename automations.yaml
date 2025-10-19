@@ -153,7 +153,7 @@
       entity_id: person.melanie
       state: home
     then:
-    - service: notify.mobile_app_sm_a525f
+    - service: notify.mobile_app_s25_mel
       data:
         message: Attention, alarme mise mais nous sommes jeudi, HelloFresh ne vient
           pas ?
@@ -172,70 +172,6 @@
     data:
       message: Disque dur externe plein !
       title: 'Disque dur '
-  mode: single
-- id: '1685630060150'
-  alias: CaveEtagere_ouvrir
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - input_button.ouvrir_cave
-  condition: []
-  action:
-  - service: mqtt.publish
-    data:
-      topic: cmd/etage0a/out/69
-      payload: 'ON'
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 30
-      milliseconds: 0
-  - service: mqtt.publish
-    data:
-      topic: cmd/etage0a/out/69
-      payload: 'OFF'
-  mode: single
-- id: '1685630458525'
-  alias: CaveEtagere_Fermer
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - input_button.fermer_cave
-  condition: []
-  action:
-  - service: mqtt.publish
-    data:
-      topic: cmd/etage0a/out/1
-      payload: 'ON'
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 30
-      milliseconds: 0
-  - service: mqtt.publish
-    data:
-      topic: cmd/etage0a/out/1
-      payload: 'OFF'
-  mode: single
-- id: '1685630585288'
-  alias: CaveEtagere_stop
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - input_button.stop_cave
-  condition: []
-  action:
-  - service: mqtt.publish
-    data:
-      topic: cmd/etage0a/out/1
-      payload: 'OFF'
-  - service: mqtt.publish
-    data:
-      topic: cmd/etage0a/out/69
-      payload: 'OFF'
   mode: single
 - id: '1685634322362'
   alias: Reset arduino cave
@@ -260,57 +196,6 @@
       topic: cmd/esp_watchdog_etage0a/watchdog
       payload: '{{ states(''input_number.arduino_watchdog'')  | int }}'
       retain: true
-  mode: single
-- id: '1685692576486'
-  alias: cave_etagere_status_update
-  description: ''
-  trigger:
-  - platform: mqtt
-    topic: cmd/etage0a/out/69
-  - platform: mqtt
-    topic: cmd/etage0a/out/1
-  condition: []
-  action:
-  - if:
-    - condition: template
-      value_template: '{{ trigger.payload == "ON" and trigger.topic == "cmd/etage0a/out/69"
-        }}'
-    then:
-    - service: input_select.select_option
-      data:
-        option: Ouverture
-      target:
-        entity_id: input_select.cave_etagere_status
-  - if:
-    - condition: template
-      value_template: '{{ trigger.payload == "ON" and trigger.topic == "cmd/etage0a/out/1"
-        }}'
-    then:
-    - service: input_select.select_option
-      data:
-        option: Fermeture
-      target:
-        entity_id: input_select.cave_etagere_status
-  - if:
-    - condition: template
-      value_template: '  {{ trigger.payload == "OFF" and trigger.topic == "cmd/etage0a/out/1"
-        }}'
-    then:
-    - service: input_select.select_option
-      data:
-        option: Fermé
-      target:
-        entity_id: input_select.cave_etagere_status
-  - if:
-    - condition: template
-      value_template: '  {{ trigger.payload == "OFF" and trigger.topic == "cmd/etage0a/out/69"
-        }}'
-    then:
-    - service: input_select.select_option
-      data:
-        option: Ouvert
-      target:
-        entity_id: input_select.cave_etagere_status
   mode: single
 - id: '1707320668533'
   alias: ActionIOS_OuvrirGarageMel
@@ -382,40 +267,44 @@
 - id: afterReload
   alias: Restore Garage state after reload
   description: ''
-  trigger:
-  - platform: homeassistant
-    event: start
-  - platform: event
-    event_type: event_mqtt_reloaded
-  action:
-  - service: mqtt.publish
-    data:
+  triggers:
+  - event: start
+    trigger: homeassistant
+  - event_type: event_mqtt_reloaded
+    trigger: event
+  actions:
+  - data:
+      topic: cmd/alarme/status
+      payload: disabled
+    action: mqtt.publish
+  - data:
       topic: cmd/etage1a/in/45
       payload: 'ON'
-  - service: mqtt.publish
-    data:
+    action: mqtt.publish
+  - data:
       topic: cmd/etage1a/in/44
       payload: 'ON'
-  - service: scene.create
-    data:
+    action: mqtt.publish
+  - data:
       scene_id: garage_mel
       snapshot_entities:
       - light.l_garage_mel
-  - service: switch.turn_on
-    data:
+    action: scene.create
+  - data:
       entity_id:
       - switch.activation_detecteur_de_distance_garage_mel
       - switch.activation_detecteur_de_distance_garage_chris
+    action: switch.turn_on
   - delay: 00:00:01
-  - service: scene.turn_on
-    data:
+  - data:
       entity_id: scene.garage_mel
+    action: scene.turn_on
   - delay: 00:00:02
-  - service: switch.turn_off
-    data:
+  - data:
       entity_id:
       - switch.activation_detecteur_de_distance_garage_mel
       - switch.activation_detecteur_de_distance_garage_chris
+    action: switch.turn_off
 - id: blackout
   alias: Blackout at home
   trigger:
@@ -450,35 +339,47 @@
 - id: MailHelloFresh
   alias: MailHelloFresh
   description: MailHelloFresh
-  trigger:
-  - platform: event
-    event_type: imap_content
+  triggers:
+  - event_type: imap_content
     event_data:
       sender: no-reply@mail.hellofresh.be
       subject: Livraison de votre box HelloFresh
-  - platform: event
-    event_type: imap_content
+    trigger: event
+    enabled: false
+  - event_type: imap_content
     event_data:
       sender: no-reply@mail.hellofresh.com
       subject: Livraison de votre box HelloFresh
-  - platform: event
-    event_type: imap_content
+    trigger: event
+    enabled: false
+  - event_type: imap_content
     event_data:
-      sender: christophe.desirant@gmail.com
+      subject: 'Fwd: Livraison de votre box HelloFresh'
+    trigger: event
+    enabled: true
+  - event_type: imap_content
+    event_data:
       subject: Livraison de votre box HelloFresh
-  action:
-  - service: google.create_event
-    target:
+    trigger: event
+  actions:
+  - action: imap.fetch
+    metadata: {}
+    data:
+      entry: 9849218bc8b3f8e72db01207bc15f935
+      uid: '{{ trigger.event.data[''uid''] }}'
+    response_variable: message_text
+  - target:
       entity_id: calendar.calendier_famille
     data:
       description: HelloFresh
       summary: HelloFresh
-      start_date_time: '{% set dt = (trigger.event.data["text"] | regex_findall_index("Heure
-        de livraison[^:]*: ([0-9]+:[0-9]+)")) %}  {{((strptime(states("sensor.date")~"
+      start_date_time: '{% set dt = (message_text["text"] | regex_findall_index("Heure
+        ?de ?livraison[^:]*: ?([0-9]+:[0-9]+)")) %}  {{((strptime(states("sensor.date")~"
         "~ dt, "%Y-%m-%d %H:%M") + timedelta(days = 1) - timedelta(minutes = 30))|string)[:-3]}}'
-      end_date_time: '{% set dt = (trigger.event.data["text"] | regex_findall_index("Heure
-        de livraison[^:]*: ([0-9]+:[0-9]+)")) %} {{((strptime(states("sensor.date")~"
+      end_date_time: '{% set dt = (message_text["text"] | regex_findall_index("Heure
+        ?de ?livraison[^:]*: ?([0-9]+:[0-9]+)")) %} {{((strptime(states("sensor.date")~"
         "~ dt, "%Y-%m-%d %H:%M") + timedelta(days = 1) + timedelta(minutes = 30))|string)[:-3]}}'
+    action: google.create_event
   mode: single
 - id: startofha
   alias: StartOf HA
@@ -643,22 +544,22 @@
       title: Version
 - id: premiere_gelee
   alias: Première gelée prévue demain ou après-demain
-  trigger:
-  - platform: template
-    value_template: '{% if states.weather.maison.attributes.forecast[0].templow <
-      3 or states.weather.maison.attributes.forecast[1].templow < 3 %}true{% endif  %}'
-  action:
+  triggers:
+  - trigger: time
+    at: 00:00:01
+  actions:
   - action: weather.get_forecasts
     metadata: {}
     data:
       type: daily
-    target:
-      entity_id: weather.maison
     response_variable: forecast
+    target:
+      entity_id: weather.maison_maison
   - if:
     - condition: template
-      value_template: '{% if forecast[''weather.maison''].forecast[0].templow < 3
-        or forecast[''weather.maison''].forecast[1].templow < 3 %}true{% endif %}'
+      value_template: '{% if forecast[''weather.maison_maison''].forecast[0].templow
+        < 3 or forecast[''weather.maison_maison''].forecast[1].templow < 3 %}true{%
+        endif %}'
     then:
     - data:
         entity_id: input_boolean.premiere_gelee
@@ -707,14 +608,14 @@
     entity_id: switch.billard_chauffage_entree
 - id: setTheme
   alias: Set theme at startup
+  triggers:
+  - event: start
+    trigger: homeassistant
+  actions:
+  - data:
+      name: dark_orange
+    action: frontend.set_theme
   initial_state: 'on'
-  trigger:
-  - platform: homeassistant
-    event: start
-  action:
-    service: frontend.set_theme
-    data:
-      name: material_dark_green
 - id: alarm_ring
   alias: L'alarme sonne !
   trigger:
@@ -995,22 +896,22 @@
     entity_id: switch.activation_detecteur_de_distance_garage_chris
 - id: descendre_volets_arriere_soleil_chaud
   alias: Fermer les volets à l'arrière si soleil et chaud
-  trigger:
-  - platform: state
-    entity_id:
-    - weather.maison
+  triggers:
+  - entity_id:
+    - weather.maison_maison
     to:
     - sunny
     - partlycloudy
-  - platform: time
-    at: '14:30:00'
-  - platform: numeric_state
-    entity_id:
-    - input_number.homepod_temp_2
+    trigger: state
+  - at: '14:30:00'
+    trigger: time
+  - entity_id:
+    - number.homepod_temp
     above: 21
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: state
-    entity_id: weather.maison
+    entity_id: weather.maison_maison
     state:
     - sunny
     - partlycloudy
@@ -1018,36 +919,36 @@
     after: '14:30:00'
     before: sensor.sun_next_setting
   - condition: numeric_state
-    entity_id: input_number.homepod_temp_2
+    entity_id: number.homepod_temp
     above: 21
   - condition: numeric_state
     entity_id: cover.volet_cuisine_1
     attribute: current_position
     above: 70
-  action:
-  - service: mqtt.publish
-    data:
+  actions:
+  - data:
       topic: cmd/blinds_etage1a/15
       payload: d
-  - service: mqtt.publish
-    data:
+    action: mqtt.publish
+  - data:
       topic: cmd/blinds_etage1a/48
       payload: u
+    action: mqtt.publish
   - delay:
       hours: 0
       minutes: 0
-      seconds: 15
+      seconds: 14
       milliseconds: 0
-  - service: mqtt.publish
-    data:
+  - data:
       topic: cmd/blinds_etage1a/07
       payload: s
+    action: mqtt.publish
   - delay:
-      seconds: 5
-  - service: mqtt.publish
-    data:
+      seconds: 10
+  - data:
       topic: cmd/blinds_etage1a/08
       payload: s
+    action: mqtt.publish
   mode: single
 - id: stopIRRemoteChris
   alias: Stop pushing IR remote
@@ -1160,19 +1061,18 @@
     data:
       topic: cmd/blinds_etage1a/63
       payload: u
-- alias: ouvrir les volets avec le soleil_sem
-  id: ouvrir_volets_soleil_sem
-  mode: single
+- id: ouvrir_volets_soleil_sem
+  alias: ouvrir les volets avec le soleil_sem
   trigger:
   - platform: time
-    at: 08:00:01
+    at: 07:45:01
   - platform: numeric_state
     entity_id: sun.sun
     value_template: '{{ state.attributes.elevation }}'
     above: -1.5
   condition:
   - condition: time
-    after: 08:00:00
+    after: 07:45:00
   - condition: numeric_state
     entity_id: sun.sun
     value_template: '{{ state.attributes.elevation }}'
@@ -1185,10 +1085,11 @@
     - thu
     - fri
   action:
-  - service: mqtt.publish
-    data:
+  - data:
       topic: cmd/blinds_etage1a/63
       payload: u
+    action: mqtt.publish
+  mode: single
 - alias: ouvrir les volets avec le soleil we
   id: ouvrir_volets_soleil_we
   mode: single
@@ -1236,7 +1137,7 @@
     - conditions: '{{ states(''person.melanie'') and now().timestamp() - states.person.melanie.last_changed.timestamp()  <
         60 }}'
       sequence:
-      - service: notify.mobile_app_sm_a525f
+      - service: notify.mobile_app_s25_mel
         data:
           message: Fermer le garage de Christophe ?
           data:
@@ -1263,7 +1164,7 @@
     - conditions: '{{ states(''person.melanie'') and now().timestamp() - states.person.melanie.last_changed.timestamp()  <
         60 }}'
       sequence:
-      - service: notify.mobile_app_sm_a525f
+      - service: notify.mobile_app_s25_mel
         data:
           message: Fermer le garage de Mel ?
           data:
@@ -2486,7 +2387,7 @@
       - service: media_player.media_pause
         entity_id: media_player.salon
       - service: media_player.media_pause
-        entity_id: media_player.terrassebas_3
+        entity_id: media_player.terrassebas
       - service: media_player.media_pause
         entity_id: media_player.terrassehaut
       - service: media_player.media_pause
@@ -2545,7 +2446,7 @@
         - media_player.salon
         - media_player.mediacenter_salon
         - media_player.terrassehaut
-        - media_player.terrassebas_3
+        - media_player.terrassebas
         - light.l_facade_avant
         - light.l_terrasse_bas
         - light.l_terrasse_haut
@@ -2907,18 +2808,69 @@
       sequence:
       - service: light.toggle
         entity_id: light.l_terrasse_bas
-- alias: Switchportearriere2
-  id: Switchportearriere2
-  trigger:
-  - platform: mqtt
-    topic: cmd/etage1a/in/18
-    payload: 'ON'
-  action:
-  - choose:
-    - conditions: '{{ is_state(''binary_sensor.femme_menage_presente'', ''off'') }}'
-      sequence:
-      - service: light.toggle
-        entity_id: light.l_terrasse_haut
+- id: Switchportearriere2
+  alias: Switchportearriere2
+  use_blueprint:
+    path: clicks.yaml
+    input:
+      switch_id: binary_sensor.salon_haut_droit
+      short_click_action:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ is_state(''binary_sensor.femme_menage_presente'',
+              ''off'') }}'
+          sequence:
+          - if:
+            - condition: template
+              value_template: '{{ is_state(''binary_sensor.esphome_shade_is_moving'',
+                ''off'') }}'
+            then:
+            - entity_id: light.l_terrasse_haut
+              action: light.toggle
+            else:
+            - entity_id: cover.esphome_shade_living_room_shade
+              action: cover.stop_cover
+      long_click_action:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ is_state(''binary_sensor.femme_menage_presente'',
+              ''off'') }}'
+          sequence:
+          - entity_id: cover.esphome_shade_living_room_shade
+            action: cover.toggle
+      double_click_action:
+      - variables:
+          delta: 4
+          position: '{{ state_attr("cover.esphome_shade_living_room_shade", "current_position")
+            | int }}'
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ is_state(''binary_sensor.femme_menage_presente'',
+              ''off'') }}'
+          sequence:
+          - if:
+            - condition: template
+              value_template: '{% set delta = 4 %} {% set position = state_attr("cover.esphome_shade_living_room_shade",
+                "current_position") | int %} {{ (position  % delta) != 0 }}'
+            then:
+            - action: cover.set_cover_position
+              metadata: {}
+              data:
+                position: '{% set delta = 4 %} {% set position = state_attr("cover.esphome_shade_living_room_shade",
+                  "current_position") | int %} {{position - (position % delta) }}'
+              target:
+                entity_id: cover.esphome_shade_living_room_shade
+            else:
+            - action: cover.set_cover_position
+              metadata: {}
+              data:
+                position: '{% set delta = 4 %} {% set position = state_attr("cover.esphome_shade_living_room_shade",
+                  "current_position") | int %} {{ min(position + delta/2, 100) }}'
+              target:
+                entity_id: cover.esphome_shade_living_room_shade
 - alias: SwitchSAM6
   id: SwitchSAM6
   trigger:
@@ -3130,25 +3082,31 @@
   - service: light.turn_on
     entity_id: light.l_hall_ambiance
   mode: single
-- alias: Couper Lumière de Noël
-  id: Couper Lumière de Noël
-  trigger:
-  - platform: time
-    at: '23:59'
-  action:
-  - service: switch.turn_off
-    entity_id: switch.prise_ext_avant,switch.prise_ext_terrasse
+- id: Couper Lumière de Noël
+  alias: Couper Lumière de Noël
+  triggers:
+  - at: '23:59'
+    trigger: time
+  actions:
+  - entity_id:
+    - switch.prise_ext_avant
+    - switch.prise_ext_terrasse
+    - switch.prise_ext_partere
+    action: switch.turn_off
   mode: single
-- alias: Allume Lumière de Noël
-  id: Allume Lumière de Noël
-  trigger:
-  - platform: numeric_state
-    entity_id: sun.sun
+- id: Allume Lumière de Noël
+  alias: Allume Lumière de Noël
+  triggers:
+  - entity_id: sun.sun
     value_template: '{{ state.attributes.elevation }}'
     below: -2
-  action:
-  - service: switch.turn_on
-    entity_id: switch.prise_ext_avant,switch.prise_ext_terrasse
+    trigger: numeric_state
+  actions:
+  - entity_id:
+    - switch.prise_ext_avant
+    - switch.prise_ext_terrasse
+    - switch.prise_ext_partere
+    action: switch.turn_on
   mode: single
 - alias: TV Led Effects
   id: tv_led_effects
@@ -3510,42 +3468,50 @@
       short_click_action:
       - service: media_player.volume_up
         entity_id: media_player.chambre
-- alias: SwitchMusicExtBasMinus
-  id: SwitchMusicExtBasMinus
+- id: SwitchMusicExtBasMinus
+  alias: SwitchMusicExtBasMinus
   initial_state: 'on'
   use_blueprint:
     path: clicks.yaml
     input:
       switch_id: binary_sensor.extBas_music_minus
       long_click_action:
-      - if: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'', ''unknown'']
-          }}'
+      - if:
+        - condition: template
+          value_template: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
         then:
         - choose:
-          - conditions: '{{ is_state(''media_player.salon'', ''playing'') and not
-              is_state(''media_player.terrassebas_3'', ''playing'')}}'
+          - conditions:
+            - condition: template
+              value_template: '{{ is_state(''media_player.salon'', ''playing'') and
+                not is_state(''media_player.terrassebas'', ''playing'')}}'
             sequence:
-            - service: squeezebox.sync
-              data:
+            - data:
                 entity_id: media_player.salon
-                other_player: media_player.terrassebas_3
-          - conditions: '{{ is_state(''media_player.terrassebas_3'', ''playing'') and
-              ''media_player.terrassebas_3'' in state_attr(''media_player.salon'', ''group_members'')
-              }}'
+                group_members: media_player.terrassebas
+              action: media_player.join
+          - conditions:
+            - condition: template
+              value_template: '{{ is_state(''media_player.terrassebas'', ''playing'')
+                and ''media_player.terrassebas'' in state_attr(''media_player.salon'',
+                ''group_members'') }}'
             sequence:
-            - service: squeezebox.unsync
-              data:
-                entity_id: media_player.terrassebas_3
+            - data:
+                entity_id: media_player.terrassebas
+              action: media_player.unjoin
           default:
-          - service: media_player.media_play_pause
-            entity_id: media_player.terrassebas_3
+          - entity_id: media_player.terrassebas
+            action: media_player.media_play_pause
       short_click_action:
       - choose:
-        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
-            ''unknown''] }}'
+        - conditions:
+          - condition: template
+            value_template: '{{ states(''binary_sensor.femme_menage_presente'') in
+              [''off'', ''unknown''] }}'
           sequence:
-          - service: media_player.volume_down
-            entity_id: media_player.terrassebas_3
+          - entity_id: media_player.terrassebas
+            action: media_player.volume_down
 - alias: SwitchMusicExtBasPlus
   id: SwitchMusicExtBasPlus
   initial_state: 'on'
@@ -3559,50 +3525,58 @@
             ''unknown''] }}'
           sequence:
           - service: media_player.media_next_track
-            entity_id: media_player.terrassebas_3
+            entity_id: media_player.terrassebas
       short_click_action:
       - choose:
         - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
             ''unknown''] }}'
           sequence:
           - service: media_player.volume_up
-            entity_id: media_player.terrassebas_3
-- alias: SwitchMusicExtHautMinus
-  id: SwitchMusicExtHautMinus
+            entity_id: media_player.terrassebas
+- id: SwitchMusicExtHautMinus
+  alias: SwitchMusicExtHautMinus
   initial_state: 'on'
   use_blueprint:
     path: clicks.yaml
     input:
       switch_id: binary_sensor.extHaut_music_minus
       long_click_action:
-      - if: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'', ''unknown'']
-          }}'
+      - if:
+        - condition: template
+          value_template: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
+            ''unknown''] }}'
         then:
         - choose:
-          - conditions: '{{ is_state(''media_player.salon'', ''playing'') and not
-              is_state(''media_player.terrassehaut'', ''playing'')}}'
+          - conditions:
+            - condition: template
+              value_template: '{{ is_state(''media_player.salon'', ''playing'') and
+                not is_state(''media_player.terrassehaut'', ''playing'')}}'
             sequence:
-            - service: squeezebox.sync
-              data:
+            - data:
                 entity_id: media_player.salon
-                other_player: media_player.terrassehaut
-          - conditions: '{{ is_state(''media_player.terrassehaut'', ''playing'') and
-              ''media_player.terrassehaut'' in state_attr(''media_player.salon'',
-              ''group_members'') }}'
+                group_members: media_player.terrassehaut
+              action: media_player.join
+          - conditions:
+            - condition: template
+              value_template: '{{ is_state(''media_player.terrassehaut'', ''playing'')
+                and ''media_player.terrassehaut'' in state_attr(''media_player.salon'',
+                ''group_members'') }}'
             sequence:
-            - service: squeezebox.unsync
-              data:
+            - data:
                 entity_id: media_player.terrassehaut
+              action: media_player.unjoin
           default:
-          - service: media_player.media_play_pause
-            entity_id: media_player.terrassehaut
+          - entity_id: media_player.terrassehaut
+            action: media_player.media_play_pause
       short_click_action:
       - choose:
-        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
-            ''unknown''] }}'
+        - conditions:
+          - condition: template
+            value_template: '{{ states(''binary_sensor.femme_menage_presente'') in
+              [''off'', ''unknown''] }}'
           sequence:
-          - service: media_player.volume_down
-            entity_id: media_player.terrassehaut
+          - entity_id: media_player.terrassehaut
+            action: media_player.volume_down
 - alias: SwitchMusicExtHautPlus
   id: SwitchMusicExtHautPlus
   initial_state: 'on'
@@ -3651,8 +3625,8 @@
           sequence:
           - service: media_player.media_play_pause
             entity_id: media_player.salon
-- alias: SwitchCuisine11
-  id: SwitchCuisine11
+- id: SwitchCuisine11
+  alias: SwitchCuisine11
   initial_state: 'on'
   use_blueprint:
     path: clicks.yaml
@@ -3660,18 +3634,68 @@
       switch_id: binary_sensor.salon_music_plus
       short_click_action:
       - choose:
-        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
-            ''unknown''] }}'
+        - conditions:
+          - condition: template
+            value_template: '{{ states(''binary_sensor.femme_menage_presente'') in
+              [''off'', ''unknown''] }}'
           sequence:
-          - service: media_player.volume_up
-            entity_id: media_player.salon
+          - entity_id: media_player.salon
+            action: media_player.volume_up
       long_click_action:
       - choose:
-        - conditions: '{{ states(''binary_sensor.femme_menage_presente'') in [''off'',
-            ''unknown''] }}'
+        - conditions:
+          - condition: template
+            value_template: '{{ states(''binary_sensor.femme_menage_presente'') in
+              [''off'', ''unknown''] }}'
           sequence:
-          - service: media_player.media_next_track
-            entity_id: media_player.salon
+          - choose:
+            - conditions:
+              - condition: state
+                entity_id: media_player.salon
+                attribute: media_channel
+                state: NRJ+ (Chansons d'amour)
+              sequence:
+              - action: media_player.play_media
+                data:
+                  media_content_id: http://opml.radiotime.com/Tune.ashx?id=s18255&formats=aac,ogg,mp3,wmpro,wma,wmvoice&partnerId=16&serial=bac235ea35932e71245e343dec419981
+                  media_content_type: music
+                  entity_id: media_player.salon
+            - conditions:
+              - condition: state
+                entity_id: media_player.salon
+                attribute: media_channel
+                state: Nostalgie Belgique
+              sequence:
+              - action: media_player.play_media
+                data:
+                  media_content_id: 'media-source://radio_browser/0af512c6-eae5-4875-a206-302dc6a12a64          '
+                  media_content_type: audio/mpeg
+                  entity_id: media_player.salon
+            - conditions:
+              - condition: state
+                entity_id: media_player.salon
+                attribute: media_channel
+                state: Classic21
+              sequence:
+              - action: media_player.play_media
+                data:
+                  media_content_id: media-source://radio_browser/961d37d6-0601-11e8-ae97-52543be04c81
+                  media_content_type: audio/mpeg
+                  entity_id: media_player.salon
+            - conditions:
+              - condition: state
+                entity_id: media_player.salon
+                attribute: media_channel
+                state: LaPremiere
+              sequence:
+              - action: media_player.play_media
+                data:
+                  media_content_id: https://stream.rcs.revma.com/1a6hdnzbebuvv
+                  media_content_type: music
+                  entity_id: media_player.salon
+            default:
+            - entity_id: media_player.salon
+              action: media_player.media_next_track
 - alias: SwitchMusicSdbMinus
   id: SwitchMusicSdbMinus
   use_blueprint:
@@ -3777,35 +3801,37 @@
         data:
           volume_level: 0.3
           entity_id: media_player.salon
-- alias: SyncUnsyncKitchen
-  id: SyncUnsyncKitchen
+- id: SyncUnsyncKitchen
+  alias: SyncUnsyncKitchen
   use_blueprint:
     path: clicks.yaml
     input:
       switch_id: binary_sensor.cuisine_sync
       short_click_action:
       - choose:
-        - conditions: '{{ state_attr(''media_player.cuisine'', ''sync_group'') | count
-            > 0}}'
+        - conditions:
+          - condition: template
+            value_template: '{{ state_attr(''media_player.cuisine'', ''group_members'')
+              | count > 0}}'
           sequence:
-          - service: squeezebox.unsync
-            data:
+          - data:
               entity_id: media_player.cuisine
+            action: media_player.unjoin
         default:
-        - service: squeezebox.sync
-          data:
+        - data:
             entity_id: media_player.salon
-            other_player: media_player.cuisine
+            group_members: media_player.cuisine
+          action: media_player.join
       long_click_action:
-      - service: squeezebox.unsync
-        data:
+      - data:
           entity_id: media_player.cuisine
-      - service: media_player.media_pause
-        data:
+        action: media_player.unjoin
+      - data:
           entity_id: media_player.salon
-      - service: media_player.media_play
-        data:
+        action: media_player.media_pause
+      - data:
           entity_id: media_player.cuisine
+        action: media_player.media_play
 - id: ack_internet_papa
   alias: Couper les alertes de coupure de courant à Beaufays par action sur notif
   trigger:
@@ -3971,7 +3997,7 @@
     entity_id: input_boolean.hello_fresh
     state: 'on'
   action:
-  - service: notify.mobile_app_sm_a525f
+  - service: notify.mobile_app_s25_mel
     data:
       message: HelloFresh sonne à la porte
       data:
@@ -4061,20 +4087,23 @@
       - condition: template
         value_template: '{{ is_state(''binary_sensor.jardin_humain'', ''off'') }}'
       sequence:
-      - service: switch.turn_off
-        data:
+      - data:
           entity_id: switch.chris_galaxy_tab_screen
+        action: switch.turn_off
     default:
-    - service: switch.turn_on
-      data:
+    - data:
         entity_id: switch.chris_galaxy_tab_screen
-  - if: '{{ not state(''sensor.chris_galaxy_tab_current_page'',''https://slashbackdomo.ddns.net:4294/lovelace/jardin'')}}'
+      action: switch.turn_on
+  - if:
+    - condition: template
+      value_template: '{{ not is_state(''sensor.chris_galaxy_tab_current_page'',''https://slashbackdomo.ddns.net:4294/lovelace/jardin'')}}'
     then:
-    - service: fully_kiosk.load_url
+    - action: fully_kiosk.load_url
       data:
-        url: https://slashbackdomo.ddns.net:4294/lovelace/jardin
-      target:
-        device_id: 479efd4d9e1f4570884d84fc0f4261eb
+        url: '{{"https://slashbackdomo.ddns.net:4294" ~ state_attr("camera.sonnette_clair",
+          "entity_picture") | replace("camera_proxy", "camera_proxy_stream")}}'
+        target:
+          device_id: 479efd4d9e1f4570884d84fc0f4261eb
   mode: single
 - id: cam_jardin_notif
   alias: cam_jardin_notif
@@ -4089,7 +4118,7 @@
       action_1h: '{{ ''PAUSE_J_1h_'' ~ context.id }}'
       action_4h: '{{ ''PAUSE_J_4h_'' ~ context.id }}'
       action_8h: '{{ ''PAUSE_J_8h_'' ~ context.id }}'
-  - service: notify.mobile_app_sm_a525f
+  - service: notify.mobile_app_s25_mel
     data:
       message: Quelqu'un est détecté dans le jardin
     enabled: true
@@ -4178,14 +4207,14 @@
   mode: single
 - id: peephole
   alias: peephole
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.sonnette_visiteur
-  - platform: state
-    entity_id:
+    trigger: state
+  - entity_id:
     - binary_sensor.sonnette_humain
-  action:
+    trigger: state
+  actions:
   - choose:
     - conditions:
       - condition: template
@@ -4195,27 +4224,32 @@
       - delay:
           hours: 0
           minutes: 0
-          seconds: 10
+          seconds: 30
           milliseconds: 0
       - if:
         - condition: template
           value_template: '{{ is_state(''binary_sensor.sonnette_visiteur'', ''off'')
             and is_state(''binary_sensor.sonnette_humain'', ''off'') }}'
         then:
-        - service: switch.turn_off
-          data:
+        - data:
             entity_id: switch.chris_galaxy_tab_screen
+          action: switch.turn_off
     default:
-    - service: switch.turn_on
-      data:
+    - data:
         entity_id: switch.chris_galaxy_tab_screen
-  - if: '{{ not state(''sensor.chris_galaxy_tab_current_page'',''https://slashbackdomo.ddns.net:4294/lovelace/peephole'')}}'
-    then:
-    - service: fully_kiosk.load_url
-      data:
-        url: https://slashbackdomo.ddns.net:4294/lovelace/peephole
-      target:
-        device_id: 479efd4d9e1f4570884d84fc0f4261eb
+      action: switch.turn_on
+    - if:
+      - condition: template
+        value_template: '{{ not is_state(''sensor.chris_galaxy_tab_current_page'',
+          "https://slashbackdomo.ddns.net:4294" ~ state_attr("camera.sonnette_fluent",
+          "entity_picture") | replace("camera_proxy", "camera_proxy_stream"))}}'
+      then:
+      - action: fully_kiosk.load_url
+        data:
+          url: '{{"https://slashbackdomo.ddns.net:4294" ~ state_attr("camera.sonnette_fluent",
+            "entity_picture") | replace("camera_proxy", "camera_proxy_stream")}}'
+        target:
+          device_id: 479efd4d9e1f4570884d84fc0f4261eb
   mode: single
 - alias: poophole_battery
   id: poophole_battery
@@ -4240,7 +4274,7 @@
       - service: notify.mobile_app_chriss_iphone
         data:
           message: Quelqu'un sonne à la porte d'en bas
-      - service: notify.mobile_app_sm_a525f
+      - service: notify.mobile_app_s25_mel
         data:
           message: Quelqu'un sonne à la porte d'en bas
       - delay:
@@ -4263,7 +4297,7 @@
                 name: Ringtone_2_Haptic-sashimi.caf
                 critical: 1
                 volume: 0.5
-      - service: notify.mobile_app_sm_a525f
+      - service: notify.mobile_app_s25_mel
         data:
           message: Quelqu'un sonne à la porte d'en bas
       - delay:
@@ -4342,7 +4376,7 @@
       - choose:
         - conditions:
           - condition: state
-            entity_id: media_player.terrassebas_3
+            entity_id: media_player.terrassebas
             state: playing
           sequence:
           - service: shell_command.ringextbas
@@ -4448,27 +4482,26 @@
       milliseconds: 5000
   mode: single
 - id: sonette_notif
-  alias: sonette_detectin_humain
+  alias: sonette_detection_humain_notif
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.sonnette_humain
+  triggers:
+  - entity_id: binary_sensor.sonnette_humain
     to: 'on'
-  action:
+    trigger: state
+  actions:
   - alias: Set up variables for the actions
     variables:
       action_15m: '{{ ''PAUSE_J_15m_'' ~ context.id }}'
       action_1h: '{{ ''PAUSE_J_1h_'' ~ context.id }}'
       action_4h: '{{ ''PAUSE_J_4h_'' ~ context.id }}'
       action_8h: '{{ ''PAUSE_J_8h_'' ~ context.id }}'
-  - service: notify.mobile_app_sm_a525f
-    data:
+  - data:
       message: Quelqu'un est détecté devant la maison
       data:
         image: https://slashbackdomo.ddns.net:4294/{{state_attr('camera.sonnette_les_instantanes_clair','entity_picture')}}
     enabled: true
-  - service: notify.mobile_app_chriss_iphone
-    data:
+    action: notify.mobile_app_s25_mel
+  - data:
       message: Quelqu'un est détecté devant la maison
       data:
         entity_id: camera.sonnette_fluent
@@ -4481,24 +4514,25 @@
           title: Désactiver 4 heure
         - action: '{{ action_8h }}'
           title: Désactiver 8 heure
+    action: notify.mobile_app_chriss_iphone
   - alias: Wait for a response
     wait_for_trigger:
-    - platform: event
-      event_type: mobile_app_notification_action
+    - event_type: mobile_app_notification_action
       event_data:
         action: '{{ action_15m }}'
-    - platform: event
-      event_type: mobile_app_notification_action
+      trigger: event
+    - event_type: mobile_app_notification_action
       event_data:
         action: '{{ action_1h }}'
-    - platform: event
-      event_type: mobile_app_notification_action
+      trigger: event
+    - event_type: mobile_app_notification_action
       event_data:
         action: '{{ action_4h }}'
-    - platform: event
-      event_type: mobile_app_notification_action
+      trigger: event
+    - event_type: mobile_app_notification_action
       event_data:
         action: '{{ action_8h }}'
+      trigger: event
     timeout:
       hours: 0
       minutes: 10
@@ -4531,20 +4565,18 @@
       - delay:
           hours: 8
   mode: single
-- alias: sonette_notif_critical
-  id: sonette_notif_critical
-  mode: single
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.sonnette_visiteur
+- id: sonette_notif_critical
+  alias: sonette_notif_critical
+  triggers:
+  - entity_id: binary_sensor.sonnette_visiteur
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.hello_fresh
     state: 'off'
-  action:
-  - service: notify.mobile_app_chriss_iphone
-    data:
+  actions:
+  - data:
       message: Quelqu'un sonne à la porte
       data:
         entity_id: camera.sonnette_fluent
@@ -4553,13 +4585,15 @@
             name: Ringtone_2_Haptic-sashimi.caf
             critical: 1
             volume: 0.5
-  - service: notify.mobile_app_sm_a525f
-    data:
+    action: notify.mobile_app_chriss_iphone
+  - data:
       message: Quelqu'un sonne à la porte
       data:
         image: https://slashbackdomo.ddns.net:4294/{{state_attr('camera.sonnette_les_instantanes_clair','entity_picture')}}
+    action: notify.mobile_app_s25_mel
   - delay:
       milliseconds: 5000
+  mode: single
 - alias: sonette_lampe_sam
   id: sonette_lampe_sam
   mode: single
@@ -4683,7 +4717,7 @@
     to: 'on'
   condition:
   - condition: state
-    entity_id: media_player.terrassebas_3
+    entity_id: media_player.terrassebas
     state: playing
   action:
   - service: shell_command.ringextbas
@@ -4831,81 +4865,87 @@
           milliseconds: 1000
 - id: wifi_off
   alias: Turn off wifi
-  trigger:
-    platform: time
-    at: 00:00:00
-  action:
-  - service: mqtt.publish
-    data:
+  triggers:
+  - at: 00:00:00
+    trigger: time
+  actions:
+  - data:
       topic: cmd/esp_watchdog_etage0a/watchdog
       payload: '999999'
       retain: true
-  - service: mqtt.publish
-    data:
+    action: mqtt.publish
+  - data:
       topic: cmd/esp_watchdog_etage1a/watchdog
       payload: '999999'
       retain: true
-  - service: input_text.set_value
-    data:
+    action: mqtt.publish
+  - data:
       entity_id: input_text.hyperion_args
       value: -c 000000
-  - service: automation.turn_off
-    data:
+    action: input_text.set_value
+  - data:
       entity_id: automation.dim_led_cuisine_sun_elevation
       stop_actions: true
-  - service: light.turn_off
-    data:
+    action: automation.turn_off
+  - data:
       entity_id: light.wled
-  - service: shell_command.hyperion_remote
-  - service: shell_command.hyperion_stop
-  - service: switch.turn_off
-    data:
+    action: light.turn_off
+  - action: shell_command.hyperion_remote
+    data: {}
+  - action: shell_command.hyperion_stop
+    data: {}
+  - data:
       entity_id: switch.unifi_rdc
+    action: switch.turn_off
+  - data:
+      entity_id: switch.unifi_etage
+    action: switch.turn_off
   - delay: 300
-  - service: mqtt.publish
-    data:
+  - data:
       topic: cmd/esp_watchdog_etage0a/watchdog
       payload: '{{states("input_number.arduino_watchdog")|int}}'
       retain: true
-  - service: mqtt.publish
-    data:
+    action: mqtt.publish
+  - data:
       topic: cmd/esp_watchdog_etage1a/watchdog
       payload: '{{states("input_number.arduino_watchdog")|int}}'
       retain: true
+    action: mqtt.publish
 - id: wifi_on
   alias: Turn on wifi
-  trigger:
-    platform: time
-    at: 07:10:00
-  action:
-  - service: mqtt.publish
-    data:
+  triggers:
+  - at: 06:25:00
+    trigger: time
+  actions:
+  - data:
       topic: cmd/esp_watchdog_etage0a/watchdog
       payload: '999999'
       retain: true
-  - service: mqtt.publish
-    data:
+    action: mqtt.publish
+  - data:
       topic: cmd/esp_watchdog_etage1a/watchdog
       payload: '999999'
       retain: true
-  - service: switch.turn_on
-    data:
+    action: mqtt.publish
+  - data:
       entity_id: switch.unifi_rdc
-  - service: shell_command.hyperion_start
+    action: switch.turn_on
+  - action: shell_command.hyperion_start
+    data: {}
   - delay: 300
-  - service: automation.turn_on
-    data:
+  - data:
       entity_id: automation.dim_led_cuisine_sun_elevation
-  - service: mqtt.publish
-    data:
+    action: automation.turn_on
+  - data:
       topic: cmd/esp_watchdog_etage0a/watchdog
       payload: '{{states("input_number.arduino_watchdog")|int}}'
       retain: true
-  - service: mqtt.publish
-    data:
+    action: mqtt.publish
+  - data:
       topic: cmd/esp_watchdog_etage1a/watchdog
       payload: '{{states("input_number.arduino_watchdog")|int}}'
       retain: true
+    action: mqtt.publish
 - id: comingHome
   alias: 'Chris Coming Home: open garage?'
   trigger:
@@ -4938,7 +4978,7 @@
     entity_id: person.melanie
     to: home
   action:
-  - service: notify.mobile_app_sm_a525f
+  - service: notify.mobile_app_s25_mel
     data:
       message: Ouvir le garage ?
       data:
@@ -5266,4 +5306,355 @@
     data:
       message: Espace disque domo supérieur à 90%
       title: Monitoring
+  mode: single
+- id: '1733415354801'
+  alias: BugNextSong_salon
+  description: ''
+  triggers:
+  - trigger: template
+    value_template: '{{ state_attr(''media_player.salon'', ''media_position'') ==
+      state_attr(''media_player.salon'', ''media_duration'') and (state_attr(''media_player.salon'',
+      ''media_position'') | int) > 0 }}'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  conditions: []
+  actions:
+  - action: media_player.media_next_track
+    target:
+      entity_id: media_player.salon
+    data: {}
+  mode: single
+- id: '1734887212936'
+  alias: 'WLED Elise '
+  description: ''
+  triggers:
+  - trigger: mqtt
+    topic: cmd/etage2a/in/36
+    payload: 'ON'
+  conditions: []
+  actions:
+  - action: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.wled_elise
+  mode: single
+- id: '1735218730973'
+  alias: sonette_detection_humain_lampe
+  description: 'Allumer la la façade lorsque quelqu’un est détecté '
+  triggers:
+  - entity_id: binary_sensor.sonnette_humain
+    to: 'on'
+    trigger: state
+  actions:
+  - if:
+    - condition: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: -2
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.l_facade_avant
+    - wait_template: '{{ is_state("binary_sensor.sonnette_visiteur", "off") }}'
+      continue_on_timeout: true
+    - delay:
+        hours: 0
+        minutes: 2
+        seconds: 0
+        milliseconds: 0
+    - action: light.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.l_facade_avant
+  mode: restart
+- id: '1737485124110'
+  alias: 3d_printer_finished
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.octoprint_printing
+    to: 'off'
+    from: 'on'
+  conditions: []
+  actions:
+  - action: notify.mobile_app_chriss_iphone
+    metadata: {}
+    data:
+      message: Impression terminée
+      title: 3D Printer
+  mode: single
+- id: '1740521185350'
+  alias: 'Minuterie garage Chris '
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - light.l_garage_chris
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  conditions:
+  - condition: template
+    value_template: '{{as_timestamp(now())-
+
+      as_timestamp(states.light.l_toilette.last_updated) < 350}}'
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.l_garage_chris
+  mode: single
+- id: '1740915072803'
+  alias: 3d_printer_started
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.octoprint_printing
+    to: 'on'
+  conditions: []
+  actions:
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.led_3d_printer
+  mode: single
+- id: '1741381371069'
+  alias: MemoireOdroid
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.system_monitor_memoire_libre
+    above: 200
+  conditions: []
+  actions:
+  - action: notify.mobile_app_chriss_iphone
+    metadata: {}
+    data:
+      message: Mémoire dispo inférieur à 200 Mo sur Odroid
+  mode: single
+- id: '1742741588851'
+  alias: BugNextSongTerrasse_bas
+  description: ''
+  triggers:
+  - trigger: template
+    value_template: '{{ state_attr(''media_player.terrassebas'', ''media_position'')
+      == state_attr(''media_player.terrassebas'', ''media_duration'') and (state_attr(''media_player.terrassebas'',
+      ''media_position'') | int) > 0 }}'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  conditions: []
+  actions:
+  - action: media_player.media_next_track
+    target:
+      entity_id:
+      - media_player.terrassebas
+    data: {}
+  mode: single
+- id: '1742741800216'
+  alias: BugNextSongTerrasse_haut
+  description: ''
+  triggers:
+  - trigger: template
+    value_template: '{{ state_attr(''media_player.terrassehaut'', ''media_position'')
+      == state_attr(''media_player.terrassehaut'', ''media_duration'') and (state_attr(''media_player.terrassehaut'',
+      ''media_position'') | int) > 0 }}'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  conditions: []
+  actions:
+  - action: media_player.media_next_track
+    data: {}
+    target:
+      entity_id: media_player.terrassehaut
+  mode: single
+- id: '1744311956619'
+  alias: Alerte Poubelle
+  description: ''
+  triggers:
+  - trigger: time
+    at: '20:00:00'
+  conditions:
+  - condition: numeric_state
+    entity_id: number.prelevement_poubelle
+    below: 2
+    above: 0
+  actions:
+  - action: notify.mobile_app_chriss_iphone
+    metadata: {}
+    data:
+      title: Poubelles
+      message: Les poubelles passent demain, mises dehors ?
+  mode: single
+- id: '1744315141618'
+  alias: New_ha_version
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.docker_hub
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  conditions: []
+  actions:
+  - action: persistent_notification.create
+    metadata: {}
+    data:
+      message: Nouvelle version de HA disponible {{ states("sensor.docker_hub") }}
+  mode: single
+- id: '1746106801980'
+  alias: Programmation Frigo Ext
+  description: ''
+  triggers:
+  - entity_id:
+    - input_boolean.frigo_prog_automation_activated
+    to: 'on'
+    trigger: state
+  - entity_id:
+    - input_datetime.frigo_prog_on
+    trigger: state
+  - entity_id:
+    - input_datetime.frigo_prog_off
+    trigger: state
+  - at: input_datetime.frigo_prog_on
+    trigger: time
+  - at: input_datetime.frigo_prog_off
+    trigger: time
+  conditions:
+  - condition: state
+    entity_id: input_boolean.frigo_prog_automation_activated
+    state: 'on'
+  actions:
+  - variables:
+      entity: switch.cuisine_ext
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: "{% if ( states('input_datetime.frigo_prog_off') == \"00:00:00\"
+          ) %}\n  {{ states('sensor.time')~':00'  >= states('input_datetime.frigo_prog_on')
+          }}\n{% else %}\n  {{ states('sensor.time')~':00'  >= states('input_datetime.frigo_prog_on')
+          and states('sensor.time')~':00' < states('input_datetime.frigo_prog_off')
+          }} \n{% endif %}"
+      sequence:
+      - data:
+          message: Activation du frigo exterieur
+        action: notify.mobile_app_chriss_iphone
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.cuisine_ext
+    default:
+    - action: switch.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.cuisine_ext
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ trigger.platform == ''time'' and trigger.entity_id ==
+            ''input_datetime.frigo_prog_off''}}'
+        sequence:
+        - data: {}
+          action: input_boolean.turn_off
+          target:
+            entity_id:
+            - input_boolean.frigo_prog_automation_activated
+  mode: single
+- id: '1748680956522'
+  alias: Tondre (devant d'abord)
+  description: ''
+  triggers:
+  - trigger: time
+    at: 07:30:00
+  conditions:
+  - condition: template
+    value_template: '{{ now().weekday() in [0, 2, 4] }}'
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: weather.maison_maison
+      state:
+      - lightning-rainy
+      - rainy
+      - pouring
+  actions:
+  - action: mammotion.start_mow
+    metadata: {}
+    data:
+      is_mow: true
+      is_dump: false
+      speed: 0.3
+      rain_tactics: 1
+      areas:
+      - switch.yuka_mnwljr28_zone_avant
+      - switch.yuka_mnwljr28_zone_arriere_3
+      channel_mode: 2
+      border_mode: 1
+      ultra_wave: 2
+      channel_width: 10
+      mowing_laps: 2
+      obstacle_laps: 2
+      start_progress: 0
+    target:
+      device_id: 8e4682ed099b2367877cd7f9b5e5d959
+  mode: single
+- id: '1749059150933'
+  alias: 'Tondeuse bloquee '
+  description: ''
+  triggers:
+  - trigger: template
+    value_template: '{{ (as_timestamp(now()) -as_timestamp(states.sensor.tondeuse_localisation.last_updated)
+      > 60) }}'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  conditions:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: device_tracker.yuka_mnwljr28_yuka_mnwljr28
+      state: Base Tondeuse
+  actions:
+  - action: notify.mobile_app_chriss_iphone
+    metadata: {}
+    data:
+      message: Tondeuse bloquée ??
+      title: Tondeuse
+  mode: single
+- id: '1757882083350'
+  alias: 'Tondeuse bloquée '
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.yuka_mnwljr28_last_error_code
+    to: '1201'
+  conditions: []
+  actions:
+  - action: notify.mobile_app_chriss_iphone
+    metadata: {}
+    data:
+      message: Robot bloqué
+      title: Tondeuse
   mode: single

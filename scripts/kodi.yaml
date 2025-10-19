@@ -3,7 +3,7 @@ kodi_defaults:
     sequence:
       - service: shell_command.curl
         data: &defaults
-          url: "http://192.168.0.175:8080/jsonrpc"
+          url: "http://192.168.40.175:8080/jsonrpc"
           method: "post"
           headers:    
             content-type: "application/json"

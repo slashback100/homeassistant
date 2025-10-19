@@ -1,6 +1,6 @@
     name: Volet Cuisine 1
     unique_id: Volet Cuisine 1
-    object_id: volet_cuisine_1
+    default_entity_id: cover.volet_cuisine_1
     device_class: blind
     command_topic: cmd/blinds_etage1a/01
     payload_close: 'd'

@@ -1,9 +1,13 @@
-#homekit:
-#    safe_mode: true
-#    filter:
-#        include_domains:
-#              - light
-#              - cover
-#                #- climate
-#              - media_player
-#                #- camera
+homekit:
+  name: my_homekit
+  port: 21064
+  ip_address: 192.168.10.186
+  advertise_ip: 192.168.10.186
+  #safe_mode: true
+  filter:
+        include_domains:
+              - light
+              - cover
+              - climate
+              - media_player
+              - camera

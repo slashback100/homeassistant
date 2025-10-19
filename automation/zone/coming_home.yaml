@@ -31,7 +31,7 @@
         entity_id: person.melanie
         to: 'home'
     action:
-      - service: notify.mobile_app_sm_a525f
+      - service: notify.mobile_app_s25_mel
         data:
             message: "Ouvir le garage ?"
             data:

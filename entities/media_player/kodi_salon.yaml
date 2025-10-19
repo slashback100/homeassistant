@@ -1,6 +1,6 @@
     platform: kodi
     name: Mediacenter Salon
-    host: 192.168.0.205
+    host: 192.168.10.205
     enable_websocket: false
     turn_on_action:
       - service: switch.turn_on

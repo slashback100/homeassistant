@@ -1,6 +1,6 @@
     name: Volet Cuisine Entree
     unique_id: Volet Cuisine Entree
-    object_id: volet_cuisine_entree
+    default_entity_id: cover.volet_cuisine_entree
     device_class: blind
     command_topic: cmd/blinds_etage1a/08
     payload_close: 'd'
